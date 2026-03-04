@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const FooterSection = () => {
   const ref = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -19,33 +21,33 @@ const FooterSection = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <p className="text-lg font-bold text-foreground">
-              Sigma <span className="font-normal text-foreground/60">Tecnologías</span>
+              {t.footer.brand} <span className="font-normal text-foreground/60">{t.footer.brandSuffix}</span>
             </p>
             <p className="text-sm text-secondary-soft mt-1">
-              Productos de IA y automatización
+              {t.footer.tagline}
             </p>
           </div>
 
           <div className="flex items-center gap-8 text-base text-secondary-soft">
             <a href="#productos" className="hover:text-foreground transition-colors">
-              Productos
+              {t.footer.products}
             </a>
             <a href="#contacto" className="hover:text-foreground transition-colors">
-              Contacto
+              {t.footer.contact}
             </a>
           </div>
         </div>
 
         <div className="mt-10 pt-6 border-t border-foreground/[0.06] text-center">
           <p className="text-sm text-secondary-soft">
-            Desarrollado por{" "}
+            {t.footer.designedBy}{" "}
             <a
-              href="https://arielodasso.com/"
+              href={t.footer.designerUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-foreground/80 hover:text-foreground hover:underline transition-colors"
             >
-              Ariel Odasso
+              {t.footer.designerName}
             </a>
           </p>
         </div>

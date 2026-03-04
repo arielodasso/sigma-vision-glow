@@ -1,16 +1,13 @@
 import { Brain, Cog, Cloud, Target } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "@/i18n/useTranslation";
 
-const items = [
-  { icon: Brain, title: "Inteligencia artificial aplicada al análisis de datos" },
-  { icon: Cog, title: "Automatización de procesos" },
-  { icon: Cloud, title: "Arquitectura SaaS escalable" },
-  { icon: Target, title: "Plataformas orientadas a decisiones basadas en datos" },
-];
+const icons = [Brain, Cog, Cloud, Target];
 
 const MethodSection = () => {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -26,28 +23,31 @@ const MethodSection = () => {
       <div className="container mx-auto px-6">
         <div className={`text-center mb-20 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <h2 className="text-4xl sm:text-5xl font-bold text-gradient mb-5">
-            Cómo trabajamos
+            {t.method.title}
           </h2>
           <p className="text-lg text-secondary-soft max-w-2xl mx-auto leading-relaxed">
-            Nuestro enfoque tecnológico combina las mejores prácticas de ingeniería con inteligencia artificial de vanguardia.
+            {t.method.subtitle}
           </p>
         </div>
 
         <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {items.map((item, i) => (
-            <div
-              key={i}
-              className={`glass-card rounded-2xl p-7 flex items-center gap-5 transition-all duration-700 hover-scale ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-              style={{ transitionDelay: visible ? `${i * 100 + 200}ms` : '0ms' }}
-            >
-              <div className="w-12 h-12 rounded-xl bg-foreground/[0.06] border border-foreground/[0.08] flex items-center justify-center shrink-0">
-                <item.icon size={24} className="text-foreground/70" />
+          {t.method.items.map((title, i) => {
+            const Icon = icons[i];
+            return (
+              <div
+                key={i}
+                className={`glass-card rounded-2xl p-7 flex items-center gap-5 transition-all duration-700 hover-scale ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                style={{ transitionDelay: visible ? `${i * 100 + 200}ms` : '0ms' }}
+              >
+                <div className="w-12 h-12 rounded-xl bg-foreground/[0.06] border border-foreground/[0.08] flex items-center justify-center shrink-0">
+                  <Icon size={24} className="text-foreground/70" />
+                </div>
+                <p className="text-base text-foreground/90 font-medium leading-relaxed">
+                  {title}
+                </p>
               </div>
-              <p className="text-base text-foreground/90 font-medium leading-relaxed">
-                {item.title}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
