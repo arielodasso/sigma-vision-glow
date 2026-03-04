@@ -46,7 +46,7 @@ const es = {
         cta: "Conocer producto",
       },
       {
-        name: "Trend Intelligence Engine",
+        name: "Sigma Trend Engine",
         tagline: "Motor de detección de tendencias con IA",
         description: "Diseñado para agencias de marketing que necesitan identificar tendencias emergentes y generar ideas de contenido estratégicas automáticamente.",
         cta: "Conocer producto",

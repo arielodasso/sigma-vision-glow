@@ -46,7 +46,7 @@ const en = {
         cta: "Learn more",
       },
       {
-        name: "Trend Intelligence Engine",
+        name: "Sigma Trend Engine",
         tagline: "AI-powered trend detection engine",
         description: "Designed for marketing agencies that need to identify emerging trends and automatically generate strategic content ideas.",
         cta: "Learn more",
