@@ -1,22 +1,17 @@
-import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/i18n/useTranslation";
+import { motion } from "framer-motion";
 
 const FooterSection = () => {
-  const ref = useRef<HTMLElement>(null);
-  const [visible, setVisible] = useState(false);
   const { t } = useTranslation();
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.3 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <footer ref={ref} className={`border-t border-foreground/[0.06] py-14 transition-all duration-700 ${visible ? 'opacity-100' : 'opacity-0'}`}>
+    <motion.footer
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6 }}
+      className="border-t border-foreground/[0.06] py-14"
+    >
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <a href="#" className="flex items-center gap-3">
@@ -57,7 +52,7 @@ const FooterSection = () => {
           </p>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 };
 

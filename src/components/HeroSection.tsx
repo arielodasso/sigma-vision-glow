@@ -2,6 +2,7 @@ import heroBg from "@/assets/hero-bg.jpg";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "@/i18n/useTranslation";
+import { motion } from "framer-motion";
 
 const HeroSection = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -30,19 +31,39 @@ const HeroSection = () => {
       <div className="absolute inset-0 opacity-[0.015]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%270 0 256 256%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27noise%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%274%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23noise)%27/%3E%3C/svg%3E")' }} />
 
       <div className="relative z-10 container mx-auto px-6 text-center max-w-5xl pt-28">
-        <div className="inline-block glass rounded-full px-5 py-2 mb-10 text-sm font-medium text-secondary-soft tracking-wide animate-fade-in" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="inline-block glass rounded-full px-5 py-2 mb-10 text-sm font-medium text-secondary-soft tracking-wide"
+        >
           {t.hero.badge}
-        </div>
+        </motion.div>
 
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight text-gradient mb-8 animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight text-gradient mb-8"
+        >
           {t.hero.title}
-        </h1>
+        </motion.h1>
 
-        <p className="text-lg sm:text-xl text-secondary-soft max-w-2xl mx-auto mb-12 leading-relaxed animate-fade-in" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="text-lg sm:text-xl text-secondary-soft max-w-2xl mx-auto mb-12 leading-relaxed"
+        >
           {t.hero.description}
-        </p>
+        </motion.p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+        >
           <a
             href="#productos"
             className="flex items-center gap-2.5 btn-primary-neutral px-10 py-4 rounded-full text-base font-semibold hover-scale"
@@ -57,7 +78,7 @@ const HeroSection = () => {
             <MessageCircle size={18} />
             {t.hero.ctaSecondary}
           </a>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
