@@ -12,8 +12,8 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-3">
-      <div className="glass-strong rounded-full max-w-6xl w-full flex items-center justify-between px-4 py-2.5">
+    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-3 animate-fade-in">
+      <div className="glass-strong rounded-full max-w-5xl w-full flex items-center justify-between px-4 py-2.5">
         {/* Logo */}
         <a href="#" className="flex items-center gap-3 pl-2">
           <div className="w-10 h-10 rounded-xl bg-foreground/10 border border-foreground/10 flex items-center justify-center">
@@ -37,19 +37,13 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Right buttons — desktop */}
-        <div className="hidden md:flex items-center gap-2.5">
-          <a
-            href="#contacto"
-            className="btn-glass-outline text-sm px-6 py-2.5 rounded-full font-medium"
-          >
-            Iniciar sesión
-          </a>
+        {/* Right CTA — desktop */}
+        <div className="hidden md:flex items-center">
           <a
             href="#contacto"
             className="btn-primary-neutral text-sm px-6 py-2.5 rounded-full"
           >
-            Solicitar demo
+            Contactar
           </a>
         </div>
 
@@ -64,7 +58,7 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {open && (
-        <div className="fixed top-[76px] left-4 right-4 glass-strong rounded-2xl p-5 space-y-3 md:hidden">
+        <div className="fixed top-[76px] left-4 right-4 glass-strong rounded-2xl p-5 space-y-3 md:hidden animate-fade-in">
           {links.map((l) => (
             <a
               key={l.href + l.label}
@@ -75,22 +69,13 @@ const Navbar = () => {
               {l.label}
             </a>
           ))}
-          <div className="flex flex-col gap-2 pt-2">
-            <a
-              href="#contacto"
-              onClick={() => setOpen(false)}
-              className="btn-glass-outline text-sm px-5 py-2.5 rounded-full text-center"
-            >
-              Iniciar sesión
-            </a>
-            <a
-              href="#contacto"
-              onClick={() => setOpen(false)}
-              className="btn-primary-neutral text-sm px-5 py-2.5 rounded-full text-center"
-            >
-              Solicitar demo
-            </a>
-          </div>
+          <a
+            href="#contacto"
+            onClick={() => setOpen(false)}
+            className="block btn-primary-neutral text-sm px-5 py-2.5 rounded-full text-center mt-2"
+          >
+            Contactar
+          </a>
         </div>
       )}
     </nav>

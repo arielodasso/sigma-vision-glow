@@ -1,4 +1,5 @@
 import { Brain, Cog, Cloud, Target } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 const items = [
   { icon: Brain, title: "Inteligencia artificial aplicada al análisis de datos" },
@@ -8,28 +9,41 @@ const items = [
 ];
 
 const MethodSection = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.15 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="metodo" className="py-24 lg:py-32">
+    <section id="metodo" className="py-28 lg:py-36" ref={ref}>
       <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gradient mb-4">
+        <div className={`text-center mb-20 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <h2 className="text-4xl sm:text-5xl font-bold text-gradient mb-5">
             Cómo trabajamos
           </h2>
-          <p className="text-secondary-soft max-w-xl mx-auto">
+          <p className="text-lg text-secondary-soft max-w-2xl mx-auto leading-relaxed">
             Nuestro enfoque tecnológico combina las mejores prácticas de ingeniería con inteligencia artificial de vanguardia.
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
+        <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {items.map((item, i) => (
             <div
               key={i}
-              className="glass-card rounded-2xl p-6 flex items-start gap-4 transition-all duration-300"
+              className={`glass-card rounded-2xl p-7 flex items-center gap-5 transition-all duration-700 hover-scale ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              style={{ transitionDelay: visible ? `${i * 100 + 200}ms` : '0ms' }}
             >
-              <div className="w-10 h-10 rounded-xl bg-foreground/[0.06] border border-foreground/[0.08] flex items-center justify-center shrink-0">
-                <item.icon size={20} className="text-foreground/70" />
+              <div className="w-12 h-12 rounded-xl bg-foreground/[0.06] border border-foreground/[0.08] flex items-center justify-center shrink-0">
+                <item.icon size={24} className="text-foreground/70" />
               </div>
-              <p className="text-sm text-foreground/90 font-medium leading-relaxed">
+              <p className="text-base text-foreground/90 font-medium leading-relaxed">
                 {item.title}
               </p>
             </div>
