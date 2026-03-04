@@ -16,22 +16,22 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto">
         <div className="glass-strong rounded-2xl px-6 py-3 flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-3 pl-2">
+        <a href="#" className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-foreground/10 border border-foreground/10 flex items-center justify-center">
-            <span className="text-foreground font-bold text-base">Σ</span>
+            <span className="text-foreground font-bold text-xl">Σ</span>
           </div>
-          <span className="text-base font-bold tracking-tight text-foreground">
+          <span className="text-xl font-bold text-foreground">
             Sigma<span className="font-normal text-foreground/70">Tecnologías</span>
           </span>
         </a>
 
         {/* Center links — desktop */}
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-8">
           {links.map((l) => (
             <a
               key={l.href + l.label}
               href={l.href}
-              className="text-sm text-foreground/60 hover:text-foreground px-5 py-2 rounded-full transition-colors font-medium"
+              className="text-muted-foreground hover:text-foreground transition-colors font-medium"
             >
               {l.label}
             </a>
@@ -42,7 +42,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center">
           <a
             href="#contacto"
-            className="btn-primary-neutral text-sm px-6 py-2.5 rounded-full"
+            className="btn-primary-neutral text-sm px-6 py-3 rounded-full"
           >
             Contactar
           </a>
