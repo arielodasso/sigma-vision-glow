@@ -15,7 +15,7 @@ const MethodSection = () => {
           <h2 className="text-3xl sm:text-4xl font-bold text-gradient mb-4">
             Cómo trabajamos
           </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
+          <p className="text-secondary-soft max-w-xl mx-auto">
             Nuestro enfoque tecnológico combina las mejores prácticas de ingeniería con inteligencia artificial de vanguardia.
           </p>
         </div>
@@ -24,12 +24,12 @@ const MethodSection = () => {
           {items.map((item, i) => (
             <div
               key={i}
-              className="glass rounded-xl p-6 flex items-start gap-4 hover:glow-accent transition-all duration-300"
+              className="glass-card rounded-2xl p-6 flex items-start gap-4 transition-all duration-300"
             >
-              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                <item.icon size={20} className="text-primary" />
+              <div className="w-10 h-10 rounded-xl bg-foreground/[0.06] border border-foreground/[0.08] flex items-center justify-center shrink-0">
+                <item.icon size={20} className="text-foreground/70" />
               </div>
-              <p className="text-sm text-foreground font-medium leading-relaxed">
+              <p className="text-sm text-foreground/90 font-medium leading-relaxed">
                 {item.title}
               </p>
             </div>

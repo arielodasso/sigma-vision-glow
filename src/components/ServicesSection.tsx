@@ -31,7 +31,7 @@ const ServicesSection = () => {
           <h2 className="text-3xl sm:text-4xl font-bold text-gradient mb-4">
             Qué hacemos
           </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
+          <p className="text-secondary-soft max-w-xl mx-auto">
             Construimos productos de software inteligentes que resuelven problemas reales con inteligencia artificial y datos.
           </p>
         </div>
@@ -40,13 +40,13 @@ const ServicesSection = () => {
           {services.map((s) => (
             <div
               key={s.title}
-              className="glass rounded-xl p-6 hover:glow-accent transition-all duration-300 group"
+              className="glass-card rounded-2xl p-6 transition-all duration-300 group"
             >
-              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                <s.icon size={24} className="text-primary" />
+              <div className="w-12 h-12 rounded-xl bg-foreground/[0.06] border border-foreground/[0.08] flex items-center justify-center mb-4 group-hover:bg-foreground/[0.10] transition-colors">
+                <s.icon size={24} className="text-foreground/70" />
               </div>
               <h3 className="text-foreground font-semibold mb-2">{s.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-sm text-secondary-soft leading-relaxed">
                 {s.description}
               </p>
             </div>

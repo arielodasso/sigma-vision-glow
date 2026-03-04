@@ -27,7 +27,7 @@ const ProductsSection = () => {
           <h2 className="text-3xl sm:text-4xl font-bold text-gradient mb-4">
             Nuestros productos
           </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
+          <p className="text-secondary-soft max-w-xl mx-auto">
             Plataformas propias impulsadas por inteligencia artificial y diseñadas para resolver necesidades específicas.
           </p>
         </div>
@@ -36,19 +36,21 @@ const ProductsSection = () => {
           {products.map((p) => (
             <div
               key={p.name}
-              className="glass rounded-2xl p-8 flex flex-col justify-between hover:glow-accent transition-all duration-300 group"
+              className="glass-card rounded-2xl p-8 flex flex-col justify-between transition-all duration-300 group"
             >
               <div>
-                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
-                  <p.icon size={28} className="text-primary" />
+                <div className="w-14 h-14 rounded-xl bg-foreground/[0.06] border border-foreground/[0.08] flex items-center justify-center mb-6 group-hover:bg-foreground/[0.10] transition-colors">
+                  <p.icon size={28} className="text-foreground/70" />
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-1">{p.name}</h3>
-                <p className="text-sm text-primary font-medium mb-4">{p.tagline}</p>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-8">
+                <span className="inline-block text-xs font-medium text-foreground/50 bg-foreground/[0.06] border border-foreground/[0.08] rounded-full px-3 py-1 mb-4">
+                  {p.tagline}
+                </span>
+                <p className="text-sm text-secondary-soft leading-relaxed mb-8">
                   {p.description}
                 </p>
               </div>
-              <button className="flex items-center gap-2 text-sm font-semibold text-foreground hover:text-primary transition-colors self-start">
+              <button className="btn-glass-outline flex items-center justify-center gap-2 text-sm px-6 py-2.5 rounded-full self-start">
                 {p.cta}
                 <ArrowRight size={16} />
               </button>
