@@ -1,8 +1,30 @@
-import { BarChart3, Sparkles, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "@/i18n/useTranslation";
+import { motion } from "framer-motion";
 
-const icons = [BarChart3, Sparkles];
+/** Sigma-style isologo component */
+const SigmaIsologo = ({ variant }: { variant: "analytics" | "trend" }) => {
+  const isAnalytics = variant === "analytics";
+  return (
+    <div className="flex items-center gap-3">
+      <div
+        className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
+        style={{
+          background: isAnalytics ? "#E2FC03" : "#A855F7",
+        }}
+      >
+        <span
+          className="font-bold text-2xl"
+          style={{ color: isAnalytics ? "#0B0D10" : "#ffffff" }}
+        >
+          Σ
+        </span>
+      </div>
+      {/* Name rendered separately below in the card */}
+    </div>
+  );
+};
 
 const ProductsSection = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -18,6 +40,25 @@ const ProductsSection = () => {
     return () => observer.disconnect();
   }, []);
 
+  const variants = ["analytics", "trend"] as const;
+
+  /** Brand name rendering with colored accent */
+  const renderBrandName = (name: string, variant: "analytics" | "trend") => {
+    const isAnalytics = variant === "analytics";
+    // Split "Sigma Analytics" or "Sigma Trend Engine" into parts
+    const sigmaPrefix = "Sigma";
+    const suffix = name.startsWith(sigmaPrefix) ? name.slice(sigmaPrefix.length).trim() : name;
+
+    return (
+      <h3 className="text-2xl font-bold text-foreground mb-2">
+        {sigmaPrefix}
+        <span style={{ color: isAnalytics ? "#E2FC03" : "#A855F7" }}>
+          {suffix ? ` ${suffix}` : ""}
+        </span>
+      </h3>
+    );
+  };
+
   return (
     <section id="productos" className="py-28 lg:py-36" ref={ref}>
       <div className="container mx-auto px-6">
@@ -32,19 +73,29 @@ const ProductsSection = () => {
 
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {t.products.items.map((p, i) => {
-            const Icon = icons[i];
+            const variant = variants[i];
             return (
-              <div
+              <motion.div
                 key={i}
-                className={`glass-card rounded-2xl p-10 flex flex-col justify-between transition-all duration-700 group hover-scale ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                style={{ transitionDelay: visible ? `${i * 150 + 200}ms` : '0ms' }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={visible ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: i * 0.15 + 0.2, duration: 0.6, ease: "easeOut" }}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                className="glass-card rounded-2xl p-10 flex flex-col justify-between group"
               >
                 <div>
-                  <div className="w-16 h-16 rounded-xl bg-foreground/[0.06] border border-foreground/[0.08] flex items-center justify-center mb-7 group-hover:bg-foreground/[0.10] transition-colors">
-                    <Icon size={32} className="text-foreground/70" />
+                  <div className="mb-7">
+                    <SigmaIsologo variant={variant} />
                   </div>
-                  <h3 className="text-2xl font-bold text-foreground mb-2">{p.name}</h3>
-                  <span className="inline-block text-sm font-medium text-foreground/50 bg-foreground/[0.06] border border-foreground/[0.08] rounded-full px-4 py-1.5 mb-5">
+                  {renderBrandName(p.name, variant)}
+                  <span
+                    className="inline-block text-sm font-medium rounded-full px-4 py-1.5 mb-5"
+                    style={{
+                      color: variant === "analytics" ? "#E2FC03" : "#C084FC",
+                      background: variant === "analytics" ? "rgba(226,252,3,0.08)" : "rgba(168,85,247,0.08)",
+                      border: `1px solid ${variant === "analytics" ? "rgba(226,252,3,0.15)" : "rgba(168,85,247,0.15)"}`,
+                    }}
+                  >
                     {p.tagline}
                   </span>
                   <p className="text-base text-secondary-soft leading-relaxed mb-10">
@@ -55,7 +106,7 @@ const ProductsSection = () => {
                   {p.cta}
                   <ArrowRight size={18} />
                 </button>
-              </div>
+              </motion.div>
             );
           })}
         </div>
