@@ -1,25 +1,15 @@
-import { useState, FormEvent, useEffect, useRef } from "react";
+import { useState, FormEvent } from "react";
 import { Send, Loader2 } from "lucide-react";
 import { useTranslation } from "@/i18n/useTranslation";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { motion } from "framer-motion";
 
 const ContactSection = () => {
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
   const { t } = useTranslation();
   const { toast } = useToast();
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.15 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -54,23 +44,40 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contacto" className="py-28 lg:py-36" ref={ref}>
+    <section id="contacto" className="py-28 lg:py-36">
       <div className="container mx-auto px-6 max-w-2xl">
-        <div className={`text-center mb-14 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-14"
+        >
           <h2 className="text-4xl sm:text-5xl font-bold text-gradient mb-5">
             {t.contact.title}
           </h2>
           <p className="text-lg text-secondary-soft leading-relaxed">
             {t.contact.subtitle}
           </p>
-        </div>
+        </motion.div>
 
-        <div className={`glass-card rounded-2xl p-10 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: visible ? '200ms' : '0ms' }}>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="glass-card rounded-2xl p-10"
+        >
           {submitted ? (
-            <div className="text-center py-10">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4 }}
+              className="text-center py-10"
+            >
               <p className="text-foreground font-semibold text-xl mb-3">{t.contact.successTitle}</p>
               <p className="text-secondary-soft text-base">{t.contact.successMessage}</p>
-            </div>
+            </motion.div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
@@ -131,7 +138,7 @@ const ContactSection = () => {
               </button>
             </form>
           )}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
