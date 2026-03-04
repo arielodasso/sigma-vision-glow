@@ -2,6 +2,7 @@ import { useState, FormEvent, useEffect, useRef } from "react";
 import { Send, Loader2 } from "lucide-react";
 import { useTranslation } from "@/i18n/useTranslation";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const ContactSection = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -26,7 +27,7 @@ const ContactSection = () => {
 
     const form = e.currentTarget;
     const formData = new FormData(form);
-    const data = {
+    const payload = {
       name: formData.get("name") as string,
       email: formData.get("email") as string,
       company: formData.get("company") as string,
@@ -34,26 +35,11 @@ const ContactSection = () => {
     };
 
     try {
-      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
-      const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+      const { error } = await supabase.functions.invoke("send-contact", {
+        body: payload,
+      });
 
-      if (!projectId || !anonKey) {
-        throw new Error("Missing config");
-      }
-
-      const res = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/send-contact`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${anonKey}`,
-          },
-          body: JSON.stringify(data),
-        }
-      );
-
-      if (!res.ok) throw new Error("Failed");
+      if (error) throw error;
 
       setSubmitted(true);
     } catch {
