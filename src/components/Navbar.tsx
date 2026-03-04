@@ -10,7 +10,6 @@ const Navbar = () => {
     { label: t.navbar.home, href: "#" },
     { label: t.navbar.solutions, href: "#servicios" },
     { label: t.navbar.products, href: "#productos" },
-    { label: t.navbar.contact, href: "#contacto" },
   ];
 
   return (
