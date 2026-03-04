@@ -1,18 +1,34 @@
 import heroBg from "@/assets/hero-bg.jpg";
 import { ArrowRight, MessageCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const HeroSection = () => {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background image with parallax */}
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-20 grayscale"
-        style={{ backgroundImage: `url(${heroBg})` }}
+        className="absolute inset-0 bg-cover bg-center opacity-20 grayscale will-change-transform"
+        style={{
+          backgroundImage: `url(${heroBg})`,
+          transform: `translateY(${scrollY * 0.3}px) scale(1.1)`,
+        }}
       />
+      {/* Radial gradient blobs */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.04)_0%,transparent_70%)]" />
         <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
       </div>
+      {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/70 to-background" />
+      {/* Subtle noise */}
       <div className="absolute inset-0 opacity-[0.015]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%270 0 256 256%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27noise%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%274%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23noise)%27/%3E%3C/svg%3E")' }} />
 
       <div className="relative z-10 container mx-auto px-6 text-center max-w-5xl pt-28">
@@ -20,7 +36,7 @@ const HeroSection = () => {
           Inteligencia Artificial · Datos · Automatización
         </div>
 
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight text-gradient mb-8 animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight text-gradient mb-8 animate-fade-in" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
           Productos de IA y sistemas de automatización para empresas modernas
         </h1>
 
