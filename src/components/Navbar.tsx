@@ -12,8 +12,9 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center px-6 pt-3 animate-fade-in">
-      <div className="glass-strong rounded-full max-w-[1400px] w-full flex items-center justify-between px-6 py-2.5">
+    <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 animate-fade-in">
+      <div className="max-w-7xl mx-auto">
+        <div className="glass-strong rounded-2xl px-6 py-3 flex items-center justify-between">
         {/* Logo */}
         <a href="#" className="flex items-center gap-3 pl-2">
           <div className="w-10 h-10 rounded-xl bg-foreground/10 border border-foreground/10 flex items-center justify-center">
@@ -54,6 +55,7 @@ const Navbar = () => {
         >
           {open ? <X size={22} /> : <Menu size={22} />}
         </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
