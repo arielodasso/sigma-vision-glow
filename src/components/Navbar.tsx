@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
 
   const links = [
-    { label: "Inicio", href: "#" },
-    { label: "Soluciones", href: "#servicios" },
-    { label: "Productos", href: "#productos" },
-    { label: "Contacto", href: "#contacto" },
+    { label: t.navbar.home, href: "#" },
+    { label: t.navbar.solutions, href: "#servicios" },
+    { label: t.navbar.products, href: "#productos" },
+    { label: t.navbar.contact, href: "#contacto" },
   ];
 
   return (
@@ -44,7 +46,7 @@ const Navbar = () => {
             href="#contacto"
             className="btn-primary-neutral text-sm px-6 py-3 rounded-full"
           >
-            Contactar
+            {t.navbar.cta}
           </a>
         </div>
 
@@ -76,7 +78,7 @@ const Navbar = () => {
             onClick={() => setOpen(false)}
             className="block btn-primary-neutral text-sm px-5 py-2.5 rounded-full text-center mt-2"
           >
-            Contactar
+            {t.navbar.cta}
           </a>
         </div>
       )}
