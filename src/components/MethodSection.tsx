@@ -20,9 +20,11 @@ const MethodSection = () => {
           <h2 className="text-4xl sm:text-5xl font-bold text-gradient mb-5">
             {t.method.title}
           </h2>
-          <p className="text-lg text-secondary-soft max-w-2xl mx-auto leading-relaxed">
-            {t.method.subtitle}
-          </p>
+          {t.method.subtitle && (
+            <p className="text-lg text-secondary-soft max-w-2xl mx-auto leading-relaxed">
+              {t.method.subtitle}
+            </p>
+          )}
         </motion.div>
 
         <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
