@@ -8,14 +8,14 @@ const es = {
   },
   hero: {
     badge: "Inteligencia Artificial · Datos · Software",
-    title: "Tecnología, inteligencia artificial y software para empresas modernas.",
-    description: "En Sigma Tecnologías desarrollamos productos propios y construimos soluciones tecnológicas para empresas que quieren trabajar con datos, automatización e inteligencia artificial.",
+    title: "Desarrollamos productos de inteligencia artificial y software para empresas.",
+    description: "En Sigma Tecnologías creamos plataformas, automatizaciones y productos tecnológicos que ayudan a empresas a analizar datos, detectar oportunidades y construir mejores sistemas digitales.",
     ctaPrimary: "Ver productos",
     ctaSecondary: "Contactar",
   },
   services: {
     title: "Construimos tecnología que convierte datos en decisiones.",
-    subtitle: "En Sigma Tecnologías desarrollamos productos de software propios y también creamos soluciones tecnológicas para empresas que necesitan analizar información, automatizar procesos y construir plataformas digitales.",
+    subtitle: "En Sigma Tecnologías desarrollamos productos de software propios y también construimos soluciones tecnológicas para empresas que necesitan analizar información, automatizar procesos y crear plataformas digitales.",
     subtitle2: "Nuestro enfoque combina inteligencia artificial, ingeniería de software y análisis de datos para resolver problemas reales.",
     items: [
       {
@@ -36,6 +36,27 @@ const es = {
       },
     ],
   },
+  solutions: {
+    title: "Tecnología que podemos construir para tu empresa.",
+    items: [
+      {
+        title: "Plataformas SaaS",
+        description: "Diseñamos y desarrollamos productos de software escalables accesibles desde cualquier lugar.",
+      },
+      {
+        title: "Automatización de procesos",
+        description: "Creamos sistemas que automatizan tareas repetitivas y optimizan flujos de trabajo.",
+      },
+      {
+        title: "Dashboards y análisis de datos",
+        description: "Construimos herramientas que permiten visualizar y entender información compleja.",
+      },
+      {
+        title: "Sistemas con inteligencia artificial",
+        description: "Desarrollamos soluciones que utilizan IA para analizar información y generar insights.",
+      },
+    ],
+  },
   products: {
     title: "Productos desarrollados por Sigma Tecnologías",
     subtitle: "Además de desarrollar software para empresas, también creamos nuestros propios productos tecnológicos.",
@@ -43,13 +64,13 @@ const es = {
       {
         name: "Sigma Analytics",
         tagline: "Plataforma de análisis de rendimiento para fútbol",
-        description: "Permite a clubes, analistas y jugadores analizar estadísticas, comparar rendimiento y generar reportes inteligentes para mejorar el análisis deportivo.",
+        description: "Permite a clubes, analistas y jugadores analizar estadísticas, comparar rendimiento y generar reportes inteligentes.",
         cta: "Conocer producto",
       },
       {
         name: "Sigma Trend Intelligence Engine",
         tagline: "Motor de inteligencia de tendencias con IA",
-        description: "Analiza redes sociales, noticias y contenido digital para detectar tendencias emergentes y generar insights estratégicos para agencias de marketing y equipos de contenido.",
+        description: "Analiza redes sociales y contenido digital para detectar tendencias emergentes y generar insights estratégicos para agencias.",
         cta: "Conocer producto",
       },
     ],
@@ -65,8 +86,8 @@ const es = {
     ],
   },
   contact: {
-    title: "¿Necesitás desarrollar tecnología para tu empresa?",
-    subtitle: "Podemos ayudarte a construir plataformas, automatizaciones y sistemas inteligentes adaptados a tus necesidades.",
+    title: "¿Querés construir tecnología para tu empresa?",
+    subtitle: "Podemos ayudarte a desarrollar plataformas, automatizaciones y sistemas inteligentes adaptados a tus necesidades.",
     name: "Nombre",
     namePlaceholder: "Tu nombre",
     email: "Email",
