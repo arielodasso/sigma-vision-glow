@@ -45,7 +45,6 @@ const ProductsSection = () => {
   /** Brand name rendering with colored accent */
   const renderBrandName = (name: string, variant: "analytics" | "trend") => {
     const isAnalytics = variant === "analytics";
-    // Split "Sigma Analytics" or "Sigma Trend Engine" into parts
     const sigmaPrefix = "Sigma";
     const suffix = name.startsWith(sigmaPrefix) ? name.slice(sigmaPrefix.length).trim() : name;
 
