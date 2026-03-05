@@ -8,14 +8,14 @@ const en = {
   },
   hero: {
     badge: "Artificial Intelligence · Data · Software",
-    title: "Technology, artificial intelligence and software for modern companies.",
-    description: "At Sigma Technologies we develop our own products and build technology solutions for companies that want to work with data, automation and artificial intelligence.",
+    title: "We develop artificial intelligence products and software for companies.",
+    description: "At Sigma Technologies we create platforms, automations and technology products that help companies analyze data, detect opportunities and build better digital systems.",
     ctaPrimary: "See products",
     ctaSecondary: "Contact us",
   },
   services: {
     title: "We build technology that turns data into decisions.",
-    subtitle: "At Sigma Technologies we develop our own software products and also create technology solutions for companies that need to analyze information, automate processes and build digital platforms.",
+    subtitle: "At Sigma Technologies we develop our own software products and also build technology solutions for companies that need to analyze information, automate processes and create digital platforms.",
     subtitle2: "Our approach combines artificial intelligence, software engineering and data analysis to solve real problems.",
     items: [
       {
@@ -36,6 +36,27 @@ const en = {
       },
     ],
   },
+  solutions: {
+    title: "Technology we can build for your company.",
+    items: [
+      {
+        title: "SaaS Platforms",
+        description: "We design and develop scalable software products accessible from anywhere.",
+      },
+      {
+        title: "Process automation",
+        description: "We create systems that automate repetitive tasks and optimize workflows.",
+      },
+      {
+        title: "Dashboards & data analysis",
+        description: "We build tools that allow you to visualize and understand complex information.",
+      },
+      {
+        title: "AI-powered systems",
+        description: "We develop solutions that use AI to analyze information and generate insights.",
+      },
+    ],
+  },
   products: {
     title: "Products developed by Sigma Technologies",
     subtitle: "In addition to developing software for companies, we also create our own technology products.",
@@ -43,13 +64,13 @@ const en = {
       {
         name: "Sigma Analytics",
         tagline: "Performance analytics platform for football",
-        description: "Enables clubs, analysts and players to analyze statistics, compare performance and generate intelligent reports to improve sports analysis.",
+        description: "Enables clubs, analysts and players to analyze statistics, compare performance and generate intelligent reports.",
         cta: "Learn more",
       },
       {
         name: "Sigma Trend Intelligence Engine",
         tagline: "AI-powered trend intelligence engine",
-        description: "Analyzes social media, news and digital content to detect emerging trends and generate strategic insights for marketing agencies and content teams.",
+        description: "Analyzes social media and digital content to detect emerging trends and generate strategic insights for agencies.",
         cta: "Learn more",
       },
     ],
@@ -65,8 +86,8 @@ const en = {
     ],
   },
   contact: {
-    title: "Need to develop technology for your company?",
-    subtitle: "We can help you build platforms, automations and intelligent systems tailored to your needs.",
+    title: "Want to build technology for your company?",
+    subtitle: "We can help you develop platforms, automations and intelligent systems tailored to your needs.",
     name: "Name",
     namePlaceholder: "Your name",
     email: "Email",
