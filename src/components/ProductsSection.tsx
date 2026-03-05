@@ -11,7 +11,7 @@ const SigmaIsologo = ({ variant }: { variant: "analytics" | "trend" }) => {
       <div
         className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
         style={{
-          background: isAnalytics ? "#E2FC03" : "#A855F7",
+          background: isAnalytics ? "#E2FC03" : "#001FB3",
         }}
       >
         <span
@@ -52,7 +52,7 @@ const ProductsSection = () => {
     return (
       <h3 className="text-2xl font-bold text-foreground mb-2">
         {sigmaPrefix}
-        <span style={{ color: isAnalytics ? "#E2FC03" : "#A855F7" }}>
+        <span style={{ color: isAnalytics ? "#E2FC03" : "#4D7BFF" }}>
           {suffix ? ` ${suffix}` : ""}
         </span>
       </h3>
@@ -91,9 +91,9 @@ const ProductsSection = () => {
                   <span
                     className="inline-block text-sm font-medium rounded-full px-4 py-1.5 mb-5"
                     style={{
-                      color: variant === "analytics" ? "#E2FC03" : "#C084FC",
-                      background: variant === "analytics" ? "rgba(226,252,3,0.08)" : "rgba(168,85,247,0.08)",
-                      border: `1px solid ${variant === "analytics" ? "rgba(226,252,3,0.15)" : "rgba(168,85,247,0.15)"}`,
+                    color: variant === "analytics" ? "#E2FC03" : "#4D7BFF",
+                      background: variant === "analytics" ? "rgba(226,252,3,0.08)" : "rgba(0,31,179,0.12)",
+                      border: `1px solid ${variant === "analytics" ? "rgba(226,252,3,0.15)" : "rgba(0,31,179,0.25)"}`,
                     }}
                   >
                     {p.tagline}
