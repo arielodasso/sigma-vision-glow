@@ -8,7 +8,7 @@ const ServicesSection = () => {
   const { t } = useTranslation();
 
   return (
-    <section id="servicios" className="py-28 lg:py-36">
+    <section id="servicios" className="py-28 lg:py-36 bg-surface-elevated border-y border-foreground/[0.06]">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

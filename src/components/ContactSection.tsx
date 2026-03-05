@@ -44,7 +44,7 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contacto" className="py-28 lg:py-36">
+    <section id="contacto" className="py-28 lg:py-36 bg-surface-elevated border-y border-foreground/[0.06]">
       <div className="container mx-auto px-6 max-w-2xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
