@@ -20,14 +20,9 @@ const ServicesSection = () => {
           <h2 className="text-4xl sm:text-5xl font-bold text-gradient mb-5">
             {t.services.title}
           </h2>
-          <p className="text-lg text-secondary-soft max-w-3xl mx-auto leading-relaxed mb-4">
+          <p className="text-lg text-secondary-soft max-w-3xl mx-auto leading-relaxed">
             {t.services.subtitle}
           </p>
-          {t.services.subtitle2 && (
-            <p className="text-lg text-secondary-soft max-w-3xl mx-auto leading-relaxed">
-              {t.services.subtitle2}
-            </p>
-          )}
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
