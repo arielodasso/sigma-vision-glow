@@ -16,7 +16,6 @@ const en = {
   services: {
     title: "We build technology that turns data into decisions.",
     subtitle: "At Sigma Technologies we develop our own software products and also build technology solutions for companies that need to analyze information, automate processes and create digital platforms.",
-    subtitle2: "Our approach combines artificial intelligence, software engineering and data analysis to solve real problems.",
     items: [
       {
         title: "Artificial intelligence",
