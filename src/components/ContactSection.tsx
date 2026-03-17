@@ -28,9 +28,7 @@ const ContactSection = () => {
       const { error } = await supabase.functions.invoke("send-contact", {
         body: payload,
       });
-
       if (error) throw error;
-
       setSubmitted(true);
     } catch {
       toast({
@@ -44,7 +42,7 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contacto" className="py-28 lg:py-36 bg-surface-elevated border-y border-foreground/[0.06]">
+    <section id="contacto" className="section-padding bg-surface-elevated border-t border-foreground/[0.04]">
       <div className="container mx-auto px-6 max-w-2xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -53,10 +51,10 @@ const ContactSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <h2 className="text-4xl sm:text-5xl font-bold text-gradient mb-5">
+          <h2 className="font-display text-4xl sm:text-5xl font-bold text-gradient mb-4">
             {t.contact.title}
           </h2>
-          <p className="text-lg text-secondary-soft leading-relaxed">
+          <p className="text-lg text-muted-foreground">
             {t.contact.subtitle}
           </p>
         </motion.div>
@@ -66,7 +64,7 @@ const ContactSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="glass-card rounded-2xl p-10"
+          className="glass-card rounded-2xl p-8 lg:p-10"
         >
           {submitted ? (
             <motion.div
@@ -75,63 +73,63 @@ const ContactSection = () => {
               transition={{ duration: 0.4 }}
               className="text-center py-10"
             >
-              <p className="text-foreground font-semibold text-xl mb-3">{t.contact.successTitle}</p>
-              <p className="text-secondary-soft text-base">{t.contact.successMessage}</p>
+              <p className="text-foreground font-display font-semibold text-xl mb-3">{t.contact.successTitle}</p>
+              <p className="text-muted-foreground">{t.contact.successMessage}</p>
             </motion.div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-secondary-soft mb-2">{t.contact.name}</label>
+                <label className="block text-sm font-medium text-foreground/60 mb-2">{t.contact.name}</label>
                 <input
                   required
                   name="name"
                   type="text"
-                  className="w-full glass-input rounded-xl px-5 py-3 text-base text-foreground placeholder:text-foreground/30 focus:outline-none"
+                  className="w-full glass-input rounded-xl px-5 py-3.5 text-sm text-foreground placeholder:text-foreground/25 focus:outline-none"
                   placeholder={t.contact.namePlaceholder}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-secondary-soft mb-2">{t.contact.email}</label>
+                <label className="block text-sm font-medium text-foreground/60 mb-2">{t.contact.email}</label>
                 <input
                   required
                   name="email"
                   type="email"
-                  className="w-full glass-input rounded-xl px-5 py-3 text-base text-foreground placeholder:text-foreground/30 focus:outline-none"
+                  className="w-full glass-input rounded-xl px-5 py-3.5 text-sm text-foreground placeholder:text-foreground/25 focus:outline-none"
                   placeholder={t.contact.emailPlaceholder}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-secondary-soft mb-2">{t.contact.company}</label>
+                <label className="block text-sm font-medium text-foreground/60 mb-2">{t.contact.company}</label>
                 <input
                   name="company"
                   type="text"
-                  className="w-full glass-input rounded-xl px-5 py-3 text-base text-foreground placeholder:text-foreground/30 focus:outline-none"
+                  className="w-full glass-input rounded-xl px-5 py-3.5 text-sm text-foreground placeholder:text-foreground/25 focus:outline-none"
                   placeholder={t.contact.companyPlaceholder}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-secondary-soft mb-2">{t.contact.message}</label>
+                <label className="block text-sm font-medium text-foreground/60 mb-2">{t.contact.message}</label>
                 <textarea
                   required
                   name="message"
                   rows={4}
-                  className="w-full glass-input rounded-xl px-5 py-3 text-base text-foreground placeholder:text-foreground/30 focus:outline-none resize-none"
+                  className="w-full glass-input rounded-xl px-5 py-3.5 text-sm text-foreground placeholder:text-foreground/25 focus:outline-none resize-none"
                   placeholder={t.contact.messagePlaceholder}
                 />
               </div>
               <button
                 type="submit"
                 disabled={sending}
-                className="w-full btn-primary-neutral flex items-center justify-center gap-2.5 py-3.5 rounded-full text-base font-semibold hover-scale disabled:opacity-50"
+                className="w-full flex items-center justify-center gap-2.5 bg-foreground text-background py-3.5 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors disabled:opacity-50"
               >
                 {sending ? (
                   <>
-                    <Loader2 size={18} className="animate-spin" />
+                    <Loader2 size={16} className="animate-spin" />
                     {t.contact.sending}
                   </>
                 ) : (
                   <>
-                    <Send size={18} />
+                    <Send size={16} />
                     {t.contact.submit}
                   </>
                 )}
