@@ -1,68 +1,111 @@
 const en = {
   navbar: {
     home: "Home",
-    solutions: "What we do",
+    solutions: "Solutions",
+    projects: "Projects",
     products: "Products",
-    contact: "Contact",
-    cta: "Contact us",
+    about: "About",
+    cta: "Let's talk",
   },
   hero: {
-    badge: "Artificial Intelligence · Data · Software",
-    title: "We develop artificial intelligence products and software for companies.",
-    description: "At Sigma Technologies we create platforms, automations and technology products that help companies analyze data, detect opportunities and build better digital systems.",
-    ctaPrimary: "See products",
-    ctaSecondary: "Contact us",
+    headline: "Less promises.",
+    headlineAccent: "More solutions.",
+    description: "We build custom software, digital platforms, automation systems and proprietary technology products. We don't promise — we build.",
+    ctaPrimary: "See solutions",
+    ctaSecondary: "See products",
   },
-  services: {
-    title: "We build technology that turns data into decisions.",
-    subtitle: "At Sigma Technologies we develop our own software products and also build technology solutions for companies that need to analyze information, automate processes and create digital platforms.",
+  manifesto: {
+    tagline: "Our philosophy",
+    headline: "We turn ideas into real products.",
+    description: "We're not a traditional agency or just a software company. We combine custom development, product creation and automation to build technology that works.",
     items: [
-      {
-        title: "Artificial intelligence",
-        description: "We apply AI to analyze data, detect patterns and generate useful information for decision-making.",
-      },
-      {
-        title: "Software development",
-        description: "We create web platforms, SaaS systems and digital tools tailored to each company's needs.",
-      },
-      {
-        title: "Automation",
-        description: "We design systems that eliminate manual tasks and optimize workflows.",
-      },
-      {
-        title: "Data analysis",
-        description: "We build dashboards and tools that transform large volumes of data into clear information.",
-      },
+      "Custom web platforms",
+      "Systems & automation",
+      "Proprietary software products",
+      "AI-powered tools",
     ],
   },
-  solutions: {
-    title: "Technology we can build for your company.",
+  services: {
+    tagline: "What we do",
+    title: "Solutions we build",
+    subtitle: "Every project is different. Every solution too.",
     items: [
       {
-        title: "SaaS Platforms",
-        description: "We design and develop scalable software products accessible from anywhere.",
+        title: "Custom web development",
+        description: "Websites and platforms designed to communicate, capture clients and structure digital presence.",
+        outcomes: "High-performance sites, scalable and optimized for conversion.",
       },
       {
         title: "Process automation",
-        description: "We create systems that automate repetitive tasks and optimize workflows.",
+        description: "Systems that eliminate manual tasks, connect tools and optimize workflows.",
+        outcomes: "Less operational time. More efficiency. Fewer errors.",
       },
       {
-        title: "Dashboards & data analysis",
-        description: "We build tools that allow you to visualize and understand complex information.",
+        title: "Custom SaaS",
+        description: "Software-as-a-service platforms designed from scratch to solve specific problems.",
+        outcomes: "Scalable products with recurring business models.",
       },
       {
-        title: "AI-powered systems",
-        description: "We develop solutions that use AI to analyze information and generate insights.",
+        title: "Software & digital platforms",
+        description: "Complex systems with backend logic, admin panels and data processing.",
+        outcomes: "Robust digital infrastructure to operate and scale.",
       },
     ],
   },
+  projects: {
+    tagline: "Real work",
+    title: "Solutions that already exist.",
+    subtitle: "Real projects built by Ariel Odasso. Not mockups — live systems.",
+    categories: {
+      web: {
+        title: "Web development",
+        description: "Custom web development for companies, professionals and organizations that need websites designed to communicate, capture clients and structure digital presence.",
+        note: "Developed as part of work for Justa Agencia, a marketing agency specialized in client acquisition campaigns.",
+        items: [
+          "Justa Agencia",
+          "Unidos Para Amar",
+          "Geonosis",
+          "Urbetex",
+          "Mind Praxis",
+          "Cristian Schauvinhold",
+          "OffMarket",
+          "Estamos Unidos",
+        ],
+      },
+      platforms: {
+        title: "Platforms & digital systems",
+        description: "Complex digital systems with backend logic and structured data.",
+        items: [
+          {
+            name: "Iceberg",
+            description: "Digital platform that processes uploaded files and reads data from Google Sheets to generate structured charts and visualizations.",
+          },
+          {
+            name: "Viaja Seguro a Marruecos",
+            description: "Travel platform with backend administration panel to manage tours and structured content.",
+          },
+        ],
+      },
+      automation: {
+        title: "Automation & intelligent systems",
+        description: "Automation systems and data intelligence engines.",
+        items: [
+          {
+            name: "Sigma Trend Intelligence Engine",
+            description: "AI-powered engine that analyzes social media content and detects emerging trends for marketing agencies. Processes data from multiple platforms and generates structured strategic documents.",
+          },
+        ],
+      },
+    },
+  },
   products: {
-    title: "Products developed by Sigma Technologies",
-    subtitle: "In addition to developing software for companies, we also create our own technology products.",
+    tagline: "Our products",
+    title: "Technology we create.",
+    subtitle: "We don't just build for others. We also create our own products.",
     items: [
       {
         name: "Sigma Analytics",
-        tagline: "Performance analytics platform for football",
+        tagline: "Football performance analytics",
         description: "Enables clubs, analysts and players to analyze statistics, compare performance and generate intelligent reports.",
         cta: "Learn more",
       },
@@ -74,19 +117,28 @@ const en = {
       },
     ],
   },
-  method: {
-    title: "Engineering, data and artificial intelligence.",
-    subtitle: "",
-    items: [
-      "Scalable software development.",
-      "Modern SaaS architectures.",
-      "Process automation.",
-      "Platforms designed to turn data into decisions.",
+  about: {
+    tagline: "About us",
+    title: "A technology company with a product mindset.",
+    description: "Sigma Technologies is a company founded by Ariel Odasso. We combine software development, product creation and automation.",
+    founder: "Ariel Odasso",
+    founderRole: "Founder",
+    background: [
+      "Product development",
+      "Custom software",
+      "SaaS platforms",
+      "Automation systems",
     ],
+    philosophy: "We combine product mindset, technical execution and business thinking.",
+  },
+  cta: {
+    headline: "Want to build technology for your company?",
+    description: "We can help you develop platforms, automations and intelligent systems tailored to your needs.",
+    button: "Let's talk",
   },
   contact: {
-    title: "Want to build technology for your company?",
-    subtitle: "We can help you develop platforms, automations and intelligent systems tailored to your needs.",
+    title: "Contact",
+    subtitle: "Tell us about your project and we'll get back to you.",
     name: "Name",
     namePlaceholder: "Your name",
     email: "Email",
@@ -95,7 +147,7 @@ const en = {
     companyPlaceholder: "Your company (optional)",
     message: "Message",
     messagePlaceholder: "Tell us about your project...",
-    submit: "Contact us",
+    submit: "Send message",
     successTitle: "Message sent!",
     successMessage: "We'll get back to you as soon as possible.",
     errorTitle: "Error sending",
@@ -105,8 +157,11 @@ const en = {
   footer: {
     brand: "Sigma",
     brandSuffix: "Technologies",
-    tagline: "Artificial intelligence, data and automation products.",
+    tagline: "Software, automation and technology products.",
+    solutions: "Solutions",
     products: "Products",
+    projects: "Projects",
+    about: "About",
     contact: "Contact",
     designedBy: "Developed by",
     designerName: "Ariel Odasso",

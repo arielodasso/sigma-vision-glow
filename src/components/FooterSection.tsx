@@ -1,58 +1,70 @@
 import { useTranslation } from "@/i18n/useTranslation";
-import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const FooterSection = () => {
   const { t } = useTranslation();
 
-  return (
-    <motion.footer
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.6 }}
-      className="border-t border-foreground/[0.06] py-14"
-    >
-      <div className="container mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <a href="#" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-foreground/10 border border-foreground/10 flex items-center justify-center">
-              <span className="text-foreground font-bold text-xl">Σ</span>
-            </div>
-            <div>
-              <span className="text-xl font-bold text-foreground">
-                Sigma<span className="font-normal text-foreground/70">Tecnologías</span>
-              </span>
-              <p className="text-sm text-secondary-soft mt-0.5">
-                {t.footer.tagline}
-              </p>
-            </div>
-          </a>
+  const links = [
+    { label: t.footer.solutions, href: "/#soluciones" },
+    { label: t.footer.projects, href: "/#proyectos" },
+    { label: t.footer.products, href: "/#productos" },
+    { label: t.footer.about, href: "/nosotros" },
+    { label: t.footer.contact, href: "/#contacto" },
+  ];
 
-          <div className="flex items-center gap-8 text-base text-secondary-soft">
-            <a href="#productos" className="hover:text-foreground transition-colors">
-              {t.footer.products}
-            </a>
-            <a href="#contacto" className="hover:text-foreground transition-colors">
-              {t.footer.contact}
-            </a>
+  return (
+    <footer className="border-t border-foreground/[0.04] py-16">
+      <div className="container mx-auto px-6 max-w-6xl">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10">
+          {/* Brand */}
+          <div>
+            <Link to="/" className="flex items-center gap-3 mb-3">
+              <div className="w-9 h-9 rounded-lg bg-foreground/[0.08] border border-foreground/[0.06] flex items-center justify-center">
+                <span className="text-foreground font-display font-bold text-lg">Σ</span>
+              </div>
+              <span className="font-display text-lg font-semibold text-foreground tracking-tight">
+                {t.footer.brand}<span className="font-normal text-foreground/50">{t.footer.brandSuffix}</span>
+              </span>
+            </Link>
+            <p className="text-sm text-muted-foreground max-w-xs">
+              {t.footer.tagline}
+            </p>
+          </div>
+
+          {/* Links */}
+          <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
+            {links.map((l) => (
+              l.href.startsWith("/") && !l.href.startsWith("/#") ? (
+                <Link key={l.href} to={l.href} className="hover:text-foreground transition-colors">
+                  {l.label}
+                </Link>
+              ) : (
+                <a key={l.href} href={l.href} className="hover:text-foreground transition-colors">
+                  {l.label}
+                </a>
+              )
+            ))}
           </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t border-foreground/[0.06] text-center">
-          <p className="text-sm text-secondary-soft">
+        <div className="mt-12 pt-8 border-t border-foreground/[0.04] flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-muted-foreground">
+            © {new Date().getFullYear()} Sigma Tecnologías
+          </p>
+          <p className="text-xs text-muted-foreground">
             {t.footer.designedBy}{" "}
             <a
               href={t.footer.designerUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-foreground/80 hover:text-foreground hover:underline transition-colors"
+              className="text-foreground/60 hover:text-foreground transition-colors"
             >
               {t.footer.designerName}
             </a>
           </p>
         </div>
       </div>
-    </motion.footer>
+    </footer>
   );
 };
 
