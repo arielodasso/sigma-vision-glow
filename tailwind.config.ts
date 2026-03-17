@@ -14,7 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Montserrat", "system-ui", "sans-serif"],
+        display: ["Space Grotesk", "system-ui", "sans-serif"],
+        sans: ["Inter", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -61,6 +62,8 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         "surface-elevated": "hsl(var(--surface-elevated))",
+        "sigma-yellow": "#E2FC03",
+        "sigma-blue": "#4C7AFF",
       },
       borderRadius: {
         lg: "var(--radius)",
