@@ -55,20 +55,20 @@ const es = {
   projects: {
     tagline: "Trabajo real",
     title: "Soluciones que ya existen.",
-    subtitle: "Proyectos reales construidos por Ariel Odasso. No mockups — sistemas en producción.",
+    subtitle: "Proyectos reales desarrollados por Ariel Odasso. No mockups — sistemas en producción.",
     categories: {
       web: {
         title: "Desarrollo web",
-        description: "Desarrollo web para empresas, profesionales y organizaciones que necesitan sitios diseñados para comunicar, captar clientes y estructurar presencia digital.",
-        note: "Desarrollados como parte del trabajo para Justa Agencia, una agencia de marketing especializada en campañas de captación de clientes.",
+        description: "Desarrollo web a medida para empresas, profesionales y organizaciones que necesitan sitios diseñados para comunicar, captar clientes y estructurar presencia digital.",
+        note: "Estos sitios fueron desarrollados por Ariel Odasso como desarrollador web para clientes de Justa, una agencia de marketing especializada en campañas diseñadas para captar clientes y aumentar las ventas. El desarrollo fue realizado bajo el nombre de Ariel Odasso de forma independiente, no bajo la marca Sigma Tecnologías.",
         items: [
-          "Justa Agencia",
+          "Justa",
           "Unidos Para Amar",
           "Geonosis",
-          "Urbetex",
           "Mind Praxis",
           "Cristian Schauvinhold",
           "OffMarket",
+          "Urbetex",
           "Estamos Unidos",
         ],
       },
@@ -91,7 +91,7 @@ const es = {
         description: "Sistemas de automatización y motores de inteligencia de datos.",
         items: [
           {
-            name: "Sigma Trend Intelligence Engine",
+            name: "Sigma Trend Engine",
             description: "Motor de IA que analiza contenido de redes sociales y detecta tendencias emergentes para agencias de marketing. Procesa datos de múltiples plataformas y genera documentos estratégicos.",
           },
         ],
@@ -110,7 +110,7 @@ const es = {
         cta: "Conocer producto",
       },
       {
-        name: "Sigma Trend Intelligence Engine",
+        name: "Sigma Trend Engine",
         tagline: "Motor de inteligencia de tendencias con IA",
         description: "Analiza redes sociales y contenido digital para detectar tendencias emergentes y generar insights estratégicos para agencias.",
         cta: "Conocer producto",
@@ -120,16 +120,21 @@ const es = {
   about: {
     tagline: "Quiénes somos",
     title: "Una empresa de tecnología con mentalidad de producto.",
-    description: "Sigma Tecnologías es una empresa fundada por Ariel Odasso. Combinamos desarrollo de software, creación de productos propios y automatización.",
+    description: "Sigma Tecnologías es una empresa fundada por Ariel Odasso, desarrollador web con más de 5 años creando soluciones reales para empresas y agencias.",
     founder: "Ariel Odasso",
-    founderRole: "Fundador",
+    founderRole: "Fundador · Desarrollador Web",
+    bio: "Desarrollador Web especializado en WordPress, con experiencia comprobada en PrestaShop, e-commerce y plataformas productivas. Trabajo codo a codo con el cliente o la agencia, con comunicación directa y sin intermediarios.",
     background: [
-      "Desarrollo de productos",
-      "Software a medida",
-      "Plataformas SaaS",
-      "Sistemas de automatización",
+      "Más de 5 años creando soluciones reales",
+      "Proyectos e-commerce y sitios productivos",
+      "Experiencia en PrestaShop y WordPress, incluyendo módulos, checkout y performance",
+      "Automatización de procesos con n8n",
+      "Acompañamiento y soporte real, antes, durante y después de la entrega",
     ],
-    philosophy: "Combinamos mentalidad de producto, ejecución técnica y pensamiento de negocio.",
+    technologies: "PHP, HTML, CSS, JavaScript, MySQL, WordPress, PrestaShop, React, Tailwind CSS, n8n, Make, Lovable, Figma, Git, GitHub",
+    philosophy: "Combinamos mentalidad de producto, ejecución técnica y pensamiento de negocio para construir tecnología que resuelve problemas reales.",
+    portfolioUrl: "https://arielodasso.com",
+    portfolioLabel: "Ver portfolio completo",
   },
   cta: {
     headline: "¿Querés construir tecnología para tu empresa?",
@@ -157,7 +162,6 @@ const es = {
   footer: {
     brand: "Sigma",
     brandSuffix: "Tecnologías",
-    tagline: "Software, automatización y productos de tecnología.",
     solutions: "Soluciones",
     products: "Productos",
     projects: "Proyectos",

@@ -7,10 +7,10 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-end overflow-hidden pb-20 lg:pb-28">
-      {/* Background effects */}
+      {/* Subtle background effects — no color, just depth */}
       <div className="absolute inset-0">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] rounded-full bg-[radial-gradient(circle,rgba(226,252,3,0.03)_0%,transparent_70%)]" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(76,122,255,0.03)_0%,transparent_70%)]" />
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.02)_0%,transparent_70%)]" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.015)_0%,transparent_70%)]" />
       </div>
       <div className="absolute inset-0 opacity-[0.012]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%270 0 256 256%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27noise%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%274%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23noise)%27/%3E%3C/svg%3E")' }} />
 
@@ -23,7 +23,7 @@ const HeroSection = () => {
           <h1 className="font-display text-5xl sm:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] font-bold leading-[1.05] tracking-tight mb-8">
             <span className="text-gradient">{t.hero.headline}</span>
             <br />
-            <span className="text-gradient-yellow">{t.hero.headlineAccent}</span>
+            <span className="text-foreground">{t.hero.headlineAccent}</span>
           </h1>
         </motion.div>
 

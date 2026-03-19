@@ -39,17 +39,27 @@ const Navbar = () => {
     }
   };
 
+  const scrollToTop = () => {
+    if (location.pathname === "/") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "py-3" : "py-5"}`}>
+    <nav className="fixed top-0 left-0 right-0 z-50 py-4">
       <div className="max-w-7xl mx-auto px-6">
-        <div className={`flex items-center justify-between transition-all duration-500 ${scrolled ? "glass-strong rounded-2xl px-6 py-3" : ""}`}>
+        <div className={`flex items-center justify-between rounded-full px-6 py-3 transition-all duration-500 ${
+          scrolled 
+            ? "bg-card/90 backdrop-blur-xl border border-foreground/[0.06] shadow-lg shadow-black/20" 
+            : "bg-card/60 backdrop-blur-md border border-foreground/[0.04]"
+        }`}>
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-lg bg-foreground/[0.08] border border-foreground/[0.06] flex items-center justify-center group-hover:bg-foreground/[0.12] transition-colors">
-              <span className="text-foreground font-display font-bold text-lg">Σ</span>
+          <Link to="/" onClick={scrollToTop} className="flex items-center gap-3 group">
+            <div className="w-9 h-9 rounded-xl bg-foreground flex items-center justify-center group-hover:bg-foreground/90 transition-colors">
+              <span className="text-background font-display font-bold text-lg">Σ</span>
             </div>
-            <span className="font-display text-lg font-semibold text-foreground tracking-tight">
-              Sigma<span className="font-normal text-foreground/50">Tecnologías</span>
+            <span className="font-display text-base font-bold text-foreground tracking-tight">
+              Sigma<span className="font-medium text-foreground/50">Tecnologías</span>
             </span>
           </Link>
 
@@ -61,7 +71,7 @@ const Navbar = () => {
                   key={l.href}
                   href={l.href}
                   onClick={(e) => { e.preventDefault(); handleNavClick(l.href); }}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
+                  className="text-sm text-foreground/50 hover:text-foreground transition-colors duration-300 font-medium"
                 >
                   {l.label}
                 </a>
@@ -69,7 +79,7 @@ const Navbar = () => {
                 <Link
                   key={l.href}
                   to={l.href}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
+                  className="text-sm text-foreground/50 hover:text-foreground transition-colors duration-300 font-medium"
                 >
                   {l.label}
                 </Link>
@@ -82,7 +92,7 @@ const Navbar = () => {
             <a
               href="/#contacto"
               onClick={(e) => { e.preventDefault(); handleNavClick("/#contacto"); }}
-              className="flex items-center gap-2 text-sm font-medium bg-foreground text-background px-5 py-2.5 rounded-full hover:bg-foreground/90 transition-colors"
+              className="flex items-center gap-2 text-sm font-semibold bg-foreground text-background px-5 py-2.5 rounded-full hover:bg-foreground/90 transition-colors"
             >
               {t.navbar.cta}
               <ArrowRight size={14} />
@@ -107,7 +117,7 @@ const Navbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="fixed top-[72px] left-4 right-4 glass-strong rounded-2xl p-6 space-y-1 lg:hidden"
+            className="fixed top-[76px] left-4 right-4 bg-card/95 backdrop-blur-xl border border-foreground/[0.06] rounded-2xl p-6 space-y-1 lg:hidden shadow-xl shadow-black/30"
           >
             {links.map((l) => (
               l.href.startsWith("/#") ? (
@@ -115,7 +125,7 @@ const Navbar = () => {
                   key={l.href}
                   href={l.href}
                   onClick={(e) => { e.preventDefault(); handleNavClick(l.href); }}
-                  className="block text-sm text-foreground/60 hover:text-foreground transition-colors py-3 px-4 rounded-lg"
+                  className="block text-sm text-foreground/60 hover:text-foreground transition-colors py-3 px-4 rounded-lg font-medium"
                 >
                   {l.label}
                 </a>
@@ -123,7 +133,7 @@ const Navbar = () => {
                 <Link
                   key={l.href}
                   to={l.href}
-                  className="block text-sm text-foreground/60 hover:text-foreground transition-colors py-3 px-4 rounded-lg"
+                  className="block text-sm text-foreground/60 hover:text-foreground transition-colors py-3 px-4 rounded-lg font-medium"
                 >
                   {l.label}
                 </Link>
@@ -132,7 +142,7 @@ const Navbar = () => {
             <a
               href="/#contacto"
               onClick={(e) => { e.preventDefault(); handleNavClick("/#contacto"); }}
-              className="block bg-foreground text-background text-sm font-medium px-5 py-3 rounded-full text-center mt-3"
+              className="block bg-foreground text-background text-sm font-semibold px-5 py-3 rounded-full text-center mt-3"
             >
               {t.navbar.cta}
             </a>

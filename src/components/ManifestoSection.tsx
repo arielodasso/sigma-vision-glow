@@ -16,7 +16,7 @@ const ManifestoSection = () => {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.7 }}
           >
-            <span className="text-sm text-sigma-yellow font-medium tracking-wide uppercase mb-4 block">
+            <span className="text-sm text-foreground/40 font-medium tracking-wide uppercase mb-4 block">
               {t.manifesto.tagline}
             </span>
             <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-gradient leading-[1.1] mb-6">
@@ -45,8 +45,8 @@ const ManifestoSection = () => {
                 transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
                 className="flex items-center gap-4 p-5 rounded-xl border border-foreground/[0.04] hover:border-foreground/[0.08] hover:bg-foreground/[0.02] transition-all duration-300"
               >
-                <div className="w-8 h-8 rounded-lg bg-sigma-yellow/10 flex items-center justify-center shrink-0">
-                  <Check size={16} className="text-sigma-yellow" />
+                <div className="w-8 h-8 rounded-lg bg-foreground/[0.06] flex items-center justify-center shrink-0">
+                  <Check size={16} className="text-foreground/50" />
                 </div>
                 <span className="text-foreground/90 font-medium">{item}</span>
               </motion.div>

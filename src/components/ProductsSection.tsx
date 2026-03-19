@@ -16,7 +16,7 @@ const ProductsSection = () => {
           transition={{ duration: 0.6 }}
           className="mb-20"
         >
-          <span className="text-sm text-sigma-yellow font-medium tracking-wide uppercase mb-4 block">
+          <span className="text-sm text-foreground/40 font-medium tracking-wide uppercase mb-4 block">
             {t.products.tagline}
           </span>
           <h2 className="font-display text-4xl sm:text-5xl font-bold text-gradient mb-4">
@@ -32,6 +32,9 @@ const ProductsSection = () => {
             const variant = variants[i];
             const isAnalytics = variant === "analytics";
             const accentColor = isAnalytics ? "#E2FC03" : "#4C7AFF";
+            const isologoColor = isAnalytics ? "#E2FC03" : "#001fb3";
+            const isologoBg = isAnalytics ? "#E2FC03" : "#001fb3";
+            const isologoText = isAnalytics ? "#0B0D10" : "#fff";
 
             return (
               <motion.div
@@ -47,9 +50,9 @@ const ProductsSection = () => {
                   <div className="flex items-center gap-3 mb-8">
                     <div
                       className="w-11 h-11 rounded-xl flex items-center justify-center"
-                      style={{ background: accentColor }}
+                      style={{ background: isologoBg }}
                     >
-                      <span className="font-display font-bold text-xl" style={{ color: isAnalytics ? "#0B0D10" : "#fff" }}>
+                      <span className="font-display font-bold text-xl" style={{ color: isologoText }}>
                         Σ
                       </span>
                     </div>
