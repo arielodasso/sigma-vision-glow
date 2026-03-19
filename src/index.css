@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -24,7 +24,7 @@
     --muted: 220 8% 13%;
     --muted-foreground: 220 5% 50%;
 
-    --accent: 66 97% 50%;
+    --accent: 0 0% 96%;
     --accent-foreground: 220 18% 5%;
 
     --destructive: 0 84.2% 60.2%;
@@ -37,8 +37,6 @@
     --radius: 0.75rem;
 
     --surface-elevated: 220 16% 6%;
-    --sigma-yellow: 66 97% 50%;
-    --sigma-blue: 223 100% 65%;
 
     --sidebar-background: 220 18% 5%;
     --sidebar-foreground: 0 0% 75%;
@@ -58,28 +56,28 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Montserrat', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-family: 'Montserrat', system-ui, sans-serif;
   }
 
   ::selection {
-    background: hsl(var(--sigma-yellow) / 0.25);
+    background: rgba(255, 255, 255, 0.15);
     color: hsl(var(--foreground));
   }
 }
 
 @layer utilities {
   .font-display {
-    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-family: 'Montserrat', system-ui, sans-serif;
   }
 
   .font-body {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Montserrat', system-ui, sans-serif;
   }
 
   .glass {
@@ -155,7 +153,7 @@
   .line-accent {
     width: 48px;
     height: 2px;
-    background: linear-gradient(90deg, hsl(var(--sigma-yellow)), transparent);
+    background: linear-gradient(90deg, rgba(255,255,255,0.3), transparent);
   }
 
   .section-padding {
@@ -216,4 +214,65 @@ html {
 
 .animate-marquee {
   animation: marquee 30s linear infinite;
+}
+
+/* Blog article styles */
+.prose-sigma {
+  color: hsl(0 0% 75%);
+  line-height: 1.8;
+}
+
+.prose-sigma h2 {
+  font-family: 'Montserrat', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: hsl(0 0% 98%);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.prose-sigma h3 {
+  font-family: 'Montserrat', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: hsl(0 0% 95%);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-sigma p {
+  margin-bottom: 1.25rem;
+}
+
+.prose-sigma ul, .prose-sigma ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+}
+
+.prose-sigma li {
+  margin-bottom: 0.5rem;
+}
+
+.prose-sigma a {
+  color: hsl(0 0% 98%);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose-sigma blockquote {
+  border-left: 2px solid rgba(255,255,255,0.15);
+  padding-left: 1.5rem;
+  font-style: italic;
+  color: hsl(0 0% 60%);
+  margin: 1.5rem 0;
+}
+
+.prose-sigma img {
+  border-radius: 1rem;
+  margin: 2rem 0;
+}
+
+.prose-sigma strong {
+  color: hsl(0 0% 98%);
+  font-weight: 600;
 }

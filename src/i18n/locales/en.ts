@@ -55,20 +55,20 @@ const en = {
   projects: {
     tagline: "Real work",
     title: "Solutions that already exist.",
-    subtitle: "Real projects built by Ariel Odasso. Not mockups — live systems.",
+    subtitle: "Real projects developed by Ariel Odasso. Not mockups — live systems.",
     categories: {
       web: {
         title: "Web development",
         description: "Custom web development for companies, professionals and organizations that need websites designed to communicate, capture clients and structure digital presence.",
-        note: "Developed as part of work for Justa Agencia, a marketing agency specialized in client acquisition campaigns.",
+        note: "These websites were developed by Ariel Odasso as a freelance web developer for clients of Justa, a marketing agency specialized in campaigns designed to capture clients and increase sales. Development was carried out under the name Ariel Odasso independently, not under the Sigma Tecnologías brand.",
         items: [
-          "Justa Agencia",
+          "Justa",
           "Unidos Para Amar",
           "Geonosis",
-          "Urbetex",
           "Mind Praxis",
           "Cristian Schauvinhold",
           "OffMarket",
+          "Urbetex",
           "Estamos Unidos",
         ],
       },
@@ -91,7 +91,7 @@ const en = {
         description: "Automation systems and data intelligence engines.",
         items: [
           {
-            name: "Sigma Trend Intelligence Engine",
+            name: "Sigma Trend Engine",
             description: "AI-powered engine that analyzes social media content and detects emerging trends for marketing agencies. Processes data from multiple platforms and generates structured strategic documents.",
           },
         ],
@@ -110,7 +110,7 @@ const en = {
         cta: "Learn more",
       },
       {
-        name: "Sigma Trend Intelligence Engine",
+        name: "Sigma Trend Engine",
         tagline: "AI-powered trend intelligence engine",
         description: "Analyzes social media and digital content to detect emerging trends and generate strategic insights for agencies.",
         cta: "Learn more",
@@ -120,16 +120,21 @@ const en = {
   about: {
     tagline: "About us",
     title: "A technology company with a product mindset.",
-    description: "Sigma Technologies is a company founded by Ariel Odasso. We combine software development, product creation and automation.",
+    description: "Sigma Technologies is a company founded by Ariel Odasso, a web developer with 5+ years building real solutions for companies and agencies.",
     founder: "Ariel Odasso",
-    founderRole: "Founder",
+    founderRole: "Founder · Web Developer",
+    bio: "Web Developer specialized in WordPress, with proven experience in PrestaShop, e-commerce and productive platforms. I work side by side with the client or agency, with direct communication and no intermediaries.",
     background: [
-      "Product development",
-      "Custom software",
-      "SaaS platforms",
-      "Automation systems",
+      "5+ years building real solutions",
+      "E-commerce and productive site projects",
+      "Experience in PrestaShop and WordPress, including modules, checkout and performance",
+      "Process automation with n8n",
+      "Real support before, during and after delivery",
     ],
-    philosophy: "We combine product mindset, technical execution and business thinking.",
+    technologies: "PHP, HTML, CSS, JavaScript, MySQL, WordPress, PrestaShop, React, Tailwind CSS, n8n, Make, Lovable, Figma, Git, GitHub",
+    philosophy: "We combine product mindset, technical execution and business thinking to build technology that solves real problems.",
+    portfolioUrl: "https://arielodasso.com",
+    portfolioLabel: "View full portfolio",
   },
   cta: {
     headline: "Want to build technology for your company?",
@@ -157,7 +162,6 @@ const en = {
   footer: {
     brand: "Sigma",
     brandSuffix: "Technologies",
-    tagline: "Software, automation and technology products.",
     solutions: "Solutions",
     products: "Products",
     projects: "Projects",

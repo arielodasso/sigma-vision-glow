@@ -1,8 +1,9 @@
 import { useTranslation } from "@/i18n/useTranslation";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const FooterSection = () => {
   const { t } = useTranslation();
+  const location = useLocation();
 
   const links = [
     { label: t.footer.solutions, href: "/#soluciones" },
@@ -12,23 +13,26 @@ const FooterSection = () => {
     { label: t.footer.contact, href: "/#contacto" },
   ];
 
+  const scrollToTop = () => {
+    if (location.pathname === "/") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
     <footer className="border-t border-foreground/[0.04] py-16">
       <div className="container mx-auto px-6 max-w-6xl">
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10">
           {/* Brand */}
           <div>
-            <Link to="/" className="flex items-center gap-3 mb-3">
-              <div className="w-9 h-9 rounded-lg bg-foreground/[0.08] border border-foreground/[0.06] flex items-center justify-center">
-                <span className="text-foreground font-display font-bold text-lg">Σ</span>
+            <Link to="/" onClick={scrollToTop} className="flex items-center gap-3 mb-3">
+              <div className="w-9 h-9 rounded-xl bg-foreground flex items-center justify-center">
+                <span className="text-background font-display font-bold text-lg">Σ</span>
               </div>
-              <span className="font-display text-lg font-semibold text-foreground tracking-tight">
-                {t.footer.brand}<span className="font-normal text-foreground/50">{t.footer.brandSuffix}</span>
+              <span className="font-display text-base font-bold text-foreground tracking-tight">
+                {t.footer.brand}<span className="font-medium text-foreground/50">{t.footer.brandSuffix}</span>
               </span>
             </Link>
-            <p className="text-sm text-muted-foreground max-w-xs">
-              {t.footer.tagline}
-            </p>
           </div>
 
           {/* Links */}
