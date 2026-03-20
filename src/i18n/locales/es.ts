@@ -135,6 +135,22 @@ const es = {
     philosophy: "Combinamos mentalidad de producto, ejecución técnica y pensamiento de negocio para construir tecnología que resuelve problemas reales.",
     portfolioUrl: "https://arielodasso.com",
     portfolioLabel: "Ver portfolio completo",
+    techLabel: "Tecnologías",
+    experienceLabel: "Experiencia",
+    valuesTitles: [
+      "Ejecución técnica",
+      "Diseño con propósito",
+      "Automatización",
+      "Comunicación directa",
+      "Soporte real",
+    ],
+    valuesDescs: [
+      "Más de 5 años desarrollando soluciones reales para empresas y agencias.",
+      "Interfaces orientadas a negocio, usabilidad y conversión.",
+      "Procesos optimizados con n8n, Make y herramientas modernas.",
+      "Trabajo codo a codo con el cliente, sin intermediarios.",
+      "Acompañamiento antes, durante y después de la entrega.",
+    ],
   },
   cta: {
     headline: "¿Querés construir tecnología para tu empresa?",
