@@ -135,6 +135,22 @@ const en = {
     philosophy: "We combine product mindset, technical execution and business thinking to build technology that solves real problems.",
     portfolioUrl: "https://arielodasso.com",
     portfolioLabel: "View full portfolio",
+    techLabel: "Technologies",
+    experienceLabel: "Experience",
+    valuesTitles: [
+      "Technical execution",
+      "Purposeful design",
+      "Automation",
+      "Direct communication",
+      "Real support",
+    ],
+    valuesDescs: [
+      "5+ years building real solutions for companies and agencies.",
+      "Interfaces oriented to business, usability and conversion.",
+      "Optimized processes with n8n, Make and modern tools.",
+      "Working side by side with the client, no intermediaries.",
+      "Support before, during and after delivery.",
+    ],
   },
   cta: {
     headline: "Want to build technology for your company?",

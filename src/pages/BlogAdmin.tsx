@@ -2,7 +2,8 @@ import { useState, useEffect, FormEvent } from "react";
 import Navbar from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Trash2, Edit2, Eye, EyeOff } from "lucide-react";
+import { Trash2, Edit2, Eye, EyeOff, LogOut } from "lucide-react";
+import BlogAdminLogin from "@/components/BlogAdminLogin";
 
 interface BlogPost {
   id: string;
@@ -18,12 +19,13 @@ interface BlogPost {
 }
 
 const BlogAdmin = () => {
+  const [session, setSession] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [editing, setEditing] = useState<BlogPost | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const { toast } = useToast();
 
-  // Form state
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [excerpt, setExcerpt] = useState("");
@@ -32,15 +34,29 @@ const BlogAdmin = () => {
   const [category, setCategory] = useState("");
   const [published, setPublished] = useState(false);
 
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setLoading(false);
+    });
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
   const fetchPosts = async () => {
     const { data } = await supabase
-      .from("blog_posts" as any)
+      .from("blog_posts")
       .select("*")
       .order("created_at", { ascending: false });
     setPosts((data as any) || []);
   };
 
-  useEffect(() => { fetchPosts(); }, []);
+  useEffect(() => {
+    if (session) fetchPosts();
+  }, [session]);
 
   const generateSlug = (text: string) =>
     text.toLowerCase()
@@ -66,7 +82,7 @@ const BlogAdmin = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setSaving(true);
 
     const postData = {
       title,
@@ -82,10 +98,10 @@ const BlogAdmin = () => {
 
     try {
       if (editing) {
-        await supabase.from("blog_posts" as any).update(postData).eq("id", editing.id);
+        await supabase.from("blog_posts").update(postData as any).eq("id", editing.id);
         toast({ title: "Artículo actualizado" });
       } else {
-        await supabase.from("blog_posts" as any).insert(postData);
+        await supabase.from("blog_posts").insert(postData as any);
         toast({ title: "Artículo creado" });
       }
       resetForm();
@@ -93,25 +109,41 @@ const BlogAdmin = () => {
     } catch {
       toast({ title: "Error", variant: "destructive" });
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
   const deletePost = async (id: string) => {
     if (!confirm("¿Eliminar este artículo?")) return;
-    await supabase.from("blog_posts" as any).delete().eq("id", id);
+    await supabase.from("blog_posts").delete().eq("id", id);
     fetchPosts();
     toast({ title: "Artículo eliminado" });
   };
 
   const togglePublish = async (post: BlogPost) => {
     const newPublished = !post.published;
-    await supabase.from("blog_posts" as any).update({
+    await supabase.from("blog_posts").update({
       published: newPublished,
       published_at: newPublished ? new Date().toISOString() : null,
-    }).eq("id", post.id);
+    } as any).eq("id", post.id);
     fetchPosts();
   };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p className="text-muted-foreground">Cargando...</p>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return <BlogAdminLogin />;
+  }
 
   const inputClass = "w-full bg-card border border-foreground/[0.08] rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-foreground/25 focus:outline-none focus:border-foreground/20 transition-colors";
 
@@ -121,10 +153,18 @@ const BlogAdmin = () => {
 
       <div className="pt-32 pb-20">
         <div className="container mx-auto px-6 max-w-5xl">
-          <h1 className="font-display text-3xl font-bold text-foreground mb-10">Blog Admin</h1>
+          <div className="flex items-center justify-between mb-10">
+            <h1 className="font-display text-3xl font-bold text-foreground">Blog Admin</h1>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 text-sm text-foreground/50 hover:text-foreground transition-colors"
+            >
+              <LogOut size={14} />
+              Cerrar sesión
+            </button>
+          </div>
 
           <div className="grid lg:grid-cols-2 gap-10">
-            {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Título</label>
@@ -161,7 +201,7 @@ const BlogAdmin = () => {
                 <span className="text-sm text-foreground/70">Publicar</span>
               </label>
               <div className="flex gap-3">
-                <button type="submit" disabled={loading} className="bg-foreground text-background px-6 py-3 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors disabled:opacity-50">
+                <button type="submit" disabled={saving} className="bg-foreground text-background px-6 py-3 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors disabled:opacity-50">
                   {editing ? "Actualizar" : "Crear artículo"}
                 </button>
                 {editing && (
@@ -172,9 +212,11 @@ const BlogAdmin = () => {
               </div>
             </form>
 
-            {/* Posts list */}
             <div className="space-y-3">
               <h2 className="font-display text-lg font-semibold text-foreground mb-4">Artículos ({posts.length})</h2>
+              {posts.length === 0 && (
+                <p className="text-sm text-muted-foreground py-8 text-center">No hay artículos aún.</p>
+              )}
               {posts.map((post) => (
                 <div key={post.id} className="flex items-center justify-between gap-4 p-4 rounded-xl border border-foreground/[0.06] hover:border-foreground/[0.10] transition-colors">
                   <div className="min-w-0">
