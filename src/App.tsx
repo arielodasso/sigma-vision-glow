@@ -24,7 +24,7 @@ const App = () => (
           <FloatingLanguageSelector />
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/nosotros" element={<About />} />
+            <Route path="/contacto" element={<About />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/admin/blog" element={<BlogAdmin />} />

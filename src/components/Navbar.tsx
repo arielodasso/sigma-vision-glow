@@ -36,6 +36,8 @@ const Navbar = () => {
       } else {
         window.location.href = href;
       }
+    } else if (href.startsWith("/")) {
+      window.location.href = href;
     }
   };
 
