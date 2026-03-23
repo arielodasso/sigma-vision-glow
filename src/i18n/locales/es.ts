@@ -5,6 +5,7 @@ const es = {
     projects: "Proyectos",
     products: "Productos",
     about: "Nosotros",
+    contact: "Contacto",
     cta: "Hablemos",
   },
   hero: {
