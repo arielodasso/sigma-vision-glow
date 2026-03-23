@@ -7,8 +7,10 @@ import ProductsSection from "@/components/ProductsSection";
 import CTASection from "@/components/CTASection";
 import ContactSection from "@/components/ContactSection";
 import FooterSection from "@/components/FooterSection";
+import useSmoothScroll from "@/hooks/use-smooth-scroll";
 
 const Index = () => {
+  useSmoothScroll();
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
