@@ -7,9 +7,8 @@ const FooterSection = () => {
 
   const links = [
     { label: t.footer.solutions, href: "/#soluciones" },
-    { label: t.footer.projects, href: "/#proyectos" },
     { label: t.footer.products, href: "/#productos" },
-    { label: t.footer.about, href: "/nosotros" },
+    { label: t.footer.about, href: "/#filosofia" },
     { label: t.footer.contact, href: "/#contacto" },
   ];
 
@@ -19,11 +18,21 @@ const FooterSection = () => {
     }
   };
 
+  const handleNavClick = (href: string) => {
+    if (href.startsWith("/#")) {
+      const id = href.slice(2);
+      if (location.pathname === "/") {
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      } else {
+        window.location.href = href;
+      }
+    }
+  };
+
   return (
     <footer className="border-t border-foreground/[0.04] py-16">
       <div className="container mx-auto px-6 max-w-6xl">
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10">
-          {/* Brand */}
           <div>
             <Link to="/" onClick={scrollToTop} className="flex items-center gap-3 mb-3">
               <div className="w-9 h-9 rounded-xl bg-foreground flex items-center justify-center">
@@ -35,18 +44,16 @@ const FooterSection = () => {
             </Link>
           </div>
 
-          {/* Links */}
           <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
             {links.map((l) => (
-              l.href.startsWith("/") && !l.href.startsWith("/#") ? (
-                <Link key={l.href} to={l.href} className="hover:text-foreground transition-colors">
-                  {l.label}
-                </Link>
-              ) : (
-                <a key={l.href} href={l.href} className="hover:text-foreground transition-colors">
-                  {l.label}
-                </a>
-              )
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={(e) => { e.preventDefault(); handleNavClick(l.href); }}
+                className="hover:text-foreground transition-colors cursor-pointer"
+              >
+                {l.label}
+              </a>
             ))}
           </div>
         </div>

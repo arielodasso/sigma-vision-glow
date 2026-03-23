@@ -1,6 +1,6 @@
 import { useTranslation } from "@/i18n/useTranslation";
 import { motion } from "framer-motion";
-import { Globe, Server, Cpu, ArrowUpRight, ExternalLink } from "lucide-react";
+import { Globe, Server, Cpu, ExternalLink } from "lucide-react";
 
 const webProjectLinks: Record<string, string> = {
   "Justa": "https://justaagencia.com/",
@@ -23,9 +23,25 @@ const ProjectsSection = () => {
   const { categories } = t.projects;
 
   return (
-    <section id="proyectos" className="section-padding">
-      <div className="container mx-auto px-6 max-w-6xl">
-        {/* Section header */}
+    <section id="proyectos" className="section-padding relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-[15%] w-px h-full bg-gradient-to-b from-transparent via-foreground/[0.03] to-transparent" />
+        <div className="absolute top-[10%] right-0 w-[250px] h-px bg-gradient-to-l from-foreground/[0.04] to-transparent" />
+        <div className="absolute bottom-[20%] left-0 w-[180px] h-px bg-gradient-to-r from-foreground/[0.04] to-transparent" />
+        <motion.div
+          animate={{ y: [0, -12, 0], rotate: [0, 3, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[8%] right-[12%] w-12 h-12 border border-foreground/[0.03] rounded-lg rotate-45"
+        />
+        <div className="absolute bottom-[10%] right-[20%] grid grid-cols-4 gap-3 opacity-[0.03]">
+          {Array.from({ length: 16 }).map((_, i) => (
+            <div key={i} className="w-1 h-1 rounded-full bg-foreground" />
+          ))}
+        </div>
+      </div>
+
+      <div className="container mx-auto px-6 max-w-6xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -44,7 +60,6 @@ const ProjectsSection = () => {
           </p>
         </motion.div>
 
-        {/* Cintelli-style layout: sticky left + scrolling right */}
         <div className="space-y-32">
           {/* Category 1: Web Development */}
           <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
@@ -53,8 +68,10 @@ const ProjectsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6 }}
-              className="lg:col-span-2 lg:sticky lg:top-32 lg:self-start"
+              className="lg:col-span-2 lg:sticky lg:top-32 lg:self-start relative"
             >
+              {/* Side accent */}
+              <div className="absolute -left-4 top-0 bottom-0 w-px bg-gradient-to-b from-foreground/[0.08] via-foreground/[0.04] to-transparent hidden lg:block" />
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-foreground/[0.04] border border-foreground/[0.06] flex items-center justify-center">
                   <Globe size={20} className="text-foreground/50" />
@@ -98,8 +115,9 @@ const ProjectsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6 }}
-              className="lg:col-span-2 lg:sticky lg:top-32 lg:self-start"
+              className="lg:col-span-2 lg:sticky lg:top-32 lg:self-start relative"
             >
+              <div className="absolute -left-4 top-0 bottom-0 w-px bg-gradient-to-b from-foreground/[0.08] via-foreground/[0.04] to-transparent hidden lg:block" />
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-foreground/[0.04] border border-foreground/[0.06] flex items-center justify-center">
                   <Server size={20} className="text-foreground/50" />
@@ -122,8 +140,9 @@ const ProjectsSection = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: i * 0.1 }}
-                    className="block glass-card rounded-2xl p-8 group"
+                    className="block glass-card rounded-2xl p-8 group relative"
                   >
+                    <div className="absolute left-0 top-[20%] bottom-[20%] w-[2px] bg-foreground/[0.00] group-hover:bg-foreground/[0.08] transition-all duration-500 rounded-full" />
                     <div className="flex items-center justify-between mb-3">
                       <h4 className="font-display text-lg font-semibold text-foreground">{project.name}</h4>
                       <ExternalLink size={14} className="text-foreground/15 group-hover:text-foreground/50 transition-colors" />
@@ -142,8 +161,9 @@ const ProjectsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6 }}
-              className="lg:col-span-2 lg:sticky lg:top-32 lg:self-start"
+              className="lg:col-span-2 lg:sticky lg:top-32 lg:self-start relative"
             >
+              <div className="absolute -left-4 top-0 bottom-0 w-px bg-gradient-to-b from-foreground/[0.08] via-foreground/[0.04] to-transparent hidden lg:block" />
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-foreground/[0.04] border border-foreground/[0.06] flex items-center justify-center">
                   <Cpu size={20} className="text-foreground/50" />
@@ -161,8 +181,9 @@ const ProjectsSection = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="glass-card rounded-2xl p-8"
+                  className="glass-card rounded-2xl p-8 relative"
                 >
+                  <div className="absolute left-0 top-[20%] bottom-[20%] w-[2px] bg-foreground/[0.06] rounded-full" />
                   <h4 className="font-display text-lg font-semibold text-foreground mb-3">{project.name}</h4>
                   <p className="text-muted-foreground leading-relaxed">{project.description}</p>
                 </motion.div>

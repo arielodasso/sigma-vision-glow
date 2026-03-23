@@ -22,9 +22,9 @@ const Navbar = () => {
 
   const links = [
     { label: t.navbar.solutions, href: "/#soluciones" },
-    { label: t.navbar.projects, href: "/#proyectos" },
     { label: t.navbar.products, href: "/#productos" },
-    { label: t.navbar.about, href: "/nosotros" },
+    { label: t.navbar.about, href: "/#filosofia" },
+    { label: t.navbar.contact || "Contacto", href: "/#contacto" },
   ];
 
   const handleNavClick = (href: string) => {
@@ -53,7 +53,6 @@ const Navbar = () => {
             ? "bg-card/90 backdrop-blur-xl border border-foreground/[0.06] shadow-lg shadow-black/20" 
             : "bg-card/60 backdrop-blur-md border border-foreground/[0.04]"
         }`}>
-          {/* Logo */}
           <Link to="/" onClick={scrollToTop} className="flex items-center gap-3 group">
             <div className="w-9 h-9 rounded-xl bg-foreground flex items-center justify-center group-hover:bg-foreground/90 transition-colors">
               <span className="text-background font-display font-bold text-lg">Σ</span>
@@ -63,31 +62,19 @@ const Navbar = () => {
             </span>
           </Link>
 
-          {/* Center links — desktop */}
           <div className="hidden lg:flex items-center gap-8">
             {links.map((l) => (
-              l.href.startsWith("/#") ? (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  onClick={(e) => { e.preventDefault(); handleNavClick(l.href); }}
-                  className="text-sm text-foreground/50 hover:text-foreground transition-colors duration-300 font-medium"
-                >
-                  {l.label}
-                </a>
-              ) : (
-                <Link
-                  key={l.href}
-                  to={l.href}
-                  className="text-sm text-foreground/50 hover:text-foreground transition-colors duration-300 font-medium"
-                >
-                  {l.label}
-                </Link>
-              )
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={(e) => { e.preventDefault(); handleNavClick(l.href); }}
+                className="text-sm text-foreground/50 hover:text-foreground transition-colors duration-300 font-medium"
+              >
+                {l.label}
+              </a>
             ))}
           </div>
 
-          {/* Right CTA — desktop */}
           <div className="hidden lg:flex items-center">
             <a
               href="/#contacto"
@@ -99,7 +86,6 @@ const Navbar = () => {
             </a>
           </div>
 
-          {/* Mobile toggle */}
           <button
             className="lg:hidden text-foreground p-2"
             onClick={() => setOpen(!open)}
@@ -109,7 +95,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -120,24 +105,14 @@ const Navbar = () => {
             className="fixed top-[76px] left-4 right-4 bg-card/95 backdrop-blur-xl border border-foreground/[0.06] rounded-2xl p-6 space-y-1 lg:hidden shadow-xl shadow-black/30"
           >
             {links.map((l) => (
-              l.href.startsWith("/#") ? (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  onClick={(e) => { e.preventDefault(); handleNavClick(l.href); }}
-                  className="block text-sm text-foreground/60 hover:text-foreground transition-colors py-3 px-4 rounded-lg font-medium"
-                >
-                  {l.label}
-                </a>
-              ) : (
-                <Link
-                  key={l.href}
-                  to={l.href}
-                  className="block text-sm text-foreground/60 hover:text-foreground transition-colors py-3 px-4 rounded-lg font-medium"
-                >
-                  {l.label}
-                </Link>
-              )
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={(e) => { e.preventDefault(); handleNavClick(l.href); }}
+                className="block text-sm text-foreground/60 hover:text-foreground transition-colors py-3 px-4 rounded-lg font-medium"
+              >
+                {l.label}
+              </a>
             ))}
             <a
               href="/#contacto"

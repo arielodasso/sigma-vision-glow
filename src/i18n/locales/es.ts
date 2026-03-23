@@ -27,7 +27,7 @@ const es = {
   },
   services: {
     tagline: "Lo que hacemos",
-    title: "Soluciones que construimos",
+    title: "Soluciones que construimos.",
     subtitle: "Cada proyecto es diferente. Cada solución también.",
     items: [
       {
