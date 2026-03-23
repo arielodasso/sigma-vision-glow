@@ -9,7 +9,7 @@ const FooterSection = () => {
     { label: t.footer.solutions, href: "/#soluciones" },
     { label: t.footer.products, href: "/#productos" },
     { label: t.footer.about, href: "/#filosofia" },
-    { label: t.footer.contact, href: "/#contacto" },
+    { label: t.footer.contact, href: "/contacto" },
   ];
 
   const scrollToTop = () => {

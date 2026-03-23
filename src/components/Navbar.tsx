@@ -24,7 +24,7 @@ const Navbar = () => {
     { label: t.navbar.solutions, href: "/#soluciones" },
     { label: t.navbar.products, href: "/#productos" },
     { label: t.navbar.about, href: "/#filosofia" },
-    { label: t.navbar.contact || "Contacto", href: "/#contacto" },
+    { label: t.navbar.contact || "Contacto", href: "/contacto" },
   ];
 
   const handleNavClick = (href: string) => {
@@ -36,6 +36,8 @@ const Navbar = () => {
       } else {
         window.location.href = href;
       }
+    } else if (href.startsWith("/")) {
+      window.location.href = href;
     }
   };
 
