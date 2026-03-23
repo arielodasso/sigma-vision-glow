@@ -5,6 +5,7 @@ const es = {
     projects: "Proyectos",
     products: "Productos",
     about: "Nosotros",
+    contact: "Contacto",
     cta: "Hablemos",
   },
   hero: {
@@ -27,7 +28,7 @@ const es = {
   },
   services: {
     tagline: "Lo que hacemos",
-    title: "Soluciones que construimos",
+    title: "Soluciones que construimos.",
     subtitle: "Cada proyecto es diferente. Cada solución también.",
     items: [
       {

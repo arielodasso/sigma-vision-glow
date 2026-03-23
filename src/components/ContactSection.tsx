@@ -42,8 +42,19 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contacto" className="section-padding bg-surface-elevated border-t border-foreground/[0.04]">
-      <div className="container mx-auto px-6 max-w-2xl">
+    <section id="contacto" className="section-padding bg-surface-elevated border-t border-foreground/[0.04] relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 right-[25%] w-px h-[200px] bg-gradient-to-b from-foreground/[0.05] to-transparent" />
+        <div className="absolute bottom-0 left-[35%] w-px h-[150px] bg-gradient-to-t from-foreground/[0.04] to-transparent" />
+        <motion.div
+          animate={{ y: [0, -8, 0] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[20%] left-[10%] w-10 h-10 border border-foreground/[0.03] rounded-lg rotate-12"
+        />
+      </div>
+
+      <div className="container mx-auto px-6 max-w-2xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
