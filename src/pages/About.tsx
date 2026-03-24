@@ -4,9 +4,11 @@ import ContactSection from "@/components/ContactSection";
 import { useTranslation } from "@/i18n/useTranslation";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Code, Palette, Wrench, Users, Headphones } from "lucide-react";
+import useSmoothScroll from "@/hooks/use-smooth-scroll";
 
 const About = () => {
   const { t } = useTranslation();
+  useSmoothScroll();
 
   const values = [
     {

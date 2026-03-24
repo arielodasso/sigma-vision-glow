@@ -1,39 +1,54 @@
 import { ArrowRight } from "lucide-react";
 import { useTranslation } from "@/i18n/useTranslation";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 const HeroSection = () => {
   const { t } = useTranslation();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, 120]);
+  const opacityOut = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <section className="relative min-h-screen flex items-end overflow-hidden pb-20 lg:pb-28">
-      {/* Decorative background elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Large radial glow top-right */}
-        <div className="absolute -top-40 -right-40 w-[900px] h-[900px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.025)_0%,transparent_65%)]" />
-        {/* Subtle glow bottom-left */}
-        <div className="absolute -bottom-60 -left-40 w-[700px] h-[700px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.015)_0%,transparent_65%)]" />
+    <section ref={sectionRef} className="relative min-h-screen flex items-end overflow-hidden pb-20 lg:pb-28">
+      {/* Animated parallax background */}
+      <motion.div style={{ y: bgY }} className="absolute inset-0 pointer-events-none">
+        {/* Large radial glow top-right with subtle yellow */}
+        <div className="absolute -top-40 -right-40 w-[900px] h-[900px] rounded-full bg-[radial-gradient(circle,rgba(226,252,3,0.02)_0%,rgba(255,255,255,0.02)_30%,transparent_65%)]" />
+        {/* Blue glow bottom-left */}
+        <div className="absolute -bottom-60 -left-40 w-[700px] h-[700px] rounded-full bg-[radial-gradient(circle,rgba(76,122,255,0.02)_0%,transparent_65%)]" />
 
         {/* Decorative lines */}
         <div className="absolute top-[20%] right-[10%] w-px h-[200px] bg-gradient-to-b from-transparent via-foreground/[0.06] to-transparent" />
         <div className="absolute top-[35%] right-[8%] w-[120px] h-px bg-gradient-to-r from-foreground/[0.06] to-transparent" />
         <div className="absolute bottom-[25%] left-[5%] w-px h-[150px] bg-gradient-to-b from-transparent via-foreground/[0.05] to-transparent" />
 
-        {/* Floating geometric shapes */}
+        {/* Floating geometric shapes with color accents */}
         <motion.div
           animate={{ y: [0, -15, 0], rotate: [0, 5, 0] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[15%] right-[15%] w-20 h-20 border border-foreground/[0.04] rounded-2xl"
+          className="absolute top-[15%] right-[15%] w-20 h-20 border border-sigma-yellow/[0.08] rounded-2xl"
         />
         <motion.div
           animate={{ y: [0, 10, 0], rotate: [0, -3, 0] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-[30%] right-[25%] w-14 h-14 border border-foreground/[0.03] rounded-full"
+          className="absolute bottom-[30%] right-[25%] w-14 h-14 border border-sigma-blue/[0.08] rounded-full"
         />
         <motion.div
           animate={{ y: [0, -8, 0] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[45%] left-[8%] w-3 h-3 rounded-full bg-foreground/[0.06]"
+          className="absolute top-[45%] left-[8%] w-3 h-3 rounded-full bg-sigma-yellow/[0.12]"
+        />
+        <motion.div
+          animate={{ y: [0, 12, 0], x: [0, -5, 0] }}
+          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[60%] right-[12%] w-2 h-2 rounded-full bg-sigma-blue/[0.10]"
         />
 
         {/* Grid dots pattern */}
@@ -42,12 +57,29 @@ const HeroSection = () => {
             <div key={i} className="w-1 h-1 rounded-full bg-foreground" />
           ))}
         </div>
-      </div>
+
+        {/* Continuous floating particles */}
+        <motion.div
+          animate={{ y: [0, -200], opacity: [0, 0.6, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+          className="absolute bottom-0 left-[20%] w-1 h-1 rounded-full bg-sigma-yellow/20"
+        />
+        <motion.div
+          animate={{ y: [0, -180], opacity: [0, 0.4, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "linear", delay: 2 }}
+          className="absolute bottom-0 left-[60%] w-1 h-1 rounded-full bg-sigma-blue/20"
+        />
+        <motion.div
+          animate={{ y: [0, -160], opacity: [0, 0.5, 0] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "linear", delay: 4 }}
+          className="absolute bottom-0 left-[80%] w-0.5 h-0.5 rounded-full bg-foreground/20"
+        />
+      </motion.div>
 
       {/* Noise texture */}
       <div className="absolute inset-0 opacity-[0.012]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%270 0 256 256%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27noise%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%274%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23noise)%27/%3E%3C/svg%3E")' }} />
 
-      <div className="relative z-10 container mx-auto px-6 max-w-6xl">
+      <motion.div style={{ opacity: opacityOut }} className="relative z-10 container mx-auto px-6 max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -90,7 +122,7 @@ const HeroSection = () => {
             <ArrowRight size={16} />
           </a>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 };

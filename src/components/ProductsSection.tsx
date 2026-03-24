@@ -1,10 +1,19 @@
 import { ArrowRight } from "lucide-react";
 import { useTranslation } from "@/i18n/useTranslation";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 const ProductsSection = () => {
   const { t } = useTranslation();
   const variants = ["analytics", "trend"] as const;
+  const sectionRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const bgY = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   const productLinks = [
     "https://sigmaanalyticsarg.com/",
@@ -12,8 +21,27 @@ const ProductsSection = () => {
   ];
 
   return (
-    <section id="productos" className="section-padding bg-surface-elevated border-y border-foreground/[0.04]">
-      <div className="container mx-auto px-6 max-w-6xl">
+    <section ref={sectionRef} id="productos" className="section-padding bg-surface-elevated border-y border-foreground/[0.04] relative overflow-hidden">
+      {/* Parallax background elements */}
+      <motion.div style={{ y: bgY }} className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-[20%] left-0 w-[200px] h-px bg-gradient-to-r from-sigma-yellow/[0.08] to-transparent" />
+        <div className="absolute bottom-[30%] right-0 w-[200px] h-px bg-gradient-to-l from-sigma-blue/[0.08] to-transparent" />
+        <div className="absolute top-0 left-[40%] w-px h-[250px] bg-gradient-to-b from-foreground/[0.04] to-transparent" />
+        <div className="absolute -top-10 left-[15%] w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(226,252,3,0.025)_0%,transparent_70%)]" />
+        <div className="absolute -bottom-10 right-[15%] w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(76,122,255,0.025)_0%,transparent_70%)]" />
+        <motion.div
+          animate={{ y: [0, -10, 0], rotate: [0, 3, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[10%] right-[10%] w-16 h-16 border border-sigma-blue/[0.06] rounded-xl"
+        />
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-[15%] left-[8%] w-10 h-10 border border-sigma-yellow/[0.06] rounded-full"
+        />
+      </motion.div>
+
+      <div className="container mx-auto px-6 max-w-6xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -43,8 +71,8 @@ const ProductsSection = () => {
             return (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 30, scale: 0.97 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.6, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
                 className={`glass-card rounded-2xl p-10 flex flex-col justify-between ${isAnalytics ? "glow-yellow" : "glow-blue"}`}
