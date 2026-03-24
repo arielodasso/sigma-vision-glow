@@ -23,7 +23,7 @@ const ProjectsSection = () => {
   const { categories } = t.projects;
 
   return (
-    <section id="proyectos" className="section-padding relative overflow-hidden">
+    <section id="proyectos" className="section-padding relative">
       {/* Decorative elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-[15%] w-px h-full bg-gradient-to-b from-transparent via-foreground/[0.03] to-transparent" />
