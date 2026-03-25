@@ -5,11 +5,12 @@ const FooterSection = () => {
   const { t } = useTranslation();
   const location = useLocation();
 
-  const links = [
+  const links: { label: string; href: string; isRoute?: boolean }[] = [
     { label: t.footer.solutions, href: "/#soluciones" },
     { label: t.footer.products, href: "/#productos" },
     { label: t.footer.about, href: "/#filosofia" },
-    { label: t.footer.contact, href: "/contacto" },
+    { label: "Blog", href: "/blog", isRoute: true },
+    { label: t.footer.contact, href: "/contacto", isRoute: true },
   ];
 
   const scrollToTop = () => {
@@ -45,16 +46,26 @@ const FooterSection = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
-            {links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={(e) => { e.preventDefault(); handleNavClick(l.href); }}
-                className="hover:text-foreground transition-colors cursor-pointer"
-              >
-                {l.label}
-              </a>
-            ))}
+            {links.map((l) =>
+              l.isRoute ? (
+                <Link
+                  key={l.href}
+                  to={l.href}
+                  className="hover:text-foreground transition-colors cursor-pointer"
+                >
+                  {l.label}
+                </Link>
+              ) : (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={(e) => { e.preventDefault(); handleNavClick(l.href); }}
+                  className="hover:text-foreground transition-colors cursor-pointer"
+                >
+                  {l.label}
+                </a>
+              )
+            )}
           </div>
         </div>
 
