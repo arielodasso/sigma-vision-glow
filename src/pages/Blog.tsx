@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import Navbar from "@/components/Navbar";
 import FooterSection from "@/components/FooterSection";
 import { motion } from "framer-motion";
@@ -35,6 +36,15 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Blog — Sigma Tecnologías | Desarrollo web, SaaS e IA</title>
+        <meta name="description" content="Artículos sobre desarrollo web, plataformas SaaS, automatización e inteligencia artificial aplicada. Casos reales y soluciones técnicas." />
+        <link rel="canonical" href="https://sigmatecnologiasarg.com/blog" />
+        <meta property="og:title" content="Blog — Sigma Tecnologías" />
+        <meta property="og:description" content="Desarrollo web, SaaS, automatización e inteligencia artificial aplicada." />
+        <meta property="og:url" content="https://sigmatecnologiasarg.com/blog" />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <Navbar />
 
       <section className="pt-36 pb-20 lg:pt-44 lg:pb-28">

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import Navbar from "@/components/Navbar";
 import FooterSection from "@/components/FooterSection";
 import { useParams, Link } from "react-router-dom";
@@ -77,6 +78,21 @@ const BlogPost = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>{post.title} — Sigma Tecnologías</title>
+        {post.excerpt && <meta name="description" content={post.excerpt} />}
+        <link rel="canonical" href={`https://sigmatecnologiasarg.com/blog/${post.slug}`} />
+        <meta property="og:title" content={post.title} />
+        {post.excerpt && <meta property="og:description" content={post.excerpt} />}
+        <meta property="og:url" content={`https://sigmatecnologiasarg.com/blog/${post.slug}`} />
+        <meta property="og:type" content="article" />
+        {post.image_url && <meta property="og:image" content={post.image_url} />}
+        {post.published_at && <meta property="article:published_time" content={post.published_at} />}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={post.title} />
+        {post.excerpt && <meta name="twitter:description" content={post.excerpt} />}
+        {post.image_url && <meta name="twitter:image" content={post.image_url} />}
+      </Helmet>
       <Navbar />
 
       <article className="pt-36 pb-20 lg:pt-44 lg:pb-28">
