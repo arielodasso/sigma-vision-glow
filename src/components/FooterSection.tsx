@@ -5,12 +5,12 @@ const FooterSection = () => {
   const { t } = useTranslation();
   const location = useLocation();
 
-  const links = [
+  const links: { label: string; href: string; isRoute?: boolean }[] = [
     { label: t.footer.solutions, href: "/#soluciones" },
     { label: t.footer.products, href: "/#productos" },
     { label: t.footer.about, href: "/#filosofia" },
     { label: "Blog", href: "/blog", isRoute: true },
-    { label: t.footer.contact, href: "/contacto" },
+    { label: t.footer.contact, href: "/contacto", isRoute: true },
   ];
 
   const scrollToTop = () => {
