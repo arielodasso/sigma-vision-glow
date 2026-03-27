@@ -25,6 +25,7 @@ const Navbar = () => {
     { label: t.navbar.products, href: "/#productos" },
     { label: t.navbar.about, href: "/#filosofia" },
     { label: t.navbar.contact || "Contacto", href: "/contacto" },
+    { label: "Blog", href: "/blog" },
   ];
 
   const handleNavClick = (href: string) => {
@@ -74,6 +75,14 @@ const Navbar = () => {
               >
                 {l.label}
               </a>
+            ) : (
+              <Link
+                key={l.href}
+                to={l.href}
+                className="text-sm text-foreground/50 hover:text-foreground transition-colors duration-300 font-medium"
+              >
+                {l.label}
+              </Link>
             ))}
           </div>
 
