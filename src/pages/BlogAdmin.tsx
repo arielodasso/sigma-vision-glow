@@ -136,6 +136,22 @@ const BlogAdmin = () => {
     await supabase.auth.signOut();
   };
 
+  const fetchSitemap = async () => {
+    setSitemapLoading(true);
+    try {
+      const res = await fetch(
+        `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID || 'qxkeungqbgaytxdfhccn'}.supabase.co/functions/v1/sitemap`
+      );
+      const xml = await res.text();
+      setSitemapXml(xml);
+      setShowSitemap(true);
+    } catch {
+      toast({ title: "Error al cargar sitemap", variant: "destructive" });
+    } finally {
+      setSitemapLoading(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
