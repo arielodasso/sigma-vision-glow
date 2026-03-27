@@ -174,14 +174,47 @@ const BlogAdmin = () => {
         <div className="container mx-auto px-6 max-w-5xl">
           <div className="flex items-center justify-between mb-10">
             <h1 className="font-display text-3xl font-bold text-foreground">Blog Admin</h1>
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 text-sm text-foreground/50 hover:text-foreground transition-colors"
-            >
-              <LogOut size={14} />
-              Cerrar sesión
-            </button>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={fetchSitemap}
+                disabled={sitemapLoading}
+                className="flex items-center gap-2 text-sm text-foreground/50 hover:text-foreground transition-colors"
+              >
+                <Map size={14} />
+                {sitemapLoading ? "Cargando..." : "Ver Sitemap"}
+              </button>
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 text-sm text-foreground/50 hover:text-foreground transition-colors"
+              >
+                <LogOut size={14} />
+                Cerrar sesión
+              </button>
+            </div>
           </div>
+
+          {showSitemap && (
+            <div className="mb-8 p-5 rounded-xl border border-foreground/[0.08] bg-card">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-semibold text-foreground">Sitemap actual (dinámico)</h3>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => { navigator.clipboard.writeText(sitemapXml); toast({ title: "XML copiado al portapapeles" }); }}
+                    className="text-xs text-foreground/50 hover:text-foreground transition-colors"
+                  >
+                    Copiar XML
+                  </button>
+                  <button onClick={() => setShowSitemap(false)} className="text-xs text-foreground/50 hover:text-foreground transition-colors">
+                    Cerrar
+                  </button>
+                </div>
+              </div>
+              <p className="text-xs text-foreground/30 mb-3">
+                Este es el sitemap generado dinámicamente. Para actualizar el archivo estático en producción, republicá el sitio después de modificar posts.
+              </p>
+              <pre className="text-xs text-foreground/60 bg-background rounded-lg p-4 overflow-auto max-h-64 whitespace-pre-wrap">{sitemapXml}</pre>
+            </div>
+          )}
 
           <div className="grid lg:grid-cols-2 gap-10">
             <form onSubmit={handleSubmit} className="space-y-5">
