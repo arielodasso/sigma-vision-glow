@@ -92,6 +92,35 @@ const BlogPost = () => {
         <meta name="twitter:title" content={post.title} />
         {post.excerpt && <meta name="twitter:description" content={post.excerpt} />}
         {post.image_url && <meta name="twitter:image" content={post.image_url} />}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": post.title,
+            "description": post.excerpt || "",
+            "image": post.image_url || "",
+            "datePublished": post.published_at || "",
+            "dateModified": post.published_at || "",
+            "author": {
+              "@type": "Organization",
+              "name": "Sigma Tecnologías",
+              "url": "https://sigmatecnologiasarg.com"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "Sigma Tecnologías",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://sigmatecnologiasarg.com/placeholder.svg"
+              }
+            },
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": `https://sigmatecnologiasarg.com/blog/${post.slug}`
+            },
+            ...(post.category ? { "articleSection": post.category } : {})
+          })}
+        </script>
       </Helmet>
       <Navbar />
 
