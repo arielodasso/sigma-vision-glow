@@ -2,7 +2,7 @@ import { useState, useEffect, FormEvent } from "react";
 import Navbar from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Trash2, Edit2, Eye, EyeOff, LogOut } from "lucide-react";
+import { Trash2, Edit2, Eye, EyeOff, LogOut, Map } from "lucide-react";
 import BlogAdminLogin from "@/components/BlogAdminLogin";
 
 interface BlogPost {
