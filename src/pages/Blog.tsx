@@ -5,7 +5,7 @@ import FooterSection from "@/components/FooterSection";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Calendar } from "lucide-react";
 
 interface BlogPost {
   id: string;
@@ -18,6 +18,13 @@ interface BlogPost {
 }
 
 const POSTS_PER_PAGE = 6;
+
+const formatDate = (date: string) =>
+  new Date(date).toLocaleDateString("es-AR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
 const Blog = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -37,8 +44,10 @@ const Blog = () => {
     fetchPosts();
   }, []);
 
-  const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
-  const paginatedPosts = posts.slice(
+  const featuredPost = posts[0];
+  const remainingPosts = posts.slice(1);
+  const totalPages = Math.ceil(remainingPosts.length / POSTS_PER_PAGE);
+  const paginatedPosts = remainingPosts.slice(
     (currentPage - 1) * POSTS_PER_PAGE,
     currentPage * POSTS_PER_PAGE
   );
@@ -62,14 +71,15 @@ const Blog = () => {
       <Navbar />
 
       <section className="pt-36 pb-20 lg:pt-44 lg:pb-28">
-        <div className="container mx-auto px-6 max-w-4xl">
+        <div className="container mx-auto px-6 max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
+            className="text-center mb-16"
           >
             <h1 className="font-display text-4xl sm:text-5xl font-bold text-gradient mb-4">Blog</h1>
-            <p className="text-lg text-muted-foreground mb-16">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Desarrollo web, SaaS, automatización, inteligencia artificial aplicada y casos reales.
             </p>
           </motion.div>
@@ -90,54 +100,117 @@ const Blog = () => {
             </motion.div>
           ) : (
             <>
-              <div className="space-y-8">
-                {paginatedPosts.map((post, i) => (
-                  <motion.div
-                    key={post.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
+              {/* Featured Post */}
+              {featuredPost && (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="mb-16"
+                >
+                  <p className="text-sm font-medium text-muted-foreground uppercase tracking-widest mb-6 text-center">
+                    Artículo destacado
+                  </p>
+                  <Link
+                    to={`/blog/${featuredPost.slug}`}
+                    className="block glass-card rounded-2xl overflow-hidden group lg:grid lg:grid-cols-2"
                   >
-                    <Link
-                      to={`/blog/${post.slug}`}
-                      className="block glass-card rounded-2xl overflow-hidden group"
-                    >
-                      {post.image_url && (
-                        <div className="aspect-[21/9] overflow-hidden">
-                          <img
-                            src={post.image_url}
-                            alt={post.title}
-                            className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
-                          />
-                        </div>
-                      )}
-                      <div className="p-8">
-                        <div className="flex items-center gap-3 mb-3">
-                          {post.category && (
-                            <span className="text-xs text-foreground/40 font-medium uppercase tracking-wide">{post.category}</span>
-                          )}
-                          {post.published_at && (
-                            <span className="text-xs text-foreground/25">
-                              {new Date(post.published_at).toLocaleDateString("es-AR", { year: "numeric", month: "long", day: "numeric" })}
-                            </span>
-                          )}
-                        </div>
-                        <h2 className="font-display text-xl font-semibold text-foreground mb-2 group-hover:text-foreground/80 transition-colors">
-                          {post.title}
-                        </h2>
-                        {post.excerpt && (
-                          <p className="text-muted-foreground text-sm mb-4">{post.excerpt}</p>
-                        )}
-                        <span className="inline-flex items-center gap-2 text-sm font-medium text-foreground/50 group-hover:text-foreground/80 transition-colors">
-                          Leer artículo
-                          <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                        </span>
+                    {featuredPost.image_url && (
+                      <div className="aspect-[16/10] lg:aspect-auto lg:min-h-[360px] overflow-hidden">
+                        <img
+                          src={featuredPost.image_url}
+                          alt={featuredPost.title}
+                          className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700"
+                        />
                       </div>
-                    </Link>
-                  </motion.div>
-                ))}
-              </div>
+                    )}
+                    <div className="p-8 lg:p-10 flex flex-col justify-center">
+                      <div className="flex items-center gap-3 mb-4">
+                        {featuredPost.category && (
+                          <span className="text-xs font-semibold uppercase tracking-wide px-3 py-1 rounded-full bg-primary/10 text-primary">
+                            {featuredPost.category}
+                          </span>
+                        )}
+                        {featuredPost.published_at && (
+                          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <Calendar size={12} />
+                            {formatDate(featuredPost.published_at)}
+                          </span>
+                        )}
+                      </div>
+                      <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3 group-hover:text-foreground/80 transition-colors leading-tight">
+                        {featuredPost.title}
+                      </h2>
+                      {featuredPost.excerpt && (
+                        <p className="text-muted-foreground text-sm lg:text-base mb-6 line-clamp-3">
+                          {featuredPost.excerpt}
+                        </p>
+                      )}
+                      <span className="inline-flex items-center gap-2 text-sm font-semibold text-foreground/60 group-hover:text-foreground transition-colors">
+                        Leer artículo
+                        <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                      </span>
+                    </div>
+                  </Link>
+                </motion.div>
+              )}
 
+              {/* Cards Grid */}
+              {paginatedPosts.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {paginatedPosts.map((post, i) => (
+                    <motion.div
+                      key={post.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.08 }}
+                    >
+                      <Link
+                        to={`/blog/${post.slug}`}
+                        className="block glass-card rounded-2xl overflow-hidden group h-full flex flex-col"
+                      >
+                        {post.image_url && (
+                          <div className="aspect-[16/10] overflow-hidden">
+                            <img
+                              src={post.image_url}
+                              alt={post.title}
+                              className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                            />
+                          </div>
+                        )}
+                        <div className="p-6 flex flex-col flex-1">
+                          <div className="flex items-center gap-2 mb-3">
+                            {post.category && (
+                              <span className="text-[11px] font-semibold uppercase tracking-wide px-2.5 py-0.5 rounded-full bg-primary/10 text-primary">
+                                {post.category}
+                              </span>
+                            )}
+                            {post.published_at && (
+                              <span className="text-[11px] text-muted-foreground">
+                                {formatDate(post.published_at)}
+                              </span>
+                            )}
+                          </div>
+                          <h3 className="font-display text-base font-semibold text-foreground mb-2 group-hover:text-foreground/80 transition-colors leading-snug line-clamp-2">
+                            {post.title}
+                          </h3>
+                          {post.excerpt && (
+                            <p className="text-muted-foreground text-sm mb-4 line-clamp-2 flex-1">
+                              {post.excerpt}
+                            </p>
+                          )}
+                          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-foreground/50 group-hover:text-foreground/80 transition-colors mt-auto">
+                            Leer más
+                            <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                          </span>
+                        </div>
+                      </Link>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+
+              {/* Pagination */}
               {totalPages > 1 && (
                 <motion.div
                   initial={{ opacity: 0 }}
