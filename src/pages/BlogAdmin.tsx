@@ -24,6 +24,9 @@ const BlogAdmin = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [editing, setEditing] = useState<BlogPost | null>(null);
   const [saving, setSaving] = useState(false);
+  const [showSitemap, setShowSitemap] = useState(false);
+  const [sitemapXml, setSitemapXml] = useState("");
+  const [sitemapLoading, setSitemapLoading] = useState(false);
   const { toast } = useToast();
 
   const [title, setTitle] = useState("");
