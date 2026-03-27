@@ -66,24 +66,26 @@ const Navbar = () => {
           </Link>
 
           <div className="hidden lg:flex items-center gap-8">
-            {links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={(e) => { e.preventDefault(); handleNavClick(l.href); }}
-                className="text-sm text-foreground/50 hover:text-foreground transition-colors duration-300 font-medium"
-              >
-                {l.label}
-              </a>
-            ) : (
-              <Link
-                key={l.href}
-                to={l.href}
-                className="text-sm text-foreground/50 hover:text-foreground transition-colors duration-300 font-medium"
-              >
-                {l.label}
-              </Link>
-            ))}
+            {links.map((l) =>
+              l.href.startsWith("/#") ? (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={(e) => { e.preventDefault(); handleNavClick(l.href); }}
+                  className="text-sm text-foreground/50 hover:text-foreground transition-colors duration-300 font-medium"
+                >
+                  {l.label}
+                </a>
+              ) : (
+                <Link
+                  key={l.href}
+                  to={l.href}
+                  className="text-sm text-foreground/50 hover:text-foreground transition-colors duration-300 font-medium"
+                >
+                  {l.label}
+                </Link>
+              )
+            )}
           </div>
 
           <div className="hidden lg:flex items-center">
