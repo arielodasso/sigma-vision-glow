@@ -76,10 +76,10 @@ const Blog = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="text-center mb-16"
+            className="mb-14"
           >
-            <h1 className="font-display text-4xl sm:text-5xl font-bold text-gradient mb-4">Blog</h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <h1 className="font-display text-4xl sm:text-5xl font-bold text-gradient mb-3">Blog</h1>
+            <p className="text-base text-muted-foreground max-w-2xl">
               Desarrollo web, SaaS, automatización, inteligencia artificial aplicada y casos reales.
             </p>
           </motion.div>
@@ -125,17 +125,17 @@ const Blog = () => {
                       </div>
                     )}
                     <div className="p-8 lg:p-10 flex flex-col justify-center">
-                      <div className="flex items-center gap-3 mb-4">
+                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-3 text-[11px] text-muted-foreground">
                         {featuredPost.category && (
-                          <span className="text-xs font-semibold uppercase tracking-wide px-3 py-1 rounded-full bg-primary/10 text-primary">
-                            {featuredPost.category}
+                          <span className="tracking-wide">
+                            {featuredPost.category.toUpperCase()}
                           </span>
                         )}
+                        {featuredPost.category && featuredPost.published_at && (
+                          <span className="text-muted-foreground/40">·</span>
+                        )}
                         {featuredPost.published_at && (
-                          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                            <Calendar size={12} />
-                            {formatDate(featuredPost.published_at)}
-                          </span>
+                          <span>{formatDate(featuredPost.published_at)}</span>
                         )}
                       </div>
                       <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3 group-hover:text-foreground/80 transition-colors leading-tight">
@@ -179,16 +179,17 @@ const Blog = () => {
                           </div>
                         )}
                         <div className="p-6 flex flex-col flex-1">
-                          <div className="flex items-center gap-2 mb-3">
+                          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-2 text-[11px] text-muted-foreground">
                             {post.category && (
-                              <span className="text-[11px] font-semibold uppercase tracking-wide px-2.5 py-0.5 rounded-full bg-primary/10 text-primary">
-                                {post.category}
+                              <span className="tracking-wide">
+                                {post.category.toUpperCase()}
                               </span>
                             )}
+                            {post.category && post.published_at && (
+                              <span className="text-muted-foreground/40">·</span>
+                            )}
                             {post.published_at && (
-                              <span className="text-[11px] text-muted-foreground">
-                                {formatDate(post.published_at)}
-                              </span>
+                              <span>{formatDate(post.published_at)}</span>
                             )}
                           </div>
                           <h3 className="font-display text-base font-semibold text-foreground mb-2 group-hover:text-foreground/80 transition-colors leading-snug line-clamp-2">
