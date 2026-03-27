@@ -117,16 +117,26 @@ const Navbar = () => {
             transition={{ duration: 0.2 }}
             className="fixed top-[76px] left-4 right-4 bg-card/95 backdrop-blur-xl border border-foreground/[0.06] rounded-2xl p-6 space-y-1 lg:hidden shadow-xl shadow-black/30"
           >
-            {links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                onClick={(e) => { e.preventDefault(); handleNavClick(l.href); }}
-                className="block text-sm text-foreground/60 hover:text-foreground transition-colors py-3 px-4 rounded-lg font-medium"
-              >
-                {l.label}
-              </a>
-            ))}
+            {links.map((l) =>
+              l.href.startsWith("/#") ? (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={(e) => { e.preventDefault(); handleNavClick(l.href); }}
+                  className="block text-sm text-foreground/60 hover:text-foreground transition-colors py-3 px-4 rounded-lg font-medium"
+                >
+                  {l.label}
+                </a>
+              ) : (
+                <Link
+                  key={l.href}
+                  to={l.href}
+                  className="block text-sm text-foreground/60 hover:text-foreground transition-colors py-3 px-4 rounded-lg font-medium"
+                >
+                  {l.label}
+                </Link>
+              )
+            )}
             <a
               href="/#contacto"
               onClick={(e) => { e.preventDefault(); handleNavClick("/#contacto"); }}
