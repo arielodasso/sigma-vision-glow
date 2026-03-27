@@ -18,7 +18,7 @@ const es = {
   manifesto: {
     tagline: "Nuestra filosofía",
     headline: "Llevamos ideas a productos reales.",
-    description: "No somos una agencia tradicional ni solo una empresa de software. Combinamos desarrollo a medida, creación de productos propios y automatización para construir tecnología que funciona.",
+    description: "No somos una agencia tradicional ni solo un estudio de software. Combinamos desarrollo a medida, creación de productos propios y automatización para construir tecnología que funciona.",
     items: [
       "Plataformas web a medida",
       "Sistemas y automatizaciones",
@@ -120,8 +120,8 @@ const es = {
   },
   about: {
     tagline: "Quiénes somos",
-    title: "Una empresa de tecnología con mentalidad de producto.",
-    description: "Sigma Tecnologías es una empresa fundada por Ariel Odasso, desarrollador web con más de 5 años creando soluciones reales para empresas y agencias.",
+    title: "Una marca de tecnología con mentalidad de producto.",
+    description: "Sigma Tecnologías es una marca creada por Ariel Odasso, desarrollador web con más de 5 años construyendo soluciones reales para empresas y agencias.",
     founder: "Ariel Odasso",
     founderRole: "Fundador · Desarrollador Web",
     bio: "Desarrollador Web especializado en WordPress, con experiencia comprobada en PrestaShop, e-commerce y plataformas productivas. Trabajo codo a codo con el cliente o la agencia, con comunicación directa y sin intermediarios.",
