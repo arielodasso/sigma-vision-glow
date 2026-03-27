@@ -5,7 +5,7 @@ import FooterSection from "@/components/FooterSection";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
-import { ArrowRight, Calendar } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface BlogPost {
   id: string;
