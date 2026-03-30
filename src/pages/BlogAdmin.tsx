@@ -199,21 +199,6 @@ const BlogAdmin = () => {
                 <h3 className="text-sm font-semibold text-foreground">Sitemap actual (dinámico)</h3>
                 <div className="flex gap-3">
                   <button
-                    onClick={() => {
-                      const blob = new Blob([sitemapXml], { type: "application/xml" });
-                      const url = URL.createObjectURL(blob);
-                      const a = document.createElement("a");
-                      a.href = url;
-                      a.download = "sitemap.xml";
-                      a.click();
-                      URL.revokeObjectURL(url);
-                      toast({ title: "Sitemap descargado. Reemplazá public/sitemap.xml y republicá el sitio." });
-                    }}
-                    className="text-xs text-foreground/50 hover:text-foreground transition-colors font-medium"
-                  >
-                    ⬇ Descargar sitemap.xml
-                  </button>
-                  <button
                     onClick={() => { navigator.clipboard.writeText(sitemapXml); toast({ title: "XML copiado al portapapeles" }); }}
                     className="text-xs text-foreground/50 hover:text-foreground transition-colors"
                   >
@@ -225,7 +210,7 @@ const BlogAdmin = () => {
                 </div>
               </div>
               <p className="text-xs text-foreground/30 mb-3">
-                Este sitemap se genera dinámicamente desde la base de datos. Descargalo y reemplazá <code className="text-foreground/50">public/sitemap.xml</code> en el proyecto, luego republicá para que Google lo vea actualizado.
+                El sitemap se actualiza automáticamente cuando publicás o despublicás artículos. Google lo lee en <a href="https://sigmatecnologiasarg.com/sitemap.xml" target="_blank" className="text-foreground/50 underline">sigmatecnologiasarg.com/sitemap.xml</a>.
               </p>
               <pre className="text-xs text-foreground/60 bg-background rounded-lg p-4 overflow-auto max-h-64 whitespace-pre-wrap">{sitemapXml}</pre>
             </div>
