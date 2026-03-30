@@ -210,7 +210,7 @@ const BlogAdmin = () => {
                 </div>
               </div>
               <p className="text-xs text-foreground/30 mb-3">
-                Este es el sitemap generado dinámicamente. Para actualizar el archivo estático en producción, republicá el sitio después de modificar posts.
+                Este sitemap se genera dinámicamente y se actualiza automáticamente cada vez que publicás o despublicás un artículo. No necesitás hacer nada más.
               </p>
               <pre className="text-xs text-foreground/60 bg-background rounded-lg p-4 overflow-auto max-h-64 whitespace-pre-wrap">{sitemapXml}</pre>
             </div>
