@@ -14,4 +14,4 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 
-Sitemap: https://qxkeungqbgaytxdfhccn.supabase.co/functions/v1/sitemap
+Sitemap: https://sigmatecnologiasarg.com/sitemap.xml
