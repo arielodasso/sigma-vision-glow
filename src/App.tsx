@@ -45,6 +45,7 @@ const App = () => (
               <Route path="casos-de-uso" element={<AcademyUseCases />} />
               <Route path="avanzado" element={<AcademyAdvanced />} />
             </Route>
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
         </TooltipProvider>

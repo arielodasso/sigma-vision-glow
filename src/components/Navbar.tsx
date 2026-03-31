@@ -26,6 +26,7 @@ const Navbar = () => {
     { label: t.navbar.about, href: "/#filosofia" },
     { label: t.navbar.contact || "Contacto", href: "/contacto" },
     { label: "Blog", href: "/blog" },
+    { label: "Academy", href: "/academy" },
   ];
 
   const handleNavClick = (href: string) => {

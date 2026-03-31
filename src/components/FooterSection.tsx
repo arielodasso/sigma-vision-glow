@@ -10,6 +10,7 @@ const FooterSection = () => {
     { label: t.footer.products, href: "/#productos" },
     { label: t.footer.about, href: "/#filosofia" },
     { label: "Blog", href: "/blog", isRoute: true },
+    { label: "Academy", href: "/academy", isRoute: true },
     { label: t.footer.contact, href: "/contacto", isRoute: true },
   ];
 
