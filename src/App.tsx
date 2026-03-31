@@ -37,7 +37,14 @@ const App = () => (
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/admin/blog" element={<BlogAdmin />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="/academy" element={<AcademyLayout />}>
+              <Route index element={<AcademyHome />} />
+              <Route path="guias" element={<AcademyGuides />} />
+              <Route path="videos" element={<AcademyVideos />} />
+              <Route path="plantillas" element={<AcademyTemplates />} />
+              <Route path="casos-de-uso" element={<AcademyUseCases />} />
+              <Route path="avanzado" element={<AcademyAdvanced />} />
+            </Route>
           </Routes>
         </BrowserRouter>
         </TooltipProvider>
