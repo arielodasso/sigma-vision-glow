@@ -11,6 +11,13 @@ import About from "./pages/About";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import BlogAdmin from "./pages/BlogAdmin";
+import AcademyLayout from "./pages/AcademyLayout";
+import AcademyHome from "./pages/academy/AcademyHome";
+import AcademyGuides from "./pages/academy/AcademyGuides";
+import AcademyVideos from "./pages/academy/AcademyVideos";
+import AcademyTemplates from "./pages/academy/AcademyTemplates";
+import AcademyUseCases from "./pages/academy/AcademyUseCases";
+import AcademyAdvanced from "./pages/academy/AcademyAdvanced";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
