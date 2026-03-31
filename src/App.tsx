@@ -11,6 +11,13 @@ import About from "./pages/About";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import BlogAdmin from "./pages/BlogAdmin";
+import AcademyLayout from "./pages/AcademyLayout";
+import AcademyHome from "./pages/academy/AcademyHome";
+import AcademyGuides from "./pages/academy/AcademyGuides";
+import AcademyVideos from "./pages/academy/AcademyVideos";
+import AcademyTemplates from "./pages/academy/AcademyTemplates";
+import AcademyUseCases from "./pages/academy/AcademyUseCases";
+import AcademyAdvanced from "./pages/academy/AcademyAdvanced";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +37,14 @@ const App = () => (
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/admin/blog" element={<BlogAdmin />} />
+            <Route path="/academy" element={<AcademyLayout />}>
+              <Route index element={<AcademyHome />} />
+              <Route path="guias" element={<AcademyGuides />} />
+              <Route path="videos" element={<AcademyVideos />} />
+              <Route path="plantillas" element={<AcademyTemplates />} />
+              <Route path="casos-de-uso" element={<AcademyUseCases />} />
+              <Route path="avanzado" element={<AcademyAdvanced />} />
+            </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
