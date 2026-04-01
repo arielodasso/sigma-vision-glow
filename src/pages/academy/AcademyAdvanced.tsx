@@ -1,54 +1,54 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Cloud, Shield, CreditCard, Brain, Palette, FileText, Globe, GitBranch, MessageCircle, AlertTriangle } from "lucide-react";
+import { ArrowRight, Cloud, Shield, CreditCard, Brain, Palette, FileText, Globe, GitBranch, MessageCircle, AlertTriangle, ExternalLink } from "lucide-react";
 
 const topics = [
   {
     title: "Infraestructura cloud",
     desc: "Backend, base de datos, almacenamiento y funciones serverless — todo lo que necesitás para lógica del lado del servidor.",
     icon: Cloud,
-    href: "#",
+    href: "https://docs.lovable.dev/integrations/cloud",
   },
   {
     title: "Autenticación de usuarios",
     desc: "Registro, login, proveedores OAuth como Google y GitHub, y rutas protegidas — todo configurado.",
     icon: Shield,
-    href: "#",
+    href: "https://docs.lovable.dev/features/authentication",
   },
   {
     title: "Integración de pagos",
     desc: "Aceptá pagos, gestioná suscripciones y configurá portales de cliente con las herramientas de pago más populares.",
     icon: CreditCard,
-    href: "#",
+    href: "https://docs.lovable.dev/integrations/stripe",
   },
   {
     title: "IA en tu aplicación",
     desc: "Construí interfaces de chat, generación de contenido y funcionalidades inteligentes con modelos de lenguaje.",
     icon: Brain,
-    href: "#",
+    href: "https://docs.lovable.dev/features/ai",
   },
   {
     title: "Diseño y UI avanzado",
     desc: "Usá herramientas de diseño visual, creá layouts responsivos y construí interfaces pulidas con librerías de componentes.",
     icon: Palette,
-    href: "#",
+    href: "https://docs.lovable.dev/features/design",
   },
   {
     title: "Archivos de conocimiento",
     desc: "Dale a la IA contexto personalizado sobre tu proyecto — guías de marca, specs de API o conocimiento de dominio.",
     icon: FileText,
-    href: "#",
+    href: "https://docs.lovable.dev/features/knowledge-files",
   },
   {
     title: "Dominio personalizado",
     desc: "Poné en producción con tu propia URL. Conectá un dominio, configurá DNS y publicá en minutos.",
     icon: Globe,
-    href: "#",
+    href: "https://docs.lovable.dev/features/custom-domain",
   },
   {
     title: "Control de versiones",
     desc: "Versionado completo y ownership del código. Push a GitHub, pull de cambios y colaborá con tu equipo.",
     icon: GitBranch,
-    href: "#",
+    href: "https://docs.lovable.dev/integrations/github",
   },
 ];
 
@@ -77,27 +77,33 @@ const AcademyAdvanced = () => {
           Profundizá.
         </h1>
         <p className="mt-4 text-muted-foreground max-w-lg text-lg">
-          Funcionalidades listas para producción, un tema a la vez.
+          Funcionalidades listas para producción, un tema a la vez. Cada card enlaza a la documentación oficial.
         </p>
       </motion.div>
 
       <div className="grid sm:grid-cols-2 gap-4">
         {topics.map((topic, i) => (
-          <motion.div
+          <motion.a
             key={topic.title}
+            href={topic.href}
+            target="_blank"
+            rel="noopener noreferrer"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.3, delay: i * 0.05 }}
-            className="rounded-xl border border-border bg-secondary/20 p-6 hover:bg-secondary/40 transition-colors group cursor-pointer"
+            className="rounded-xl border border-border bg-secondary/20 p-6 hover:bg-secondary/40 transition-colors group cursor-pointer block"
           >
-            <topic.icon size={20} className="text-muted-foreground mb-3" />
+            <div className="flex items-center justify-between mb-3">
+              <topic.icon size={20} className="text-muted-foreground" />
+              <ExternalLink size={14} className="text-muted-foreground/30 group-hover:text-foreground/60 transition-colors" />
+            </div>
             <h3 className="font-display font-bold text-foreground text-sm">{topic.title}</h3>
             <p className="mt-2 text-xs text-muted-foreground leading-relaxed">{topic.desc}</p>
             <span className="inline-flex items-center gap-1 mt-3 text-xs font-medium text-foreground/50 group-hover:text-foreground">
-              → Explorar
+              Ver documentación →
             </span>
-          </motion.div>
+          </motion.a>
         ))}
       </div>
 
