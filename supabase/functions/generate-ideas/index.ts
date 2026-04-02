@@ -12,20 +12,22 @@ Deno.serve(async (req) => {
   try {
     const { occupation, problem } = await req.json();
 
-    const prompt = `You are an app idea generator. Based on the user's occupation and problem, suggest 3 specific web app ideas they could build with Lovable (an AI web app builder). Each idea should be a single sentence describing the app, specific enough to be used as a prompt. Write in Spanish.
+    const prompt = `Sos un generador de ideas de apps. Basándote en la ocupación y el problema del usuario, sugerí 3 ideas específicas de apps web que podrían construir con Lovable (un constructor de apps web con IA). Cada idea debe ser una oración específica describiendo la app, lo suficientemente detallada como para usarse como prompt. Escribí en español.
 
-Occupation: ${occupation || "No especificado"}
-Problem: ${problem || "No especificado"}
+Ocupación del usuario: ${occupation || "No especificado"}
+Problema que quiere resolver: ${problem || "No especificado"}
 
-Return ONLY a valid JSON object with an "ideas" array of 3 strings. Each string is a concise app idea (one sentence, in Spanish). No markdown, no code fences, no explanation. Just the raw JSON object.`;
+Las ideas DEBEN estar directamente relacionadas con la ocupación y el problema del usuario. Sé creativo pero relevante.
+
+Devolvé ÚNICAMENTE un objeto JSON válido con un array "ideas" de 3 strings. Cada string es una idea de app concisa (una oración, en español). Sin markdown, sin code fences, sin explicación. Solo el JSON puro.`;
 
     const response = await fetch(
-      "https://qxkeungqbgaytxdfhccn.supabase.co/functions/v1/ai",
+      "https://ai.gateway.lovable.dev/v1/chat/completions",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`,
+          Authorization: `Bearer ${Deno.env.get("LOVABLE_API_KEY")}`,
         },
         body: JSON.stringify({
           model: "google/gemini-2.5-flash",
@@ -35,17 +37,16 @@ Return ONLY a valid JSON object with an "ideas" array of 3 strings. Each string 
     );
 
     if (!response.ok) {
-      console.error("AI API error:", response.status, await response.text());
+      const errText = await response.text();
+      console.error("AI API error:", response.status, errText);
       throw new Error(`AI API returned ${response.status}`);
     }
 
     const data = await response.json();
-    console.log("AI response:", JSON.stringify(data));
-    
     const content = data.choices?.[0]?.message?.content || "";
-    console.log("Content:", content);
+    console.log("AI content:", content);
 
-    // Try to parse JSON from the response, handling markdown code fences
+    // Parse JSON, handling markdown code fences
     const cleaned = content.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
     const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
@@ -62,7 +63,7 @@ Return ONLY a valid JSON object with an "ideas" array of 3 strings. Each string 
       .split("\n")
       .filter((l: string) => l.trim().length > 10)
       .slice(0, 3);
-    
+
     if (ideas.length > 0) {
       return new Response(JSON.stringify({ ideas }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
