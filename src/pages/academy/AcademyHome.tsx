@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, BookOpen, Play, Layout, Lightbulb, Rocket, Brain } from "lucide-react";
+import { ArrowRight, BookOpen, Play, Layout, Lightbulb, Rocket, ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
 
 const personas = [
