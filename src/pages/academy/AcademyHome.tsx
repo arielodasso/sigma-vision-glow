@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, BookOpen, Play, Layout, Lightbulb, Rocket, Brain } from "lucide-react";
+import { ArrowRight, BookOpen, Play, Layout, Lightbulb, Rocket, ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
 
 const personas = [
@@ -12,10 +12,10 @@ const personas = [
 ];
 
 const featuredTemplates = [
-  { title: "Dashboard IA", desc: "Panel de análisis con inteligencia artificial integrada", category: "SaaS" },
-  { title: "Landing Startup", desc: "Página de lanzamiento optimizada para conversión", category: "Marketing" },
-  { title: "Portfolio Creativo", desc: "Portafolio minimalista con animaciones premium", category: "Portfolio" },
-  { title: "E-commerce Inteligente", desc: "Tienda online con recomendaciones IA", category: "E-commerce" },
+  { title: "Lovable Slides", desc: "Creá presentaciones desde código con IA", category: "Apps", image: "https://lovable.dev/cdn-cgi/image/width=800,f=auto,fit=scale-down/templates/lovable-slides-final.webp", href: "https://lovable.dev/templates/apps/saas/lovable-slides" },
+  { title: "Dealflow", desc: "Pipeline visual con drag-and-drop para gestión de deals", category: "Apps", image: "https://lovable.dev/cdn-cgi/image/width=800,f=auto,fit=scale-down/https://storage.googleapis.com/lovable-assets/templates/dealflow.webp", href: "https://lovable.dev/templates/apps/internal-tools/dealflow-visual-crm-pipeline-tracker-template" },
+  { title: "Obsidian", desc: "Portfolio fotográfico cinematográfico con diseño oscuro premium", category: "Portfolio", image: "https://lovable.dev/cdn-cgi/image/width=800,f=auto,fit=scale-down/templates/obsidian-template-screenshot.webp", href: "https://lovable.dev/templates/websites/portfolio/obsidian-template" },
+  { title: "EventSpark", desc: "Plataforma de registro de eventos con analytics integrado", category: "Eventos", image: "https://lovable.dev/cdn-cgi/image/width=800,f=auto,fit=scale-down/https://storage.googleapis.com/lovable-assets/templates/event-spark.webp", href: "https://lovable.dev/templates/websites/events/eventspark-event-registration-platform-template" },
 ];
 
 const AcademyHome = () => {
@@ -136,17 +136,23 @@ const AcademyHome = () => {
         </div>
         <div className="grid sm:grid-cols-2 gap-4">
           {featuredTemplates.map((t) => (
-            <div
+            <a
               key={t.title}
-              className="rounded-xl border border-border bg-secondary/20 p-6 hover:bg-secondary/40 transition-colors"
+              href={t.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-xl border border-border bg-secondary/20 p-3 hover:bg-secondary/40 transition-colors group block"
             >
-              <div className="w-full h-32 rounded-lg bg-secondary/60 mb-4 flex items-center justify-center">
-                <Brain size={32} className="text-muted-foreground/40" />
+              <div className="w-full h-32 rounded-lg bg-secondary/60 mb-4 overflow-hidden">
+                <img src={t.image} alt={t.title} className="w-full h-full object-cover" loading="lazy" />
               </div>
               <span className="text-[10px] font-semibold tracking-widest text-muted-foreground/50 uppercase">{t.category}</span>
               <h3 className="font-display font-bold text-foreground mt-1">{t.title}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{t.desc}</p>
-            </div>
+              <span className="inline-flex items-center gap-1 mt-2 text-xs text-foreground/60 group-hover:text-foreground">
+                Ver plantilla <ExternalLink size={12} />
+              </span>
+            </a>
           ))}
         </div>
       </section>

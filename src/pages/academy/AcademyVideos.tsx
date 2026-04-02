@@ -8,22 +8,16 @@ const channels = [
     url: "https://www.youtube.com/@lovable/videos",
     videos: [
       {
-        title: "Build a Full-Stack App with Lovable in Minutes",
-        duration: "12 min",
-        description: "Paso a paso completo: desde la idea hasta una app full-stack desplegada. Prompting, diseño, backend y deploy.",
-        youtubeId: "aircAruvnKk",
+        title: "Build Web Apps with AI — No Coding Required! Full Tutorial",
+        duration: "1h 07min",
+        description: "Tutorial oficial completo del canal de Lovable. Desde la idea hasta una app full-stack desplegada con Supabase, OpenAI y Stripe.",
+        youtubeId: "c0zhLzcVJRI",
       },
       {
-        title: "Lovable 101: From Idea to Production",
-        duration: "20 min",
-        description: "Tutorial oficial para crear tu primer proyecto con Lovable. Aprende cómo funciona la plataforma de punta a punta.",
+        title: "Lovable 2.0 Launch — What's New",
+        duration: "5 min",
+        description: "Presentación oficial de Lovable 2.0 con las nuevas funcionalidades y mejoras de la plataforma.",
         youtubeId: "9KHLTZaJcR8",
-      },
-      {
-        title: "Building a SaaS with AI — No Code Required",
-        duration: "25 min",
-        description: "Cómo construir un SaaS completo con autenticación, pagos y dashboard usando solo prompts en Lovable.",
-        youtubeId: "jGJFtALMAEU",
       },
     ],
   },
@@ -33,35 +27,41 @@ const channels = [
     url: "https://www.youtube.com/@n8n-io/videos",
     videos: [
       {
-        title: "Automate Everything with n8n — Getting Started",
+        title: "n8n Quick Start: Build Your First Workflow [2025]",
         duration: "15 min",
-        description: "Introducción a la automatización con n8n. Creá flujos de trabajo visuales que conectan tus apps y servicios.",
-        youtubeId: "1MwSoB0gnM4",
+        description: "Tutorial oficial de n8n para principiantes. Aprendé los conceptos fundamentales y construí tu primer workflow de automatización.",
+        youtubeId: "4cQWJViybAQ",
       },
       {
-        title: "Build AI Agents with n8n",
-        duration: "22 min",
+        title: "n8n Quick Start: Build Your First AI Agent [2026]",
+        duration: "21 min",
         description: "Cómo crear agentes de IA que automatizan tareas complejas usando n8n y modelos de lenguaje.",
-        youtubeId: "HSCJRaFPMeo",
+        youtubeId: "GuaKeDS6UKU",
       },
     ],
   },
   {
-    name: "Claude",
-    handle: "@claude",
-    url: "https://www.youtube.com/@claude/videos",
+    name: "Anthropic (Claude)",
+    handle: "@anthropic-ai",
+    url: "https://www.youtube.com/@anthropic-ai/videos",
     videos: [
       {
-        title: "Introducing Claude — AI Assistant by Anthropic",
-        duration: "8 min",
-        description: "Conocé Claude, el asistente de IA de Anthropic. Capacidades, casos de uso y cómo empezar a usarlo.",
-        youtubeId: "jBfGEySQ1OU",
+        title: "Introducing Claude Code",
+        duration: "4 min",
+        description: "Presentación oficial de Claude Code, la herramienta de coding agéntico de Anthropic que permite delegar tareas de ingeniería desde la terminal.",
+        youtubeId: "AJpK3YTTKZ4",
       },
       {
-        title: "Claude for Work: Enterprise AI Use Cases",
-        duration: "18 min",
-        description: "Casos de uso empresariales con Claude. Análisis de documentos, generación de contenido y automatización.",
-        youtubeId: "Yv2x5bOGs1w",
+        title: "Claude — Computer Use for Automating Operations",
+        duration: "2 min",
+        description: "Demostración de la capacidad de uso de computadora de Claude: mirar pantallas, mover cursores, cliquear y escribir texto como un humano.",
+        youtubeId: "ODaHJzOyVCQ",
+      },
+      {
+        title: "Claude Code Updates: Haiku 4.5, Claude Code on Web & More",
+        duration: "5 min",
+        description: "Últimas novedades para desarrolladores: Claude Code en la web, Claude Haiku 4.5 y mejoras en el flujo de trabajo.",
+        youtubeId: "CBneTpXF1CQ",
       },
     ],
   },
@@ -79,7 +79,7 @@ const AcademyVideos = () => {
           Mirá y aprendé.
         </h1>
         <p className="mt-4 text-muted-foreground max-w-lg text-lg">
-          Tutoriales y walkthroughs de los canales oficiales de Lovable, n8n y Claude.
+          Tutoriales y walkthroughs de los canales oficiales de Lovable, n8n y Anthropic (Claude).
         </p>
       </motion.div>
 
