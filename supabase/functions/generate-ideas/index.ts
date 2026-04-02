@@ -17,7 +17,7 @@ Deno.serve(async (req) => {
 Occupation: ${occupation || "No especificado"}
 Problem: ${problem || "No especificado"}
 
-Return a JSON object with an "ideas" array of 3 strings. Each string is a concise app idea (one sentence, in Spanish). Only return the JSON, no markdown.`;
+Return ONLY a valid JSON object with an "ideas" array of 3 strings. Each string is a concise app idea (one sentence, in Spanish). No markdown, no code fences, no explanation. Just the raw JSON object.`;
 
     const response = await fetch(
       "https://qxkeungqbgaytxdfhccn.supabase.co/functions/v1/ai",
@@ -34,16 +34,27 @@ Return a JSON object with an "ideas" array of 3 strings. Each string is a concis
       }
     );
 
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content || "";
+    if (!response.ok) {
+      console.error("AI API error:", response.status, await response.text());
+      throw new Error(`AI API returned ${response.status}`);
+    }
 
-    // Parse JSON from the response
-    const jsonMatch = content.match(/\{[\s\S]*\}/);
+    const data = await response.json();
+    console.log("AI response:", JSON.stringify(data));
+    
+    const content = data.choices?.[0]?.message?.content || "";
+    console.log("Content:", content);
+
+    // Try to parse JSON from the response, handling markdown code fences
+    const cleaned = content.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
+    const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       const parsed = JSON.parse(jsonMatch[0]);
-      return new Response(JSON.stringify(parsed), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      if (parsed.ideas && Array.isArray(parsed.ideas) && parsed.ideas.length > 0) {
+        return new Response(JSON.stringify(parsed), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
     }
 
     // Fallback: split by newlines
@@ -51,17 +62,22 @@ Return a JSON object with an "ideas" array of 3 strings. Each string is a concis
       .split("\n")
       .filter((l: string) => l.trim().length > 10)
       .slice(0, 3);
-    return new Response(JSON.stringify({ ideas }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    
+    if (ideas.length > 0) {
+      return new Response(JSON.stringify({ ideas }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    throw new Error("Could not parse AI response");
   } catch (error) {
     console.error("Error generating ideas:", error);
     return new Response(
       JSON.stringify({
         ideas: [
-          "Dashboard personalizado para gestionar tu negocio",
-          "Landing page optimizada para captar clientes",
-          "Herramienta de automatización para tareas repetitivas",
+          "Dashboard personalizado para gestionar tu negocio con métricas en tiempo real",
+          "Landing page optimizada para captar clientes con formulario inteligente",
+          "Herramienta de automatización para eliminar tareas repetitivas del día a día",
         ],
       }),
       {
