@@ -12,10 +12,10 @@ const personas = [
 ];
 
 const featuredTemplates = [
-  { title: "Dashboard IA", desc: "Panel de análisis con inteligencia artificial integrada", category: "SaaS" },
-  { title: "Landing Startup", desc: "Página de lanzamiento optimizada para conversión", category: "Marketing" },
-  { title: "Portfolio Creativo", desc: "Portafolio minimalista con animaciones premium", category: "Portfolio" },
-  { title: "E-commerce Inteligente", desc: "Tienda online con recomendaciones IA", category: "E-commerce" },
+  { title: "Lovable Slides", desc: "Creá presentaciones desde código con IA", category: "Apps", image: "https://lovable.dev/cdn-cgi/image/width=800,f=auto,fit=scale-down/templates/lovable-slides-final.webp", href: "https://lovable.dev/templates/apps/saas/lovable-slides" },
+  { title: "Dealflow", desc: "Pipeline visual con drag-and-drop para gestión de deals", category: "Apps", image: "https://lovable.dev/cdn-cgi/image/width=800,f=auto,fit=scale-down/https://storage.googleapis.com/lovable-assets/templates/dealflow.webp", href: "https://lovable.dev/templates/apps/internal-tools/dealflow-visual-crm-pipeline-tracker-template" },
+  { title: "Obsidian", desc: "Portfolio fotográfico cinematográfico con diseño oscuro premium", category: "Portfolio", image: "https://lovable.dev/cdn-cgi/image/width=800,f=auto,fit=scale-down/templates/obsidian-template-screenshot.webp", href: "https://lovable.dev/templates/websites/portfolio/obsidian-template" },
+  { title: "EventSpark", desc: "Plataforma de registro de eventos con analytics integrado", category: "Eventos", image: "https://lovable.dev/cdn-cgi/image/width=800,f=auto,fit=scale-down/https://storage.googleapis.com/lovable-assets/templates/event-spark.webp", href: "https://lovable.dev/templates/websites/events/eventspark-event-registration-platform-template" },
 ];
 
 const AcademyHome = () => {
