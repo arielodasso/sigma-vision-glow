@@ -136,17 +136,23 @@ const AcademyHome = () => {
         </div>
         <div className="grid sm:grid-cols-2 gap-4">
           {featuredTemplates.map((t) => (
-            <div
+            <a
               key={t.title}
-              className="rounded-xl border border-border bg-secondary/20 p-6 hover:bg-secondary/40 transition-colors"
+              href={t.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-xl border border-border bg-secondary/20 p-3 hover:bg-secondary/40 transition-colors group block"
             >
-              <div className="w-full h-32 rounded-lg bg-secondary/60 mb-4 flex items-center justify-center">
-                <Brain size={32} className="text-muted-foreground/40" />
+              <div className="w-full h-32 rounded-lg bg-secondary/60 mb-4 overflow-hidden">
+                <img src={t.image} alt={t.title} className="w-full h-full object-cover" loading="lazy" />
               </div>
               <span className="text-[10px] font-semibold tracking-widest text-muted-foreground/50 uppercase">{t.category}</span>
               <h3 className="font-display font-bold text-foreground mt-1">{t.title}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{t.desc}</p>
-            </div>
+              <span className="inline-flex items-center gap-1 mt-2 text-xs text-foreground/60 group-hover:text-foreground">
+                Ver plantilla <ExternalLink size={12} />
+              </span>
+            </a>
           ))}
         </div>
       </section>
