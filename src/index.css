@@ -244,6 +244,12 @@ html {
   margin-bottom: 1.25rem;
 }
 
+.prose-sigma hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 2.5rem 0;
+}
+
 .prose-sigma ul, .prose-sigma ol {
   margin-bottom: 1.25rem;
   padding-left: 1.5rem;
