@@ -242,8 +242,8 @@ const BudgetEditor = () => {
                 <input
                   value={item.description}
                   onChange={(e) => updateItem(idx, "description", e.target.value)}
-                  placeholder="Descripción"
-                  className={`${inputClass} flex-1`}
+                  placeholder="Concepto (ej: Diseño de landing page)"
+                  className={`${inputClass} flex-1 min-w-0`}
                 />
                 <input
                   type="number"
@@ -251,12 +251,13 @@ const BudgetEditor = () => {
                   value={item.price}
                   onChange={(e) => updateItem(idx, "price", e.target.value)}
                   placeholder="USD"
-                  className={`${inputClass} w-32`}
+                  className={`${inputClass} !w-32 flex-shrink-0`}
                 />
                 <button
                   type="button"
                   onClick={() => removeItem(idx)}
-                  className="p-3 text-foreground/30 hover:text-destructive"
+                  className="p-3 text-foreground/30 hover:text-destructive flex-shrink-0"
+                  aria-label="Eliminar item"
                 >
                   <X size={14} />
                 </button>
