@@ -247,37 +247,69 @@ Deno.serve(async (req) => {
       y += 6;
     }
 
-    // ===== Totals box =====
+    // ===== Totals box (limpio, con jerarquía clara) =====
     const devTotal = Number(budget.development_cost) || items.reduce((a: number, i: any) => a + (Number(i.price) || 0), 0);
     const monthly = budget.monthly_maintenance_cost != null ? Number(budget.monthly_maintenance_cost) : null;
 
-    const totalsH = monthly != null ? 38 : 26;
-    ensureSpace(totalsH + 14);
-    doc.setFillColor(248, 249, 251);
+    const padX = 10;
+    const rowH = 18;
+    const totalsH = monthly != null ? rowH * 2 + 4 : rowH + 8;
+    ensureSpace(totalsH + 16);
+
+    // Outer container with subtle border, no fill (cleaner look)
     doc.setDrawColor(...line);
-    doc.roundedRect(M, y, contentW, totalsH, 3, 3, "FD");
+    doc.setLineWidth(0.3);
+    doc.roundedRect(M, y, contentW, totalsH, 4, 4, "S");
+
+    // Row 1: Costo total de desarrollo
+    const row1Y = y + (monthly != null ? rowH / 2 + 2 : totalsH / 2 + 1);
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
+    doc.setFontSize(10);
     doc.setTextColor(...muted);
-    doc.text("Costo total de desarrollo", M + 6, y + 9);
+    doc.text("Costo total de desarrollo", M + padX, row1Y);
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(18);
+    doc.setFontSize(20);
     doc.setTextColor(...ink);
-    doc.text(fmtUSD(devTotal), pageW - M - 6, y + 12, { align: "right" });
+    doc.text(fmtUSD(devTotal), pageW - M - padX, row1Y + 1, { align: "right" });
 
     if (monthly != null) {
-      doc.setDrawColor(...line);
-      doc.line(M + 6, y + 18, pageW - M - 6, y + 18);
+      // Divider
+      const divY = y + rowH + 2;
+      doc.setDrawColor(235, 237, 240);
+      doc.setLineWidth(0.2);
+      doc.line(M + padX, divY, pageW - M - padX, divY);
+
+      const row2Y = divY + rowH / 2 + 1;
       doc.setFont("helvetica", "normal");
-      doc.setFontSize(9);
+      doc.setFontSize(10);
       doc.setTextColor(...muted);
-      doc.text("Mantenimiento mensual", M + 6, y + 26);
+      doc.text("Mantenimiento mensual", M + padX, row2Y);
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(13);
+      doc.setFontSize(14);
       doc.setTextColor(...ink);
-      doc.text(`${fmtUSD(monthly)} / mes`, pageW - M - 6, y + 28, { align: "right" });
+      const monthlyStr = fmtUSD(monthly);
+      doc.text(monthlyStr, pageW - M - padX, row2Y + 0.5, { align: "right" });
+      // " /mes" en muted, justo a la izquierda del número
+      const monthlyW = doc.getTextWidth(monthlyStr);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(...muted);
+      doc.text(" /mes", pageW - M - padX + 0.5, row2Y + 0.5);
+      // (small visual: place /mes right after; recompute by drawing the full string then overlay)
+      // Simpler: redraw the right side cleanly:
+      doc.setFillColor(255, 255, 255);
+      doc.rect(pageW - M - padX - monthlyW - 18, row2Y - 5, monthlyW + 22, 8, "F");
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(14);
+      doc.setTextColor(...ink);
+      doc.text(monthlyStr, pageW - M - padX - 12, row2Y + 0.5, { align: "right" });
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(...muted);
+      doc.text("/ mes", pageW - M - padX, row2Y + 0.5, { align: "right" });
     }
-    y += totalsH + 4;
+
+    y += totalsH + 6;
 
     doc.setFont("helvetica", "italic");
     doc.setFontSize(8);
