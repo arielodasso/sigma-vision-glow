@@ -284,29 +284,19 @@ Deno.serve(async (req) => {
       doc.setFontSize(10);
       doc.setTextColor(...muted);
       doc.text("Mantenimiento mensual", M + padX, row2Y);
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(14);
-      doc.setTextColor(...ink);
+
       const monthlyStr = fmtUSD(monthly);
-      doc.text(monthlyStr, pageW - M - padX, row2Y + 0.5, { align: "right" });
-      // " /mes" en muted, justo a la izquierda del número
-      const monthlyW = doc.getTextWidth(monthlyStr);
+      const suffix = " / mes";
       doc.setFont("helvetica", "normal");
       doc.setFontSize(10);
       doc.setTextColor(...muted);
-      doc.text(" /mes", pageW - M - padX + 0.5, row2Y + 0.5);
-      // (small visual: place /mes right after; recompute by drawing the full string then overlay)
-      // Simpler: redraw the right side cleanly:
-      doc.setFillColor(255, 255, 255);
-      doc.rect(pageW - M - padX - monthlyW - 18, row2Y - 5, monthlyW + 22, 8, "F");
+      const suffixW = doc.getTextWidth(suffix);
+      doc.text(suffix, pageW - M - padX, row2Y, { align: "right" });
+
       doc.setFont("helvetica", "bold");
       doc.setFontSize(14);
       doc.setTextColor(...ink);
-      doc.text(monthlyStr, pageW - M - padX - 12, row2Y + 0.5, { align: "right" });
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      doc.setTextColor(...muted);
-      doc.text("/ mes", pageW - M - padX, row2Y + 0.5, { align: "right" });
+      doc.text(monthlyStr, pageW - M - padX - suffixW, row2Y, { align: "right" });
     }
 
     y += totalsH + 6;
