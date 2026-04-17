@@ -11,6 +11,10 @@ import About from "./pages/About";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import BlogAdmin from "./pages/BlogAdmin";
+import AdminLayout from "./pages/admin/AdminLayout";
+import BudgetsList from "./pages/admin/BudgetsList";
+import BudgetEditor from "./pages/admin/BudgetEditor";
+import BudgetView from "./pages/BudgetView";
 import AcademyLayout from "./pages/AcademyLayout";
 import AcademyHome from "./pages/academy/AcademyHome";
 import AcademyGuides from "./pages/academy/AcademyGuides";
@@ -36,7 +40,14 @@ const App = () => (
             <Route path="/contacto" element={<About />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/admin/blog" element={<BlogAdmin />} />
+            <Route path="/presupuesto/:slug" element={<BudgetView />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<BlogAdmin />} />
+              <Route path="blog" element={<BlogAdmin />} />
+              <Route path="presupuestos" element={<BudgetsList />} />
+              <Route path="presupuestos/nuevo" element={<BudgetEditor />} />
+              <Route path="presupuestos/:id" element={<BudgetEditor />} />
+            </Route>
             <Route path="/academy" element={<AcademyLayout />}>
               <Route index element={<AcademyHome />} />
               <Route path="guias" element={<AcademyGuides />} />

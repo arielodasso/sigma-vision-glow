@@ -1,0 +1,98 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { Plus, ExternalLink, Trash2, Copy } from "lucide-react";
+
+interface Budget {
+  id: string;
+  slug: string;
+  client_name: string;
+  development_cost: number | null;
+  monthly_maintenance_cost: number | null;
+  created_at: string;
+}
+
+const BudgetsList = () => {
+  const [budgets, setBudgets] = useState<Budget[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+
+  const fetch = async () => {
+    setLoading(true);
+    const { data } = await supabase
+      .from("budgets")
+      .select("id, slug, client_name, development_cost, monthly_maintenance_cost, created_at")
+      .order("created_at", { ascending: false });
+    setBudgets((data as any) || []);
+    setLoading(false);
+  };
+
+  useEffect(() => { fetch(); }, []);
+
+  const remove = async (id: string) => {
+    if (!confirm("¿Eliminar este presupuesto?")) return;
+    await supabase.from("budgets").delete().eq("id", id);
+    toast({ title: "Presupuesto eliminado" });
+    fetch();
+  };
+
+  const copyLink = (slug: string) => {
+    const url = `${window.location.origin}/presupuesto/${slug}`;
+    navigator.clipboard.writeText(url);
+    toast({ title: "Enlace copiado" });
+  };
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-10">
+        <h1 className="font-display text-3xl font-bold text-foreground">Presupuestos</h1>
+        <Link
+          to="/admin/presupuestos/nuevo"
+          className="flex items-center gap-2 bg-foreground text-background px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors"
+        >
+          <Plus size={14} /> Nuevo
+        </Link>
+      </div>
+
+      {loading ? (
+        <p className="text-sm text-muted-foreground">Cargando...</p>
+      ) : budgets.length === 0 ? (
+        <p className="text-sm text-muted-foreground py-12 text-center">No hay presupuestos aún.</p>
+      ) : (
+        <div className="space-y-3">
+          {budgets.map((b) => (
+            <div
+              key={b.id}
+              className="flex items-center justify-between gap-4 p-4 rounded-xl border border-foreground/[0.06] hover:border-foreground/[0.10] transition-colors"
+            >
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-foreground truncate">{b.client_name}</p>
+                <p className="text-xs text-foreground/30 truncate">
+                  /presupuesto/{b.slug} · USD {b.development_cost ?? 0}
+                  {b.monthly_maintenance_cost ? ` + ${b.monthly_maintenance_cost}/mes` : ""}
+                </p>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <button onClick={() => copyLink(b.slug)} className="p-2 text-foreground/30 hover:text-foreground" title="Copiar enlace">
+                  <Copy size={14} />
+                </button>
+                <a href={`/presupuesto/${b.slug}`} target="_blank" rel="noreferrer" className="p-2 text-foreground/30 hover:text-foreground" title="Ver">
+                  <ExternalLink size={14} />
+                </a>
+                <Link to={`/admin/presupuestos/${b.id}`} className="p-2 text-foreground/30 hover:text-foreground text-xs underline">
+                  Editar
+                </Link>
+                <button onClick={() => remove(b.id)} className="p-2 text-foreground/30 hover:text-destructive">
+                  <Trash2 size={14} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default BudgetsList;
