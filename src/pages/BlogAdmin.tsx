@@ -1,9 +1,7 @@
 import { useState, useEffect, FormEvent } from "react";
-import Navbar from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Trash2, Edit2, Eye, EyeOff, LogOut, Map } from "lucide-react";
-import BlogAdminLogin from "@/components/BlogAdminLogin";
+import { Trash2, Edit2, Eye, EyeOff, Map } from "lucide-react";
 
 interface BlogPost {
   id: string;
@@ -19,8 +17,6 @@ interface BlogPost {
 }
 
 const BlogAdmin = () => {
-  const [session, setSession] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [editing, setEditing] = useState<BlogPost | null>(null);
   const [saving, setSaving] = useState(false);
@@ -37,18 +33,6 @@ const BlogAdmin = () => {
   const [category, setCategory] = useState("");
   const [published, setPublished] = useState(false);
 
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      setLoading(false);
-    });
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setLoading(false);
-    });
-    return () => subscription.unsubscribe();
-  }, []);
-
   const fetchPosts = async () => {
     const { data } = await supabase
       .from("blog_posts")
@@ -57,9 +41,7 @@ const BlogAdmin = () => {
     setPosts((data as any) || []);
   };
 
-  useEffect(() => {
-    if (session) fetchPosts();
-  }, [session]);
+  useEffect(() => { fetchPosts(); }, []);
 
   const generateSlug = (text: string) =>
     text.toLowerCase()
@@ -132,10 +114,6 @@ const BlogAdmin = () => {
     fetchPosts();
   };
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-  };
-
   const fetchSitemap = async () => {
     setSitemapLoading(true);
     try {
@@ -152,144 +130,114 @@ const BlogAdmin = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-muted-foreground">Cargando...</p>
-      </div>
-    );
-  }
-
-  if (!session) {
-    return <BlogAdminLogin />;
-  }
-
   const inputClass = "w-full bg-card border border-foreground/[0.08] rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-foreground/25 focus:outline-none focus:border-foreground/20 transition-colors";
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <div>
+      <div className="flex items-center justify-between mb-10">
+        <h1 className="font-display text-3xl font-bold text-foreground">Blog</h1>
+        <button
+          onClick={fetchSitemap}
+          disabled={sitemapLoading}
+          className="flex items-center gap-2 text-sm text-foreground/50 hover:text-foreground transition-colors"
+        >
+          <Map size={14} />
+          {sitemapLoading ? "Cargando..." : "Ver Sitemap"}
+        </button>
+      </div>
 
-      <div className="pt-32 pb-20">
-        <div className="container mx-auto px-6 max-w-5xl">
-          <div className="flex items-center justify-between mb-10">
-            <h1 className="font-display text-3xl font-bold text-foreground">Blog Admin</h1>
-            <div className="flex items-center gap-4">
+      {showSitemap && (
+        <div className="mb-8 p-5 rounded-xl border border-foreground/[0.08] bg-card">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-sm font-semibold text-foreground">Sitemap actual (dinámico)</h3>
+            <div className="flex gap-3">
               <button
-                onClick={fetchSitemap}
-                disabled={sitemapLoading}
-                className="flex items-center gap-2 text-sm text-foreground/50 hover:text-foreground transition-colors"
+                onClick={() => { navigator.clipboard.writeText(sitemapXml); toast({ title: "XML copiado al portapapeles" }); }}
+                className="text-xs text-foreground/50 hover:text-foreground transition-colors"
               >
-                <Map size={14} />
-                {sitemapLoading ? "Cargando..." : "Ver Sitemap"}
+                Copiar XML
               </button>
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-2 text-sm text-foreground/50 hover:text-foreground transition-colors"
-              >
-                <LogOut size={14} />
-                Cerrar sesión
+              <button onClick={() => setShowSitemap(false)} className="text-xs text-foreground/50 hover:text-foreground transition-colors">
+                Cerrar
               </button>
             </div>
           </div>
+          <pre className="text-xs text-foreground/60 bg-background rounded-lg p-4 overflow-auto max-h-64 whitespace-pre-wrap">{sitemapXml}</pre>
+        </div>
+      )}
 
-          {showSitemap && (
-            <div className="mb-8 p-5 rounded-xl border border-foreground/[0.08] bg-card">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-foreground">Sitemap actual (dinámico)</h3>
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => { navigator.clipboard.writeText(sitemapXml); toast({ title: "XML copiado al portapapeles" }); }}
-                    className="text-xs text-foreground/50 hover:text-foreground transition-colors"
-                  >
-                    Copiar XML
-                  </button>
-                  <button onClick={() => setShowSitemap(false)} className="text-xs text-foreground/50 hover:text-foreground transition-colors">
-                    Cerrar
-                  </button>
-                </div>
-              </div>
-              <p className="text-xs text-foreground/30 mb-3">
-                El sitemap se actualiza automáticamente cuando publicás o despublicás artículos. Google lo lee en <a href="https://sigmatecnologiasarg.com/sitemap.xml" target="_blank" className="text-foreground/50 underline">sigmatecnologiasarg.com/sitemap.xml</a>.
-              </p>
-              <pre className="text-xs text-foreground/60 bg-background rounded-lg p-4 overflow-auto max-h-64 whitespace-pre-wrap">{sitemapXml}</pre>
-            </div>
+      <div className="grid lg:grid-cols-2 gap-10">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Título</label>
+            <input
+              required
+              value={title}
+              onChange={(e) => { setTitle(e.target.value); if (!editing) setSlug(generateSlug(e.target.value)); }}
+              className={inputClass}
+              placeholder="Título del artículo"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Slug</label>
+            <input value={slug} onChange={(e) => setSlug(e.target.value)} className={inputClass} placeholder="url-del-articulo" />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Extracto</label>
+            <textarea value={excerpt} onChange={(e) => setExcerpt(e.target.value)} rows={2} className={inputClass} placeholder="Breve descripción..." />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Contenido (HTML)</label>
+            <textarea required value={content} onChange={(e) => setContent(e.target.value)} rows={10} className={inputClass} placeholder="<p>Contenido del artículo...</p>" />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">URL de imagen</label>
+            <input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} className={inputClass} placeholder="https://..." />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Categoría</label>
+            <input value={category} onChange={(e) => setCategory(e.target.value)} className={inputClass} placeholder="desarrollo, saas, automatización..." />
+          </div>
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" checked={published} onChange={(e) => setPublished(e.target.checked)} className="accent-foreground" />
+            <span className="text-sm text-foreground/70">Publicar</span>
+          </label>
+          <div className="flex gap-3">
+            <button type="submit" disabled={saving} className="bg-foreground text-background px-6 py-3 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors disabled:opacity-50">
+              {editing ? "Actualizar" : "Crear artículo"}
+            </button>
+            {editing && (
+              <button type="button" onClick={resetForm} className="text-sm text-foreground/50 hover:text-foreground px-4">
+                Cancelar
+              </button>
+            )}
+          </div>
+        </form>
+
+        <div className="space-y-3">
+          <h2 className="font-display text-lg font-semibold text-foreground mb-4">Artículos ({posts.length})</h2>
+          {posts.length === 0 && (
+            <p className="text-sm text-muted-foreground py-8 text-center">No hay artículos aún.</p>
           )}
-
-          <div className="grid lg:grid-cols-2 gap-10">
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Título</label>
-                <input
-                  required
-                  value={title}
-                  onChange={(e) => { setTitle(e.target.value); if (!editing) setSlug(generateSlug(e.target.value)); }}
-                  className={inputClass}
-                  placeholder="Título del artículo"
-                />
+          {posts.map((post) => (
+            <div key={post.id} className="flex items-center justify-between gap-4 p-4 rounded-xl border border-foreground/[0.06] hover:border-foreground/[0.10] transition-colors">
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-foreground truncate">{post.title}</p>
+                <p className="text-xs text-foreground/30">{post.category} · {post.published ? "publicado" : "borrador"}</p>
               </div>
-              <div>
-                <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Slug</label>
-                <input value={slug} onChange={(e) => setSlug(e.target.value)} className={inputClass} placeholder="url-del-articulo" />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Extracto</label>
-                <textarea value={excerpt} onChange={(e) => setExcerpt(e.target.value)} rows={2} className={inputClass} placeholder="Breve descripción..." />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Contenido (HTML)</label>
-                <textarea required value={content} onChange={(e) => setContent(e.target.value)} rows={10} className={inputClass} placeholder="<p>Contenido del artículo...</p>" />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">URL de imagen</label>
-                <input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} className={inputClass} placeholder="https://..." />
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Categoría</label>
-                <input value={category} onChange={(e) => setCategory(e.target.value)} className={inputClass} placeholder="desarrollo, saas, automatización..." />
-              </div>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input type="checkbox" checked={published} onChange={(e) => setPublished(e.target.checked)} className="accent-foreground" />
-                <span className="text-sm text-foreground/70">Publicar</span>
-              </label>
-              <div className="flex gap-3">
-                <button type="submit" disabled={saving} className="bg-foreground text-background px-6 py-3 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors disabled:opacity-50">
-                  {editing ? "Actualizar" : "Crear artículo"}
+              <div className="flex items-center gap-2 shrink-0">
+                <button onClick={() => togglePublish(post)} className="p-2 text-foreground/30 hover:text-foreground transition-colors" title={post.published ? "Despublicar" : "Publicar"}>
+                  {post.published ? <Eye size={14} /> : <EyeOff size={14} />}
                 </button>
-                {editing && (
-                  <button type="button" onClick={resetForm} className="text-sm text-foreground/50 hover:text-foreground px-4">
-                    Cancelar
-                  </button>
-                )}
+                <button onClick={() => loadPost(post)} className="p-2 text-foreground/30 hover:text-foreground transition-colors">
+                  <Edit2 size={14} />
+                </button>
+                <button onClick={() => deletePost(post.id)} className="p-2 text-foreground/30 hover:text-destructive transition-colors">
+                  <Trash2 size={14} />
+                </button>
               </div>
-            </form>
-
-            <div className="space-y-3">
-              <h2 className="font-display text-lg font-semibold text-foreground mb-4">Artículos ({posts.length})</h2>
-              {posts.length === 0 && (
-                <p className="text-sm text-muted-foreground py-8 text-center">No hay artículos aún.</p>
-              )}
-              {posts.map((post) => (
-                <div key={post.id} className="flex items-center justify-between gap-4 p-4 rounded-xl border border-foreground/[0.06] hover:border-foreground/[0.10] transition-colors">
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-foreground truncate">{post.title}</p>
-                    <p className="text-xs text-foreground/30">{post.category} · {post.published ? "publicado" : "borrador"}</p>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <button onClick={() => togglePublish(post)} className="p-2 text-foreground/30 hover:text-foreground transition-colors" title={post.published ? "Despublicar" : "Publicar"}>
-                      {post.published ? <Eye size={14} /> : <EyeOff size={14} />}
-                    </button>
-                    <button onClick={() => loadPost(post)} className="p-2 text-foreground/30 hover:text-foreground transition-colors">
-                      <Edit2 size={14} />
-                    </button>
-                    <button onClick={() => deletePost(post.id)} className="p-2 text-foreground/30 hover:text-destructive transition-colors">
-                      <Trash2 size={14} />
-                    </button>
-                  </div>
-                </div>
-              ))}
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
