@@ -65,6 +65,14 @@ Deno.serve(async (req) => {
     const M = 18; // margin
     const contentW = pageW - M * 2;
 
+    // Colors
+    const ink = [20, 22, 26] as const;
+    const muted = [120, 124, 132] as const;
+    const line = [225, 227, 232] as const;
+    const subtle = [248, 249, 251] as const;
+
+    let y = M;
+
     // ===== HEADER (tipográfico, sin logo cuadrado) =====
     doc.setFont("helvetica", "bold");
     doc.setFontSize(15);
