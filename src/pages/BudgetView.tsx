@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Download, Check, X } from "lucide-react";
+
+const PROJECT_ID = import.meta.env.VITE_SUPABASE_PROJECT_ID || "qxkeungqbgaytxdfhccn";
 
 interface Item { description: string; price: number }
 type Status = "draft" | "sent" | "accepted" | "rejected";
