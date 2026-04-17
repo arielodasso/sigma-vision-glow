@@ -10,8 +10,17 @@ interface Budget {
   client_name: string;
   development_cost: number | null;
   monthly_maintenance_cost: number | null;
+  status: "draft" | "sent" | "accepted" | "rejected";
+  accepted_at: string | null;
   created_at: string;
 }
+
+const STATUS: Record<Budget["status"], { label: string; cls: string }> = {
+  draft: { label: "Borrador", cls: "bg-foreground/10 text-foreground/60" },
+  sent: { label: "Enviado", cls: "bg-blue-500/15 text-blue-400" },
+  accepted: { label: "Aceptado", cls: "bg-emerald-500/15 text-emerald-400" },
+  rejected: { label: "Rechazado", cls: "bg-red-500/15 text-red-400" },
+};
 
 const BudgetsList = () => {
   const [budgets, setBudgets] = useState<Budget[]>([]);
@@ -22,7 +31,7 @@ const BudgetsList = () => {
     setLoading(true);
     const { data } = await supabase
       .from("budgets")
-      .select("id, slug, client_name, development_cost, monthly_maintenance_cost, created_at")
+      .select("id, slug, client_name, development_cost, monthly_maintenance_cost, status, accepted_at, created_at")
       .order("created_at", { ascending: false });
     setBudgets((data as any) || []);
     setLoading(false);
@@ -66,8 +75,13 @@ const BudgetsList = () => {
               key={b.id}
               className="flex items-center justify-between gap-4 p-4 rounded-xl border border-foreground/[0.06] hover:border-foreground/[0.10] transition-colors"
             >
-              <div className="min-w-0">
-                <p className="text-sm font-medium text-foreground truncate">{b.client_name}</p>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <p className="text-sm font-medium text-foreground truncate">{b.client_name}</p>
+                  <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${STATUS[b.status].cls}`}>
+                    {STATUS[b.status].label}
+                  </span>
+                </div>
                 <p className="text-xs text-foreground/30 truncate">
                   /presupuesto/{b.slug} · USD {b.development_cost ?? 0}
                   {b.monthly_maintenance_cost ? ` + ${b.monthly_maintenance_cost}/mes` : ""}
