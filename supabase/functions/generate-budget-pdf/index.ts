@@ -296,7 +296,7 @@ Deno.serve(async (req) => {
 
     y += totalsH + 6;
 
-    doc.setFont("helvetica", "italic");
+    doc.setFont("helvetica", "normal");
     doc.setFontSize(8);
     doc.setTextColor(...muted);
     doc.text(
