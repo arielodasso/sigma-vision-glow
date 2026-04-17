@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Download, Check, X } from "lucide-react";
+
+const PROJECT_ID = import.meta.env.VITE_SUPABASE_PROJECT_ID || "qxkeungqbgaytxdfhccn";
 
 interface Item { description: string; price: number }
 type Status = "draft" | "sent" | "accepted" | "rejected";
@@ -43,7 +45,7 @@ const BudgetView = () => {
   const [notFound, setNotFound] = useState(false);
   const [acting, setActing] = useState(false);
   const [downloading, setDownloading] = useState(false);
-  const printRef = useRef<HTMLDivElement>(null);
+  
 
   const load = async () => {
     const { data } = await supabase.from("budgets").select("*").eq("slug", slug!).maybeSingle();
@@ -56,7 +58,8 @@ const BudgetView = () => {
 
   const respond = async (newStatus: "accepted" | "rejected") => {
     if (!budget) return;
-    if (!confirm(newStatus === "accepted" ? "¿Aceptar este presupuesto?" : "¿Rechazar este presupuesto?")) return;
+    const verb = newStatus === "accepted" ? "Aceptar" : "Rechazar";
+    if (!confirm(`¿${verb} este presupuesto?`)) return;
     setActing(true);
     const { error } = await supabase.rpc("set_budget_status", {
       _slug: budget.slug,
@@ -64,49 +67,43 @@ const BudgetView = () => {
     });
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: newStatus === "accepted" ? "Presupuesto aceptado" : "Presupuesto rechazado" });
-      await load();
+      setActing(false);
+      return;
     }
+
+    // Notify Sigma via send-contact (fire-and-forget)
+    const action = newStatus === "accepted" ? "ACEPTÓ" : "RECHAZÓ";
+    const url = `${window.location.origin}/presupuesto/${budget.slug}`;
+    supabase.functions
+      .invoke("send-contact", {
+        body: {
+          name: `Presupuesto ${budget.slug}`,
+          email: "presupuestos@sigmatecnologiasarg.com",
+          company: budget.client_name,
+          message:
+            `El cliente ${action} el presupuesto.\n\n` +
+            `Cliente: ${budget.client_name}\n` +
+            `Slug: ${budget.slug}\n` +
+            `Estado: ${newStatus}\n` +
+            `Fecha: ${new Date().toLocaleString("es-AR")}\n` +
+            `URL: ${url}`,
+        },
+      })
+      .catch((e) => console.warn("Email notify failed:", e));
+
+    toast({
+      title: newStatus === "accepted" ? "Presupuesto aceptado" : "Presupuesto rechazado",
+    });
+    await load();
     setActing(false);
   };
 
-  const downloadPdf = async () => {
-    if (!printRef.current) return;
+  const downloadPdf = () => {
+    if (!budget) return;
     setDownloading(true);
-    try {
-      const [{ default: html2canvas }, jspdfMod] = await Promise.all([
-        import("html2canvas"),
-        import("jspdf"),
-      ]);
-      const canvas = await html2canvas(printRef.current, {
-        scale: 2,
-        backgroundColor: getComputedStyle(document.body).backgroundColor || "#ffffff",
-        useCORS: true,
-      });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jspdfMod.jsPDF("p", "mm", "a4");
-      const pageW = pdf.internal.pageSize.getWidth();
-      const pageH = pdf.internal.pageSize.getHeight();
-      const imgW = pageW;
-      const imgH = (canvas.height * imgW) / canvas.width;
-
-      let heightLeft = imgH;
-      let position = 0;
-      pdf.addImage(imgData, "PNG", 0, position, imgW, imgH);
-      heightLeft -= pageH;
-      while (heightLeft > 0) {
-        position = heightLeft - imgH;
-        pdf.addPage();
-        pdf.addImage(imgData, "PNG", 0, position, imgW, imgH);
-        heightLeft -= pageH;
-      }
-      pdf.save(`presupuesto-${budget?.slug || "sigma"}.pdf`);
-    } catch (e: any) {
-      toast({ title: "Error al generar PDF", description: e.message, variant: "destructive" });
-    } finally {
-      setDownloading(false);
-    }
+    const url = `https://${PROJECT_ID}.supabase.co/functions/v1/generate-budget-pdf?slug=${encodeURIComponent(budget.slug)}`;
+    window.open(url, "_blank", "noopener");
+    setTimeout(() => setDownloading(false), 800);
   };
 
   if (loading) {
@@ -184,7 +181,7 @@ const BudgetView = () => {
         </div>
       </div>
 
-      <div ref={printRef} className="max-w-3xl mx-auto px-6 py-10 lg:py-16 bg-background">
+      <div className="max-w-3xl mx-auto px-6 py-10 lg:py-16 bg-background">
         {/* Header */}
         <div className="flex items-center justify-between mb-12 pb-6 border-b border-foreground/[0.08]">
           <div>
