@@ -11,15 +11,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-// SVG logo Sigma — embebido como dataURL no funciona en jsPDF, dibujamos un círculo + Σ
-function drawLogo(doc: jsPDF, x: number, y: number) {
-  doc.setFillColor(11, 13, 16); // brand dark
-  doc.roundedRect(x, y, 14, 14, 3, 3, "F");
-  doc.setTextColor(255, 255, 255);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(13);
-  doc.text("Σ", x + 7, y + 9.8, { align: "center" });
-}
+// (Logo eliminado — header tipográfico minimalista)
 
 const fmtUSD = (n: number) =>
   new Intl.NumberFormat("en-US", {
@@ -77,23 +69,23 @@ Deno.serve(async (req) => {
     const ink = [20, 22, 26] as const;
     const muted = [120, 124, 132] as const;
     const line = [225, 227, 232] as const;
-    const accent = [11, 13, 16] as const;
+    const subtle = [248, 249, 251] as const;
 
     let y = M;
 
-    // ===== HEADER =====
-    drawLogo(doc, M, y);
+    // ===== HEADER (tipográfico, sin logo cuadrado) =====
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(14);
+    doc.setFontSize(15);
     doc.setTextColor(...ink);
-    doc.text("Sigma", M + 18, y + 6);
+    doc.text("Sigma", M, y + 6);
+    const sigmaW = doc.getTextWidth("Sigma");
     doc.setFont("helvetica", "normal");
     doc.setTextColor(...muted);
-    doc.text("Tecnologías", M + 18 + doc.getTextWidth("Sigma") + 1.5, y + 6);
+    doc.text("Tecnologías", M + sigmaW + 1.8, y + 6);
 
     doc.setFontSize(8);
     doc.setTextColor(...muted);
-    doc.text("sigmatecnologiasarg.com", M + 18, y + 11);
+    doc.text("sigmatecnologiasarg.com", M, y + 11);
 
     // Right side: presupuesto label + date
     const date = new Date(budget.created_at).toLocaleDateString("es-AR", {
@@ -224,21 +216,19 @@ Deno.serve(async (req) => {
     if (items.length > 0) {
       section("Detalle");
       ensureSpace(10);
-      doc.setDrawColor(...line);
-      doc.setLineWidth(0.2);
-      const tableTop = y;
       const priceColW = 40;
-      const descX = M + 4;
-      const priceX = pageW - M - 4;
+      const descX = M + 2;
+      const priceX = pageW - M - 2;
 
       items.forEach((it: any, idx: number) => {
         const desc = String(it.description || "");
         const price = Number(it.price) || 0;
         const lines = doc.splitTextToSize(desc, contentW - priceColW - 8);
-        const rowH = Math.max(lines.length * 5, 8) + 4;
+        const rowH = Math.max(lines.length * 5, 7) + 5;
         ensureSpace(rowH + 2);
         if (idx > 0) {
-          doc.setDrawColor(240, 240, 242);
+          doc.setDrawColor(235, 237, 240);
+          doc.setLineWidth(0.2);
           doc.line(M, y - 1, pageW - M, y - 1);
         }
         doc.setFont("helvetica", "normal");
@@ -249,45 +239,64 @@ Deno.serve(async (req) => {
         doc.text(fmtUSD(price), priceX, y + 4, { align: "right" });
         y += rowH;
       });
-      // border around table
-      doc.setDrawColor(...line);
-      doc.roundedRect(M, tableTop - 1, contentW, y - tableTop + 1, 2, 2, "S");
-      y += 6;
+      y += 8;
     }
 
-    // ===== Totals box =====
+    // ===== Totals box (limpio, con jerarquía clara) =====
     const devTotal = Number(budget.development_cost) || items.reduce((a: number, i: any) => a + (Number(i.price) || 0), 0);
     const monthly = budget.monthly_maintenance_cost != null ? Number(budget.monthly_maintenance_cost) : null;
 
-    const totalsH = monthly != null ? 38 : 26;
-    ensureSpace(totalsH + 14);
-    doc.setFillColor(248, 249, 251);
+    const padX = 10;
+    const rowH = 18;
+    const totalsH = monthly != null ? rowH * 2 + 4 : rowH + 8;
+    ensureSpace(totalsH + 16);
+
+    // Outer container with subtle border, no fill (cleaner look)
     doc.setDrawColor(...line);
-    doc.roundedRect(M, y, contentW, totalsH, 3, 3, "FD");
+    doc.setLineWidth(0.3);
+    doc.roundedRect(M, y, contentW, totalsH, 4, 4, "S");
+
+    // Row 1: Costo total de desarrollo
+    const row1Y = y + (monthly != null ? rowH / 2 + 2 : totalsH / 2 + 1);
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
+    doc.setFontSize(10);
     doc.setTextColor(...muted);
-    doc.text("Costo total de desarrollo", M + 6, y + 9);
+    doc.text("Costo total de desarrollo", M + padX, row1Y);
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(18);
+    doc.setFontSize(20);
     doc.setTextColor(...ink);
-    doc.text(fmtUSD(devTotal), pageW - M - 6, y + 12, { align: "right" });
+    doc.text(fmtUSD(devTotal), pageW - M - padX, row1Y + 1, { align: "right" });
 
     if (monthly != null) {
-      doc.setDrawColor(...line);
-      doc.line(M + 6, y + 18, pageW - M - 6, y + 18);
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(9);
-      doc.setTextColor(...muted);
-      doc.text("Mantenimiento mensual", M + 6, y + 26);
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(13);
-      doc.setTextColor(...ink);
-      doc.text(`${fmtUSD(monthly)} / mes`, pageW - M - 6, y + 28, { align: "right" });
-    }
-    y += totalsH + 4;
+      // Divider
+      const divY = y + rowH + 2;
+      doc.setDrawColor(235, 237, 240);
+      doc.setLineWidth(0.2);
+      doc.line(M + padX, divY, pageW - M - padX, divY);
 
-    doc.setFont("helvetica", "italic");
+      const row2Y = divY + rowH / 2 + 1;
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(...muted);
+      doc.text("Mantenimiento mensual", M + padX, row2Y);
+
+      const monthlyStr = fmtUSD(monthly);
+      const suffix = " / mes";
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(...muted);
+      const suffixW = doc.getTextWidth(suffix);
+      doc.text(suffix, pageW - M - padX, row2Y, { align: "right" });
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(14);
+      doc.setTextColor(...ink);
+      doc.text(monthlyStr, pageW - M - padX - suffixW, row2Y, { align: "right" });
+    }
+
+    y += totalsH + 6;
+
+    doc.setFont("helvetica", "normal");
     doc.setFontSize(8);
     doc.setTextColor(...muted);
     doc.text(
