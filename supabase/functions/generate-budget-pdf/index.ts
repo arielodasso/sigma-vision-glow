@@ -65,27 +65,19 @@ Deno.serve(async (req) => {
     const M = 18; // margin
     const contentW = pageW - M * 2;
 
-    // Colors
-    const ink = [20, 22, 26] as const;
-    const muted = [120, 124, 132] as const;
-    const line = [225, 227, 232] as const;
-    const accent = [11, 13, 16] as const;
-
-    let y = M;
-
-    // ===== HEADER =====
-    drawLogo(doc, M, y);
+    // ===== HEADER (tipográfico, sin logo cuadrado) =====
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(14);
+    doc.setFontSize(15);
     doc.setTextColor(...ink);
-    doc.text("Sigma", M + 18, y + 6);
+    doc.text("Sigma", M, y + 6);
+    const sigmaW = doc.getTextWidth("Sigma");
     doc.setFont("helvetica", "normal");
     doc.setTextColor(...muted);
-    doc.text("Tecnologías", M + 18 + doc.getTextWidth("Sigma") + 1.5, y + 6);
+    doc.text("Tecnologías", M + sigmaW + 1.8, y + 6);
 
     doc.setFontSize(8);
     doc.setTextColor(...muted);
-    doc.text("sigmatecnologiasarg.com", M + 18, y + 11);
+    doc.text("sigmatecnologiasarg.com", M, y + 11);
 
     // Right side: presupuesto label + date
     const date = new Date(budget.created_at).toLocaleDateString("es-AR", {
