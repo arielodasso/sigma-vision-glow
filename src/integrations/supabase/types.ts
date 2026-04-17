@@ -58,47 +58,56 @@ export type Database = {
       }
       budgets: {
         Row: {
+          accepted_at: string | null
           billing: string | null
           client_name: string
           created_at: string
           delivery_time: string | null
           development_cost: number | null
           id: string
+          items: Json
           monthly_maintenance_cost: number | null
           observations: string | null
           payment_method: string | null
           scope: string | null
           slug: string
+          status: Database["public"]["Enums"]["budget_status"]
           updated_at: string
           work_type: string | null
         }
         Insert: {
+          accepted_at?: string | null
           billing?: string | null
           client_name: string
           created_at?: string
           delivery_time?: string | null
           development_cost?: number | null
           id?: string
+          items?: Json
           monthly_maintenance_cost?: number | null
           observations?: string | null
           payment_method?: string | null
           scope?: string | null
           slug: string
+          status?: Database["public"]["Enums"]["budget_status"]
           updated_at?: string
           work_type?: string | null
         }
         Update: {
+          accepted_at?: string | null
           billing?: string | null
           client_name?: string
           created_at?: string
           delivery_time?: string | null
           development_cost?: number | null
           id?: string
+          items?: Json
           monthly_maintenance_cost?: number | null
           observations?: string | null
           payment_method?: string | null
           scope?: string | null
           slug?: string
+          status?: Database["public"]["Enums"]["budget_status"]
           updated_at?: string
           work_type?: string | null
         }
@@ -134,9 +143,17 @@ export type Database = {
         }
         Returns: boolean
       }
+      set_budget_status: {
+        Args: {
+          _slug: string
+          _status: Database["public"]["Enums"]["budget_status"]
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      budget_status: "draft" | "sent" | "accepted" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -265,6 +282,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      budget_status: ["draft", "sent", "accepted", "rejected"],
     },
   },
 } as const

@@ -2,13 +2,23 @@ import { FormEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, ExternalLink, Copy } from "lucide-react";
+import { ArrowLeft, ExternalLink, Copy, Plus, X } from "lucide-react";
 
 const inputClass =
   "w-full bg-card border border-foreground/[0.08] rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-foreground/25 focus:outline-none focus:border-foreground/20 transition-colors";
 
 const randomSlug = () =>
   Math.random().toString(36).slice(2, 8) + Math.random().toString(36).slice(2, 6);
+
+type Item = { description: string; price: string };
+type Status = "draft" | "sent" | "accepted" | "rejected";
+
+const STATUS_LABELS: Record<Status, string> = {
+  draft: "Borrador",
+  sent: "Enviado",
+  accepted: "Aceptado",
+  rejected: "Rechazado",
+};
 
 const BudgetEditor = () => {
   const { id } = useParams();
@@ -26,8 +36,10 @@ const BudgetEditor = () => {
   const [deliveryTime, setDeliveryTime] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
   const [billing, setBilling] = useState("");
-  const [devCost, setDevCost] = useState("");
+  const [items, setItems] = useState<Item[]>([]);
   const [monthlyCost, setMonthlyCost] = useState("");
+  const [status, setStatus] = useState<Status>("draft");
+  const [acceptedAt, setAcceptedAt] = useState<string | null>(null);
 
   useEffect(() => {
     if (isNew) {
@@ -45,16 +57,36 @@ const BudgetEditor = () => {
         setDeliveryTime(data.delivery_time || "");
         setPaymentMethod(data.payment_method || "");
         setBilling(data.billing || "");
-        setDevCost(data.development_cost?.toString() || "");
         setMonthlyCost(data.monthly_maintenance_cost?.toString() || "");
+        setStatus((data.status as Status) || "draft");
+        setAcceptedAt(data.accepted_at);
+        const arr = Array.isArray(data.items) ? data.items : [];
+        setItems(
+          arr.map((i: any) => ({
+            description: i?.description ?? "",
+            price: i?.price != null ? String(i.price) : "",
+          }))
+        );
       }
       setLoading(false);
     })();
   }, [id, isNew]);
 
+  const totalDev = items.reduce((acc, i) => acc + (Number(i.price) || 0), 0);
+
+  const updateItem = (idx: number, key: keyof Item, value: string) => {
+    setItems((prev) => prev.map((it, i) => (i === idx ? { ...it, [key]: value } : it)));
+  };
+  const addItem = () => setItems((prev) => [...prev, { description: "", price: "" }]);
+  const removeItem = (idx: number) => setItems((prev) => prev.filter((_, i) => i !== idx));
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setSaving(true);
+    const cleanItems = items
+      .filter((i) => i.description.trim() || i.price)
+      .map((i) => ({ description: i.description.trim(), price: Number(i.price) || 0 }));
+
     const payload = {
       slug: slug.trim() || randomSlug(),
       client_name: clientName.trim(),
@@ -64,8 +96,10 @@ const BudgetEditor = () => {
       delivery_time: deliveryTime || null,
       payment_method: paymentMethod || null,
       billing: billing || null,
-      development_cost: devCost ? Number(devCost) : null,
+      items: cleanItems,
+      development_cost: cleanItems.reduce((a, i) => a + i.price, 0),
       monthly_maintenance_cost: monthlyCost ? Number(monthlyCost) : null,
+      status,
       updated_at: new Date().toISOString(),
     };
 
@@ -91,6 +125,13 @@ const BudgetEditor = () => {
 
   if (loading) return <p className="text-sm text-muted-foreground">Cargando...</p>;
 
+  const statusColor: Record<Status, string> = {
+    draft: "bg-foreground/10 text-foreground/60",
+    sent: "bg-blue-500/15 text-blue-400",
+    accepted: "bg-emerald-500/15 text-emerald-400",
+    rejected: "bg-red-500/15 text-red-400",
+  };
+
   return (
     <div>
       <button
@@ -100,9 +141,16 @@ const BudgetEditor = () => {
         <ArrowLeft size={14} /> Volver
       </button>
 
-      <h1 className="font-display text-3xl font-bold text-foreground mb-2">
-        {isNew ? "Nuevo presupuesto" : "Editar presupuesto"}
-      </h1>
+      <div className="flex items-center gap-3 mb-2">
+        <h1 className="font-display text-3xl font-bold text-foreground">
+          {isNew ? "Nuevo presupuesto" : "Editar presupuesto"}
+        </h1>
+        {!isNew && (
+          <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusColor[status]}`}>
+            {STATUS_LABELS[status]}
+          </span>
+        )}
+      </div>
 
       {!isNew && (
         <div className="mb-8 flex items-center gap-3 text-xs text-foreground/40">
@@ -116,10 +164,28 @@ const BudgetEditor = () => {
           <a href={publicUrl} target="_blank" rel="noreferrer" className="text-foreground/50 hover:text-foreground">
             <ExternalLink size={12} />
           </a>
+          {acceptedAt && (
+            <span className="ml-auto text-emerald-400">
+              Aceptado el {new Date(acceptedAt).toLocaleString("es-AR")}
+            </span>
+          )}
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-5">
+        <Field label="Estado">
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value as Status)}
+            className={inputClass}
+          >
+            <option value="draft">Borrador</option>
+            <option value="sent">Enviado</option>
+            <option value="accepted">Aceptado</option>
+            <option value="rejected">Rechazado</option>
+          </select>
+        </Field>
+
         <Field label="Cliente *">
           <input required value={clientName} onChange={(e) => setClientName(e.target.value)} className={inputClass} />
         </Field>
@@ -153,14 +219,60 @@ const BudgetEditor = () => {
           <input value={billing} onChange={(e) => setBilling(e.target.value)} className={inputClass} placeholder="Razón social, datos fiscales..." />
         </Field>
 
-        <div className="grid sm:grid-cols-2 gap-5">
-          <Field label="Costo total de desarrollo (USD)">
-            <input type="number" step="0.01" value={devCost} onChange={(e) => setDevCost(e.target.value)} className={inputClass} />
-          </Field>
-          <Field label="Mantenimiento mensual (USD, si aplica)">
-            <input type="number" step="0.01" value={monthlyCost} onChange={(e) => setMonthlyCost(e.target.value)} className={inputClass} />
-          </Field>
+        {/* Items */}
+        <div>
+          <div className="flex items-center justify-between mb-3">
+            <label className="block text-xs font-medium text-foreground/40 uppercase tracking-wide">
+              Items del presupuesto
+            </label>
+            <button
+              type="button"
+              onClick={addItem}
+              className="flex items-center gap-1 text-xs text-foreground/60 hover:text-foreground"
+            >
+              <Plus size={12} /> Agregar item
+            </button>
+          </div>
+          <div className="space-y-2">
+            {items.length === 0 && (
+              <p className="text-xs text-foreground/30 py-3">Sin items. Podés cargar un total directo abajo o sumar items aquí.</p>
+            )}
+            {items.map((item, idx) => (
+              <div key={idx} className="flex gap-2 items-start">
+                <input
+                  value={item.description}
+                  onChange={(e) => updateItem(idx, "description", e.target.value)}
+                  placeholder="Descripción"
+                  className={`${inputClass} flex-1`}
+                />
+                <input
+                  type="number"
+                  step="0.01"
+                  value={item.price}
+                  onChange={(e) => updateItem(idx, "price", e.target.value)}
+                  placeholder="USD"
+                  className={`${inputClass} w-32`}
+                />
+                <button
+                  type="button"
+                  onClick={() => removeItem(idx)}
+                  className="p-3 text-foreground/30 hover:text-destructive"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+            ))}
+          </div>
+          {items.length > 0 && (
+            <p className="text-xs text-foreground/50 mt-3 text-right">
+              Total desarrollo: <span className="text-foreground font-semibold">USD {totalDev.toLocaleString("en-US")}</span>
+            </p>
+          )}
         </div>
+
+        <Field label="Mantenimiento mensual (USD, si aplica)">
+          <input type="number" step="0.01" value={monthlyCost} onChange={(e) => setMonthlyCost(e.target.value)} className={inputClass} />
+        </Field>
 
         <button
           type="submit"
