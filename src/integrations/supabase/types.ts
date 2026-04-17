@@ -56,6 +56,54 @@ export type Database = {
         }
         Relationships: []
       }
+      budgets: {
+        Row: {
+          billing: string | null
+          client_name: string
+          created_at: string
+          delivery_time: string | null
+          development_cost: number | null
+          id: string
+          monthly_maintenance_cost: number | null
+          observations: string | null
+          payment_method: string | null
+          scope: string | null
+          slug: string
+          updated_at: string
+          work_type: string | null
+        }
+        Insert: {
+          billing?: string | null
+          client_name: string
+          created_at?: string
+          delivery_time?: string | null
+          development_cost?: number | null
+          id?: string
+          monthly_maintenance_cost?: number | null
+          observations?: string | null
+          payment_method?: string | null
+          scope?: string | null
+          slug: string
+          updated_at?: string
+          work_type?: string | null
+        }
+        Update: {
+          billing?: string | null
+          client_name?: string
+          created_at?: string
+          delivery_time?: string | null
+          development_cost?: number | null
+          id?: string
+          monthly_maintenance_cost?: number | null
+          observations?: string | null
+          payment_method?: string | null
+          scope?: string | null
+          slug?: string
+          updated_at?: string
+          work_type?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
