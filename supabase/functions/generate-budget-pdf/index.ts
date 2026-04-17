@@ -216,21 +216,19 @@ Deno.serve(async (req) => {
     if (items.length > 0) {
       section("Detalle");
       ensureSpace(10);
-      doc.setDrawColor(...line);
-      doc.setLineWidth(0.2);
-      const tableTop = y;
       const priceColW = 40;
-      const descX = M + 4;
-      const priceX = pageW - M - 4;
+      const descX = M + 2;
+      const priceX = pageW - M - 2;
 
       items.forEach((it: any, idx: number) => {
         const desc = String(it.description || "");
         const price = Number(it.price) || 0;
         const lines = doc.splitTextToSize(desc, contentW - priceColW - 8);
-        const rowH = Math.max(lines.length * 5, 8) + 4;
+        const rowH = Math.max(lines.length * 5, 7) + 5;
         ensureSpace(rowH + 2);
         if (idx > 0) {
-          doc.setDrawColor(240, 240, 242);
+          doc.setDrawColor(235, 237, 240);
+          doc.setLineWidth(0.2);
           doc.line(M, y - 1, pageW - M, y - 1);
         }
         doc.setFont("helvetica", "normal");
@@ -241,10 +239,7 @@ Deno.serve(async (req) => {
         doc.text(fmtUSD(price), priceX, y + 4, { align: "right" });
         y += rowH;
       });
-      // border around table
-      doc.setDrawColor(...line);
-      doc.roundedRect(M, tableTop - 1, contentW, y - tableTop + 1, 2, 2, "S");
-      y += 6;
+      y += 8;
     }
 
     // ===== Totals box (limpio, con jerarquía clara) =====
