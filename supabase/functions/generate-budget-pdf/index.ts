@@ -11,15 +11,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-// SVG logo Sigma — embebido como dataURL no funciona en jsPDF, dibujamos un círculo + Σ
-function drawLogo(doc: jsPDF, x: number, y: number) {
-  doc.setFillColor(11, 13, 16); // brand dark
-  doc.roundedRect(x, y, 14, 14, 3, 3, "F");
-  doc.setTextColor(255, 255, 255);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(13);
-  doc.text("Σ", x + 7, y + 9.8, { align: "center" });
-}
+// (Logo eliminado — header tipográfico minimalista)
 
 const fmtUSD = (n: number) =>
   new Intl.NumberFormat("en-US", {
