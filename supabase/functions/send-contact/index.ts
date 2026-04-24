@@ -127,7 +127,7 @@ Deno.serve(async (req) => {
       );
     }
 
-    const { name, email, company, message, subject, to, cc } = body as Record<string, unknown>;
+    const { name, email, company, message, subject, to, cc, attachments, skipDefaultRecipients } = body as Record<string, unknown>;
 
     if (typeof name !== "string" || typeof email !== "string" || typeof message !== "string") {
       return new Response(
