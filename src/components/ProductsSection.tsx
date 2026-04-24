@@ -129,8 +129,8 @@ const ProductsSection = () => {
                     onClick={() => setSteOpen(true)}
                     className="flex items-center gap-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors self-start group"
                   >
-                    <Play size={14} className="opacity-70 group-hover:opacity-100 transition-opacity" />
                     {p.cta}
+                    <Play size={14} className="opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   </button>
                 )}
               </motion.div>
