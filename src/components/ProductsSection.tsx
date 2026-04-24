@@ -1,12 +1,14 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
 import { useTranslation } from "@/i18n/useTranslation";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import VideoModal from "@/components/VideoModal";
 
 const ProductsSection = () => {
   const { t } = useTranslation();
   const variants = ["analytics", "trend"] as const;
   const sectionRef = useRef<HTMLElement>(null);
+  const [steOpen, setSteOpen] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -111,15 +113,26 @@ const ProductsSection = () => {
                   </p>
                 </div>
 
-                <a
-                  href={productLinks[i]}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors self-start group"
-                >
-                  {p.cta}
-                  <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                </a>
+                {isAnalytics ? (
+                  <a
+                    href={productLinks[i]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors self-start group"
+                  >
+                    {p.cta}
+                    <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setSteOpen(true)}
+                    className="flex items-center gap-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors self-start group"
+                  >
+                    <Play size={14} className="opacity-70 group-hover:opacity-100 transition-opacity" />
+                    {p.cta}
+                  </button>
+                )}
               </motion.div>
             );
           })}
