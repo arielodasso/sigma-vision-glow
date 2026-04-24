@@ -1,4 +1,4 @@
-import { useState, useEffect, FormEvent, useMemo } from "react";
+import { useState, useEffect, FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Trash2, Edit2, Eye, EyeOff, Map, ChevronLeft, ChevronRight } from "lucide-react";
@@ -240,7 +240,7 @@ const BlogAdmin = () => {
                         className="p-2 text-foreground/30 hover:text-foreground transition-colors"
                         title={post.published ? "Despublicar" : "Publicar"}
                       >
-                        {post.published ? <EyeOff size={14} /> : <Eye size={14} />}
+                        {post.published ? <Eye size={14} /> : <EyeOff size={14} />}
                       </button>
                       <a
                         href={`/blog/${post.slug}`}
