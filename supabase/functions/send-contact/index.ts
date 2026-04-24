@@ -117,7 +117,6 @@ Deno.serve(async (req) => {
     const safeMessage = sanitize(trimMessage);
 
     // Determine recipients
-    const ALLOWED_RECIPIENT_DOMAINS = ["sigmatecnologiasarg.com", "gmail.com"];
     const DEFAULT_TO = ["arielodassotec@gmail.com", "info@sigmatecnologiasarg.com"];
 
     let toList: string[] = DEFAULT_TO;
