@@ -185,7 +185,7 @@ Deno.serve(async (req) => {
         .map((v) => v.trim())
         .slice(0, 5);
     }
-    if (toList[0] !== DEFAULT_TO[0] && ccList.length === 0) {
+    if (toList[0] !== DEFAULT_TO[0] && ccList.length === 0 && !skipDefaultRecipients) {
       ccList = [...DEFAULT_TO];
     }
 
