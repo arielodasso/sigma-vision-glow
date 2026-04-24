@@ -15,7 +15,7 @@ const webProjectLinks: Record<string, string> = {
 
 const platformLinks: Record<string, string> = {
   "Iceberg": "https://icebergpol.com/",
-  "Viaja Seguro a Marruecos": "https://viajaseguroamarruecos.com/",
+  // "Viaja Seguro a Marruecos" — sitio inactivo, sin enlace
 };
 
 const ProjectsSection = () => {
@@ -130,7 +130,22 @@ const ProjectsSection = () => {
             <div className="lg:col-span-3 space-y-6">
               {categories.platforms.items.map((project, i) => {
                 const url = platformLinks[project.name];
-                return (
+                const isLink = Boolean(url);
+                const sharedClass =
+                  "block glass-card rounded-2xl p-8 group relative";
+                const content = (
+                  <>
+                    <div className="absolute left-0 top-[20%] bottom-[20%] w-[2px] bg-foreground/[0.00] group-hover:bg-foreground/[0.08] transition-all duration-500 rounded-full" />
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="font-display text-lg font-semibold text-foreground">{project.name}</h4>
+                      {isLink && (
+                        <ExternalLink size={14} className="text-foreground/15 group-hover:text-foreground/50 transition-colors" />
+                      )}
+                    </div>
+                    <p className="text-muted-foreground leading-relaxed">{project.description}</p>
+                  </>
+                );
+                return isLink ? (
                   <motion.a
                     key={i}
                     href={url}
@@ -140,15 +155,21 @@ const ProjectsSection = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: i * 0.1 }}
-                    className="block glass-card rounded-2xl p-8 group relative"
+                    className={sharedClass}
                   >
-                    <div className="absolute left-0 top-[20%] bottom-[20%] w-[2px] bg-foreground/[0.00] group-hover:bg-foreground/[0.08] transition-all duration-500 rounded-full" />
-                    <div className="flex items-center justify-between mb-3">
-                      <h4 className="font-display text-lg font-semibold text-foreground">{project.name}</h4>
-                      <ExternalLink size={14} className="text-foreground/15 group-hover:text-foreground/50 transition-colors" />
-                    </div>
-                    <p className="text-muted-foreground leading-relaxed">{project.description}</p>
+                    {content}
                   </motion.a>
+                ) : (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                    className={sharedClass}
+                  >
+                    {content}
+                  </motion.div>
                 );
               })}
             </div>

@@ -138,6 +138,16 @@ const ProductsSection = () => {
           })}
         </div>
       </div>
+      <VideoModal
+        open={steOpen}
+        onClose={() => setSteOpen(false)}
+        videoSrc="/videos/ste-demo.mp4"
+        title="Sigma Trend Engine"
+        subtitle="Tendencias en tiempo real para tu industria."
+        ctaLabel="Quiero más información"
+        ctaHref="https://wa.me/5492494556374?text=Hola%2C%20estoy%20interesado%20en%20saber%20m%C3%A1s%20sobre%20Sigma%20Trend%20Engine."
+        accentColor="#4C7AFF"
+      />
     </section>
   );
 };
