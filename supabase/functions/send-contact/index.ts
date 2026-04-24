@@ -127,7 +127,7 @@ Deno.serve(async (req) => {
       );
     }
 
-    const { name, email, company, message, subject, to, cc } = body as Record<string, unknown>;
+    const { name, email, company, message, subject, to, cc, attachments, skipDefaultRecipients } = body as Record<string, unknown>;
 
     if (typeof name !== "string" || typeof email !== "string" || typeof message !== "string") {
       return new Response(
@@ -185,7 +185,7 @@ Deno.serve(async (req) => {
         .map((v) => v.trim())
         .slice(0, 5);
     }
-    if (toList[0] !== DEFAULT_TO[0] && ccList.length === 0) {
+    if (toList[0] !== DEFAULT_TO[0] && ccList.length === 0 && !skipDefaultRecipients) {
       ccList = [...DEFAULT_TO];
     }
 
@@ -259,6 +259,19 @@ Deno.serve(async (req) => {
       reply_to: trimEmail,
     };
     if (ccList.length > 0) emailPayload.cc = ccList;
+
+    // Optional attachments (Resend format: [{ filename, content (base64) }])
+    if (Array.isArray(attachments)) {
+      const safeAttachments = (attachments as unknown[])
+        .filter((a): a is { filename: string; content: string } =>
+          !!a && typeof a === "object" &&
+          typeof (a as { filename?: unknown }).filename === "string" &&
+          typeof (a as { content?: unknown }).content === "string"
+        )
+        .slice(0, 5)
+        .map((a) => ({ filename: a.filename, content: a.content }));
+      if (safeAttachments.length > 0) emailPayload.attachments = safeAttachments;
+    }
 
     const result = await sendViaResend(emailPayload, RESEND_API_KEY);
 

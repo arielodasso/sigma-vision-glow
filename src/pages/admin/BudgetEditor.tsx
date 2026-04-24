@@ -111,26 +111,48 @@ const BudgetEditor = () => {
         const { data, error } = await supabase.from("budgets").insert(payload as any).select("id, slug").single();
         if (error) throw error;
         toast({ title: "Presupuesto creado" });
-        // Notify client by email if provided (fire-and-forget)
+        // Notify client by email if provided (fire-and-forget) — only to client, with PDF attached
         if (payload.client_email) {
           const publicUrl = `${window.location.origin}/presupuesto/${payload.slug}`;
-          supabase.functions
-            .invoke("send-contact", {
-              body: {
-                name: "Sigma Tecnologías",
-                email: payload.client_email,
-                company: payload.client_name,
-                message:
-                  `Hola ${payload.client_name},\n\n` +
-                  `Te dejamos a disposición tu presupuesto. Podés revisarlo en:\n${publicUrl}\n\n` +
-                  `Desde la vista podés descargar el PDF y aceptarlo o rechazarlo cuando quieras.\n\n` +
-                  `Cualquier consulta, escribinos.\n\n— Sigma Tecnologías`,
-                subject: `Tu presupuesto de Sigma Tecnologías está listo`,
-                to: payload.client_email,
-                cc: ["arielodassotec@gmail.com", "info@sigmatecnologiasarg.com"],
-              },
-            })
-            .catch((e) => console.warn("Client notify failed:", e));
+          (async () => {
+            try {
+              // Fetch the generated PDF and convert to base64
+              const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+              const pdfUrl = `https://${projectId}.supabase.co/functions/v1/generate-budget-pdf?slug=${encodeURIComponent(payload.slug)}`;
+              const pdfResp = await fetch(pdfUrl);
+              let attachments: Array<{ filename: string; content: string }> | undefined;
+              if (pdfResp.ok) {
+                const buf = await pdfResp.arrayBuffer();
+                const bytes = new Uint8Array(buf);
+                let binary = "";
+                for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+                const base64 = btoa(binary);
+                attachments = [{ filename: `presupuesto-${payload.slug}.pdf`, content: base64 }];
+              } else {
+                console.warn("PDF fetch failed for client email attachment:", pdfResp.status);
+              }
+
+              await supabase.functions.invoke("send-contact", {
+                body: {
+                  name: "Sigma Tecnologías",
+                  email: payload.client_email,
+                  company: payload.client_name,
+                  message:
+                    `Hola ${payload.client_name},\n\n` +
+                    `Te dejamos a disposición tu presupuesto. Podés revisarlo en:\n${publicUrl}\n\n` +
+                    `Adjuntamos también el PDF para tu comodidad.\n\n` +
+                    `Desde la vista podés aceptarlo o rechazarlo cuando quieras.\n\n` +
+                    `Cualquier consulta, escribinos.\n\n— Sigma Tecnologías`,
+                  subject: `Tu presupuesto de Sigma Tecnologías está listo`,
+                  to: payload.client_email,
+                  skipDefaultRecipients: true,
+                  attachments,
+                },
+              });
+            } catch (e) {
+              console.warn("Client notify failed:", e);
+            }
+          })();
         }
         navigate(`/admin/presupuestos/${data.id}`);
       } else {
