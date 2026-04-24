@@ -1,11 +1,13 @@
 import { ArrowRight } from "lucide-react";
 import { useTranslation } from "@/i18n/useTranslation";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import BookingModal from "@/components/BookingModal";
 
 const CTASection = () => {
   const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
+  const [bookingOpen, setBookingOpen] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -51,15 +53,17 @@ const CTASection = () => {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
             {t.cta.description}
           </p>
-          <a
-            href="#contacto"
+          <button
+            type="button"
+            onClick={() => setBookingOpen(true)}
             className="inline-flex items-center gap-2.5 bg-foreground text-background px-10 py-4 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors"
           >
             {t.cta.button}
             <ArrowRight size={16} />
-          </a>
+          </button>
         </motion.div>
       </div>
+      <BookingModal open={bookingOpen} onClose={() => setBookingOpen(false)} />
     </section>
   );
 };

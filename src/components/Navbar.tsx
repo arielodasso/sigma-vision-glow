@@ -3,10 +3,12 @@ import { Menu, X, ArrowRight } from "lucide-react";
 import { useTranslation } from "@/i18n/useTranslation";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import BookingModal from "@/components/BookingModal";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(false);
   const { t } = useTranslation();
   const location = useLocation();
 
@@ -90,14 +92,14 @@ const Navbar = () => {
           </div>
 
           <div className="hidden lg:flex items-center">
-            <a
-              href="/#contacto"
-              onClick={(e) => { e.preventDefault(); handleNavClick("/#contacto"); }}
+            <button
+              type="button"
+              onClick={() => setBookingOpen(true)}
               className="flex items-center gap-2 text-sm font-semibold bg-foreground text-background px-5 py-2.5 rounded-full hover:bg-foreground/90 transition-colors"
             >
               {t.navbar.cta}
               <ArrowRight size={14} />
-            </a>
+            </button>
           </div>
 
           <button
@@ -138,16 +140,17 @@ const Navbar = () => {
                 </Link>
               )
             )}
-            <a
-              href="/#contacto"
-              onClick={(e) => { e.preventDefault(); handleNavClick("/#contacto"); }}
-              className="block bg-foreground text-background text-sm font-semibold px-5 py-3 rounded-full text-center mt-3"
+            <button
+              type="button"
+              onClick={() => { setOpen(false); setBookingOpen(true); }}
+              className="block w-full bg-foreground text-background text-sm font-semibold px-5 py-3 rounded-full text-center mt-3"
             >
               {t.navbar.cta}
-            </a>
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
+      <BookingModal open={bookingOpen} onClose={() => setBookingOpen(false)} />
     </nav>
   );
 };
