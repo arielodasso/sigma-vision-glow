@@ -162,7 +162,7 @@ Deno.serve(async (req) => {
       },
       body: JSON.stringify({
         from: "Sigma Tecnologías <onboarding@resend.dev>",
-        to: ["arielodassotec@gmail.com"],
+        to: ["arielodassotec@gmail.com", "info@sigmatecnologiasarg.com"],
         subject: `Nuevo contacto: ${safeName}${safeCompany ? ` - ${safeCompany}` : ""}`,
         html: htmlBody,
         reply_to: trimEmail,
