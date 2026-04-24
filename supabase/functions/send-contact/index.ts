@@ -70,16 +70,6 @@ async function sendViaResend(payload: Record<string, unknown>, apiKey: string) {
       attempts.push({ attempt, status: resp.status, error: errMsg });
       console.error(`[send-contact] Resend attempt ${attempt} failed (from=${fromValue}):`, errMsg);
 
-      // 422/403 from primary → switch to fallback immediately on next attempt
-      // Other errors → exponential backoff
-      if (resp.status === 422 || resp.status === 403) {
-        // Skip to fallback attempt
-        if (!useFallback && attempt < 3) {
-          attempt = 2; // next iteration becomes 3 = fallback
-          continue;
-        }
-      }
-
       // Backoff between attempts
       if (attempt < 3) await sleep(300 * attempt);
     } catch (e) {
