@@ -260,6 +260,19 @@ Deno.serve(async (req) => {
     };
     if (ccList.length > 0) emailPayload.cc = ccList;
 
+    // Optional attachments (Resend format: [{ filename, content (base64) }])
+    if (Array.isArray(attachments)) {
+      const safeAttachments = (attachments as unknown[])
+        .filter((a): a is { filename: string; content: string } =>
+          !!a && typeof a === "object" &&
+          typeof (a as { filename?: unknown }).filename === "string" &&
+          typeof (a as { content?: unknown }).content === "string"
+        )
+        .slice(0, 5)
+        .map((a) => ({ filename: a.filename, content: a.content }));
+      if (safeAttachments.length > 0) emailPayload.attachments = safeAttachments;
+    }
+
     const result = await sendViaResend(emailPayload, RESEND_API_KEY);
 
     // Update DB with outcome
