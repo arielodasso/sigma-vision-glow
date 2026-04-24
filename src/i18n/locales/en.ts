@@ -6,7 +6,7 @@ const en = {
     products: "Products",
     about: "About",
     contact: "Contact",
-    cta: "Let's talk",
+    cta: "Book a meeting",
   },
   hero: {
     headline: "Less promises.",
@@ -156,7 +156,7 @@ const en = {
   cta: {
     headline: "Want to build technology for your company?",
     description: "We can help you develop platforms, automations and intelligent systems tailored to your needs.",
-    button: "Let's talk",
+    button: "Book a meeting",
   },
   contact: {
     title: "Contact",
