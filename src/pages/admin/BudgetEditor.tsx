@@ -214,6 +214,19 @@ const BudgetEditor = () => {
           <input required value={clientName} onChange={(e) => setClientName(e.target.value)} className={inputClass} />
         </Field>
 
+        <Field label="Email del cliente (opcional)">
+          <input
+            type="email"
+            value={clientEmail}
+            onChange={(e) => setClientEmail(e.target.value)}
+            className={inputClass}
+            placeholder="cliente@ejemplo.com"
+          />
+          <p className="text-[11px] text-foreground/40 mt-2">
+            Si lo completás, al crear el presupuesto le enviamos un email con el enlace al detalle (con descarga de PDF).
+          </p>
+        </Field>
+
         <Field label="Slug (URL)">
           <input value={slug} onChange={(e) => setSlug(e.target.value)} className={inputClass} />
         </Field>
