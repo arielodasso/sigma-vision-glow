@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { FileText, Receipt, LogOut, Menu, X } from "lucide-react";
+import { FileText, Receipt, Mail, LogOut, Menu, X } from "lucide-react";
 import BlogAdminLogin from "@/components/BlogAdminLogin";
 
 const AdminLayout = () => {
@@ -65,6 +65,10 @@ const AdminLayout = () => {
             <NavLink to="/admin/presupuestos" className={linkClass}>
               <Receipt size={16} />
               Presupuestos
+            </NavLink>
+            <NavLink to="/admin/contactos" className={linkClass}>
+              <Mail size={16} />
+              Contactos
             </NavLink>
           </nav>
 

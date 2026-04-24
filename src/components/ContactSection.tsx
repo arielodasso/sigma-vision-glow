@@ -1,36 +1,69 @@
 import { useState, FormEvent } from "react";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2, MessageCircle, Calendar, AlertCircle } from "lucide-react";
 import { useTranslation } from "@/i18n/useTranslation";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import BookingModal from "./BookingModal";
+
+const WHATSAPP_URL = "https://wa.me/5492494556374?text=Hola%2C%20vengo%20del%20sitio%20y%20quiero%20escribirles%20directamente.";
+
+type Errors = Partial<Record<"name" | "email" | "message", string>>;
 
 const ContactSection = () => {
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
+  const [errors, setErrors] = useState<Errors>({});
+  const [sendFailed, setSendFailed] = useState(false);
+  const [bookingOpen, setBookingOpen] = useState(false);
   const { t } = useTranslation();
   const { toast } = useToast();
 
+  const validate = (data: Record<string, string>): Errors => {
+    const e: Errors = {};
+    if (!data.name?.trim()) e.name = "Ingresá tu nombre";
+    else if (data.name.trim().length > 100) e.name = "Máximo 100 caracteres";
+    if (!data.email?.trim()) e.email = "Ingresá tu email";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim())) e.email = "Email inválido";
+    if (!data.message?.trim()) e.message = "Contanos sobre tu proyecto";
+    else if (data.message.trim().length > 4000) e.message = "Máximo 4000 caracteres";
+    return e;
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSending(true);
 
     const form = e.currentTarget;
     const formData = new FormData(form);
     const payload = {
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      company: formData.get("company") as string,
-      message: formData.get("message") as string,
+      name: (formData.get("name") as string) || "",
+      email: (formData.get("email") as string) || "",
+      company: (formData.get("company") as string) || "",
+      message: (formData.get("message") as string) || "",
     };
 
+    const validationErrors = validate(payload);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setErrors({});
+    setSendFailed(false);
+    setSending(true);
+
     try {
-      const { error } = await supabase.functions.invoke("send-contact", {
-        body: payload,
-      });
+      const { data, error } = await supabase.functions.invoke("send-contact", { body: payload });
       if (error) throw error;
+      if (data && (data as { error?: string }).error) throw new Error((data as { error: string }).error);
       setSubmitted(true);
-    } catch {
+      toast({
+        title: t.contact.successTitle,
+        description: t.contact.successMessage,
+      });
+    } catch (err) {
+      console.error("[ContactSection] send-contact failed:", err);
+      setSendFailed(true);
       toast({
         title: t.contact.errorTitle,
         description: t.contact.errorMessage,
@@ -41,9 +74,11 @@ const ContactSection = () => {
     }
   };
 
+  const inputBase = "w-full glass-input rounded-xl px-5 py-3.5 text-sm text-foreground placeholder:text-foreground/25 focus:outline-none transition-colors";
+  const errorRing = "ring-1 ring-red-500/40 focus:ring-red-500/60";
+
   return (
     <section id="contacto" className="section-padding bg-surface-elevated border-t border-foreground/[0.04] relative overflow-hidden">
-      {/* Decorative elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-[25%] w-px h-[200px] bg-gradient-to-b from-foreground/[0.05] to-transparent" />
         <div className="absolute bottom-0 left-[35%] w-px h-[150px] bg-gradient-to-t from-foreground/[0.04] to-transparent" />
@@ -62,12 +97,8 @@ const ContactSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <h2 className="font-display text-4xl sm:text-5xl font-bold text-gradient mb-4">
-            {t.contact.title}
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            {t.contact.subtitle}
-          </p>
+          <h2 className="font-display text-4xl sm:text-5xl font-bold text-gradient mb-4">{t.contact.title}</h2>
+          <p className="text-lg text-muted-foreground">{t.contact.subtitle}</p>
         </motion.div>
 
         <motion.div
@@ -88,16 +119,19 @@ const ContactSection = () => {
               <p className="text-muted-foreground">{t.contact.successMessage}</p>
             </motion.div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5" noValidate>
               <div>
                 <label className="block text-sm font-medium text-foreground/60 mb-2">{t.contact.name}</label>
                 <input
                   required
                   name="name"
                   type="text"
-                  className="w-full glass-input rounded-xl px-5 py-3.5 text-sm text-foreground placeholder:text-foreground/25 focus:outline-none"
+                  maxLength={100}
+                  className={`${inputBase} ${errors.name ? errorRing : ""}`}
                   placeholder={t.contact.namePlaceholder}
+                  onChange={() => errors.name && setErrors((p) => ({ ...p, name: undefined }))}
                 />
+                {errors.name && <p className="mt-1.5 text-xs text-red-400">{errors.name}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-foreground/60 mb-2">{t.contact.email}</label>
@@ -105,16 +139,20 @@ const ContactSection = () => {
                   required
                   name="email"
                   type="email"
-                  className="w-full glass-input rounded-xl px-5 py-3.5 text-sm text-foreground placeholder:text-foreground/25 focus:outline-none"
+                  maxLength={255}
+                  className={`${inputBase} ${errors.email ? errorRing : ""}`}
                   placeholder={t.contact.emailPlaceholder}
+                  onChange={() => errors.email && setErrors((p) => ({ ...p, email: undefined }))}
                 />
+                {errors.email && <p className="mt-1.5 text-xs text-red-400">{errors.email}</p>}
               </div>
               <div>
                 <label className="block text-sm font-medium text-foreground/60 mb-2">{t.contact.company}</label>
                 <input
                   name="company"
                   type="text"
-                  className="w-full glass-input rounded-xl px-5 py-3.5 text-sm text-foreground placeholder:text-foreground/25 focus:outline-none"
+                  maxLength={100}
+                  className={inputBase}
                   placeholder={t.contact.companyPlaceholder}
                 />
               </div>
@@ -124,10 +162,14 @@ const ContactSection = () => {
                   required
                   name="message"
                   rows={4}
-                  className="w-full glass-input rounded-xl px-5 py-3.5 text-sm text-foreground placeholder:text-foreground/25 focus:outline-none resize-none"
+                  maxLength={4000}
+                  className={`${inputBase} resize-none ${errors.message ? errorRing : ""}`}
                   placeholder={t.contact.messagePlaceholder}
+                  onChange={() => errors.message && setErrors((p) => ({ ...p, message: undefined }))}
                 />
+                {errors.message && <p className="mt-1.5 text-xs text-red-400">{errors.message}</p>}
               </div>
+
               <button
                 type="submit"
                 disabled={sending}
@@ -145,10 +187,53 @@ const ContactSection = () => {
                   </>
                 )}
               </button>
+
+              {/* Fallback when sending fails */}
+              <AnimatePresence>
+                {sendFailed && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="mt-2 p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.08]">
+                      <div className="flex items-start gap-2.5 mb-3">
+                        <AlertCircle size={16} className="text-amber-400 shrink-0 mt-0.5" />
+                        <p className="text-xs text-foreground/70 leading-relaxed">
+                          No pudimos enviar tu mensaje ahora mismo. Probá una de estas alternativas — te respondemos enseguida.
+                        </p>
+                      </div>
+                      <div className="flex flex-col sm:flex-row gap-2">
+                        <a
+                          href={WHATSAPP_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-foreground/[0.05] hover:bg-foreground/[0.1] border border-foreground/[0.08] text-sm text-foreground/85 transition-colors"
+                        >
+                          <MessageCircle size={14} />
+                          WhatsApp
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => setBookingOpen(true)}
+                          className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-foreground/[0.05] hover:bg-foreground/[0.1] border border-foreground/[0.08] text-sm text-foreground/85 transition-colors"
+                        >
+                          <Calendar size={14} />
+                          Reservar reunión
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </form>
           )}
         </motion.div>
       </div>
+
+      <BookingModal open={bookingOpen} onClose={() => setBookingOpen(false)} />
     </section>
   );
 };
