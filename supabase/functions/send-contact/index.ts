@@ -40,13 +40,11 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 // Try sending via Resend with retries and fallback `from`
 async function sendViaResend(payload: Record<string, unknown>, apiKey: string) {
   const FROM_PRIMARY = "Sigma Tecnologías <contacto@sigmatecnologiasarg.com>";
-  const FROM_FALLBACK = "Sigma Tecnologías <onboarding@resend.dev>";
   const attempts: Array<{ attempt: number; status: number; error?: string; messageId?: string }> = [];
 
-  // Strategy: 3 attempts. First two with primary `from`, last one with fallback.
+  // Strategy: 3 attempts with primary `from` (domain verified in Resend).
   for (let attempt = 1; attempt <= 3; attempt++) {
-    const useFallback = attempt === 3;
-    const fromValue = useFallback ? FROM_FALLBACK : FROM_PRIMARY;
+    const fromValue = FROM_PRIMARY;
     const body = { ...payload, from: fromValue };
 
     try {
