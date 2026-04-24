@@ -54,7 +54,7 @@ const BookingModal = ({ open, onClose }: BookingModalProps) => {
                   Agendá una reunión
                 </p>
                 <h3 className="font-display text-base font-semibold text-foreground mt-0.5">
-                  Hablemos
+                  Agendar reunión
                 </h3>
               </div>
               <button
