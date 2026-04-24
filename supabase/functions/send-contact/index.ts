@@ -68,7 +68,7 @@ Deno.serve(async (req) => {
       );
     }
 
-    const { name, email, company, message } = body as Record<string, unknown>;
+    const { name, email, company, message, subject, to, cc } = body as Record<string, unknown>;
 
     // Validate types
     if (typeof name !== "string" || typeof email !== "string" || typeof message !== "string") {
@@ -82,6 +82,7 @@ Deno.serve(async (req) => {
     const trimEmail = email.trim();
     const trimCompany = typeof company === "string" ? company.trim() : "";
     const trimMessage = message.trim();
+    const trimSubject = typeof subject === "string" ? subject.trim().slice(0, 200) : "";
 
     // Validate required + lengths
     if (!trimName || trimName.length > 100) {
@@ -96,9 +97,9 @@ Deno.serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
-    if (!trimMessage || trimMessage.length > 2000) {
+    if (!trimMessage || trimMessage.length > 4000) {
       return new Response(
-        JSON.stringify({ error: "Message is required and must be under 2000 chars" }),
+        JSON.stringify({ error: "Message is required and must be under 4000 chars" }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -114,6 +115,37 @@ Deno.serve(async (req) => {
     const safeEmail = sanitize(trimEmail);
     const safeCompany = sanitize(trimCompany);
     const safeMessage = sanitize(trimMessage);
+
+    // Determine recipients
+    const ALLOWED_RECIPIENT_DOMAINS = ["sigmatecnologiasarg.com", "gmail.com"];
+    const DEFAULT_TO = ["arielodassotec@gmail.com", "info@sigmatecnologiasarg.com"];
+
+    let toList: string[] = DEFAULT_TO;
+    let ccList: string[] = [];
+
+    // Allow optional `to` override only if it's a valid email
+    if (typeof to === "string" && isValidEmail(to.trim())) {
+      toList = [to.trim()];
+    }
+
+    // Allow optional `cc` array, filter to valid emails
+    if (Array.isArray(cc)) {
+      ccList = (cc as unknown[])
+        .filter((v): v is string => typeof v === "string" && isValidEmail(v.trim()))
+        .map((v) => v.trim())
+        .slice(0, 5);
+    }
+
+    // If client overrode `to` with an external email, force-cc the studio so we keep visibility
+    if (toList[0] !== DEFAULT_TO[0] && ccList.length === 0) {
+      ccList = [...DEFAULT_TO];
+    }
+
+    const isClientNotice = trimSubject.length > 0 && toList[0] !== DEFAULT_TO[0];
+
+    const headerTitle = isClientNotice
+      ? "Sigma Tecnologías"
+      : "Nuevo mensaje de contacto";
 
     const htmlBody = `
       <div style="font-family: 'Segoe UI', Tahoma, sans-serif; max-width: 600px; margin: 0 auto; background: #0B0D10; color: #ffffff; border-radius: 16px; overflow: hidden;">
@@ -131,8 +163,11 @@ Deno.serve(async (req) => {
           </table>
         </div>
         <div style="padding: 32px;">
-          <h2 style="margin: 0 0 24px; font-size: 22px; color: #ffffff;">Nuevo mensaje de contacto</h2>
-          <table cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
+          <h2 style="margin: 0 0 24px; font-size: 22px; color: #ffffff;">${sanitize(headerTitle)}</h2>
+          ${
+            isClientNotice
+              ? ""
+              : `<table cellpadding="0" cellspacing="0" border="0" style="width: 100%;">
             <tr>
               <td style="padding: 8px 0; color: rgba(255,255,255,0.6); font-size: 14px; width: 100px;">Nombre:</td>
               <td style="padding: 8px 0; color: #ffffff; font-size: 14px;">${safeName}</td>
@@ -145,14 +180,26 @@ Deno.serve(async (req) => {
               <td style="padding: 8px 0; color: rgba(255,255,255,0.6); font-size: 14px;">Empresa:</td>
               <td style="padding: 8px 0; color: #ffffff; font-size: 14px;">${safeCompany}</td>
             </tr>` : ""}
-          </table>
+          </table>`
+          }
           <div style="margin-top: 24px; padding: 20px; background: rgba(255,255,255,0.06); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
-            <p style="margin: 0 0 8px; font-size: 13px; color: rgba(255,255,255,0.6);">Mensaje:</p>
             <p style="margin: 0; font-size: 14px; color: #ffffff; line-height: 1.6; white-space: pre-wrap;">${safeMessage}</p>
           </div>
         </div>
       </div>
     `;
+
+    const finalSubject = trimSubject ||
+      `Nuevo contacto: ${safeName}${safeCompany ? ` - ${safeCompany}` : ""}`;
+
+    const emailPayload: Record<string, unknown> = {
+      from: "Sigma Tecnologías <onboarding@resend.dev>",
+      to: toList,
+      subject: finalSubject,
+      html: htmlBody,
+      reply_to: trimEmail,
+    };
+    if (ccList.length > 0) emailPayload.cc = ccList;
 
     const emailResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -160,13 +207,7 @@ Deno.serve(async (req) => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        from: "Sigma Tecnologías <onboarding@resend.dev>",
-        to: ["arielodassotec@gmail.com", "info@sigmatecnologiasarg.com"],
-        subject: `Nuevo contacto: ${safeName}${safeCompany ? ` - ${safeCompany}` : ""}`,
-        html: htmlBody,
-        reply_to: trimEmail,
-      }),
+      body: JSON.stringify(emailPayload),
     });
 
     const emailData = await emailResponse.json();
