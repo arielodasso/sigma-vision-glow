@@ -30,6 +30,7 @@ const BudgetEditor = () => {
   const [saving, setSaving] = useState(false);
   const [slug, setSlug] = useState("");
   const [clientName, setClientName] = useState("");
+  const [clientEmail, setClientEmail] = useState("");
   const [scope, setScope] = useState("");
   const [workType, setWorkType] = useState("");
   const [observations, setObservations] = useState("");
@@ -51,6 +52,7 @@ const BudgetEditor = () => {
       if (data) {
         setSlug(data.slug);
         setClientName(data.client_name);
+        setClientEmail((data as any).client_email || "");
         setScope(data.scope || "");
         setWorkType(data.work_type || "");
         setObservations(data.observations || "");
@@ -90,6 +92,7 @@ const BudgetEditor = () => {
     const payload = {
       slug: slug.trim() || randomSlug(),
       client_name: clientName.trim(),
+      client_email: clientEmail.trim() || null,
       scope: scope || null,
       work_type: workType || null,
       observations: observations || null,
@@ -105,9 +108,30 @@ const BudgetEditor = () => {
 
     try {
       if (isNew) {
-        const { data, error } = await supabase.from("budgets").insert(payload as any).select("id").single();
+        const { data, error } = await supabase.from("budgets").insert(payload as any).select("id, slug").single();
         if (error) throw error;
         toast({ title: "Presupuesto creado" });
+        // Notify client by email if provided (fire-and-forget)
+        if (payload.client_email) {
+          const publicUrl = `${window.location.origin}/presupuesto/${payload.slug}`;
+          supabase.functions
+            .invoke("send-contact", {
+              body: {
+                name: "Sigma Tecnologías",
+                email: payload.client_email,
+                company: payload.client_name,
+                message:
+                  `Hola ${payload.client_name},\n\n` +
+                  `Te dejamos a disposición tu presupuesto. Podés revisarlo en:\n${publicUrl}\n\n` +
+                  `Desde la vista podés descargar el PDF y aceptarlo o rechazarlo cuando quieras.\n\n` +
+                  `Cualquier consulta, escribinos.\n\n— Sigma Tecnologías`,
+                subject: `Tu presupuesto de Sigma Tecnologías está listo`,
+                to: payload.client_email,
+                cc: ["arielodassotec@gmail.com", "info@sigmatecnologiasarg.com"],
+              },
+            })
+            .catch((e) => console.warn("Client notify failed:", e));
+        }
         navigate(`/admin/presupuestos/${data.id}`);
       } else {
         const { error } = await supabase.from("budgets").update(payload as any).eq("id", id);
@@ -188,6 +212,19 @@ const BudgetEditor = () => {
 
         <Field label="Cliente *">
           <input required value={clientName} onChange={(e) => setClientName(e.target.value)} className={inputClass} />
+        </Field>
+
+        <Field label="Email del cliente (opcional)">
+          <input
+            type="email"
+            value={clientEmail}
+            onChange={(e) => setClientEmail(e.target.value)}
+            className={inputClass}
+            placeholder="cliente@ejemplo.com"
+          />
+          <p className="text-[11px] text-foreground/40 mt-2">
+            Si lo completás, al crear el presupuesto le enviamos un email con el enlace al detalle (con descarga de PDF).
+          </p>
         </Field>
 
         <Field label="Slug (URL)">

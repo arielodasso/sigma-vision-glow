@@ -60,6 +60,7 @@ export type Database = {
         Row: {
           accepted_at: string | null
           billing: string | null
+          client_email: string | null
           client_name: string
           created_at: string
           delivery_time: string | null
@@ -78,6 +79,7 @@ export type Database = {
         Insert: {
           accepted_at?: string | null
           billing?: string | null
+          client_email?: string | null
           client_name: string
           created_at?: string
           delivery_time?: string | null
@@ -96,6 +98,7 @@ export type Database = {
         Update: {
           accepted_at?: string | null
           billing?: string | null
+          client_email?: string | null
           client_name?: string
           created_at?: string
           delivery_time?: string | null

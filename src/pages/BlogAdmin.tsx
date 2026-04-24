@@ -1,7 +1,7 @@
 import { useState, useEffect, FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Trash2, Edit2, Eye, EyeOff, Map } from "lucide-react";
+import { Trash2, Edit2, Eye, EyeOff, Map, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface BlogPost {
   id: string;
@@ -23,6 +23,8 @@ const BlogAdmin = () => {
   const [showSitemap, setShowSitemap] = useState(false);
   const [sitemapXml, setSitemapXml] = useState("");
   const [sitemapLoading, setSitemapLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 6;
   const { toast } = useToast();
 
   const [title, setTitle] = useState("");
@@ -219,25 +221,70 @@ const BlogAdmin = () => {
           {posts.length === 0 && (
             <p className="text-sm text-muted-foreground py-8 text-center">No hay artículos aún.</p>
           )}
-          {posts.map((post) => (
-            <div key={post.id} className="flex items-center justify-between gap-4 p-4 rounded-xl border border-foreground/[0.06] hover:border-foreground/[0.10] transition-colors">
-              <div className="min-w-0">
-                <p className="text-sm font-medium text-foreground truncate">{post.title}</p>
-                <p className="text-xs text-foreground/30">{post.category} · {post.published ? "publicado" : "borrador"}</p>
-              </div>
-              <div className="flex items-center gap-2 shrink-0">
-                <button onClick={() => togglePublish(post)} className="p-2 text-foreground/30 hover:text-foreground transition-colors" title={post.published ? "Despublicar" : "Publicar"}>
-                  {post.published ? <Eye size={14} /> : <EyeOff size={14} />}
-                </button>
-                <button onClick={() => loadPost(post)} className="p-2 text-foreground/30 hover:text-foreground transition-colors">
-                  <Edit2 size={14} />
-                </button>
-                <button onClick={() => deletePost(post.id)} className="p-2 text-foreground/30 hover:text-destructive transition-colors">
-                  <Trash2 size={14} />
-                </button>
-              </div>
-            </div>
-          ))}
+          {(() => {
+            const totalPages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE));
+            const safePage = Math.min(page, totalPages);
+            const start = (safePage - 1) * PAGE_SIZE;
+            const visible = posts.slice(start, start + PAGE_SIZE);
+            return (
+              <>
+                {visible.map((post) => (
+                  <div key={post.id} className="flex items-center justify-between gap-4 p-4 rounded-xl border border-foreground/[0.06] hover:border-foreground/[0.10] transition-colors">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-foreground truncate">{post.title}</p>
+                      <p className="text-xs text-foreground/30">{post.category} · {post.published ? "publicado" : "borrador"}</p>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        onClick={() => togglePublish(post)}
+                        className="p-2 text-foreground/30 hover:text-foreground transition-colors"
+                        title={post.published ? "Despublicar" : "Publicar"}
+                      >
+                        {post.published ? <Eye size={14} /> : <EyeOff size={14} />}
+                      </button>
+                      <a
+                        href={`/blog/${post.slug}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-2 text-foreground/30 hover:text-foreground transition-colors"
+                        title="Ver artículo"
+                      >
+                        <Eye size={14} />
+                      </a>
+                      <button onClick={() => loadPost(post)} className="p-2 text-foreground/30 hover:text-foreground transition-colors" title="Editar">
+                        <Edit2 size={14} />
+                      </button>
+                      <button onClick={() => deletePost(post.id)} className="p-2 text-foreground/30 hover:text-destructive transition-colors" title="Eliminar">
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-between pt-4">
+                    <button
+                      onClick={() => setPage((p) => Math.max(1, p - 1))}
+                      disabled={safePage === 1}
+                      className="flex items-center gap-1 text-xs text-foreground/50 hover:text-foreground disabled:opacity-30 disabled:hover:text-foreground/50 transition-colors"
+                    >
+                      <ChevronLeft size={14} /> Anterior
+                    </button>
+                    <span className="text-xs text-foreground/40">
+                      Página {safePage} de {totalPages}
+                    </span>
+                    <button
+                      onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                      disabled={safePage === totalPages}
+                      className="flex items-center gap-1 text-xs text-foreground/50 hover:text-foreground disabled:opacity-30 disabled:hover:text-foreground/50 transition-colors"
+                    >
+                      Siguiente <ChevronRight size={14} />
+                    </button>
+                  </div>
+                )}
+              </>
+            );
+          })()}
         </div>
       </div>
     </div>
