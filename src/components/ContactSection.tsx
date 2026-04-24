@@ -233,7 +233,7 @@ const ContactSection = () => {
         </motion.div>
       </div>
 
-      <BookingModal isOpen={bookingOpen} onClose={() => setBookingOpen(false)} />
+      <BookingModal open={bookingOpen} onClose={() => setBookingOpen(false)} />
     </section>
   );
 };
