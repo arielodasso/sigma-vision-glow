@@ -5,7 +5,6 @@ import ServicesSection from "@/components/ServicesSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import ProductsSection from "@/components/ProductsSection";
 import CTASection from "@/components/CTASection";
-import ContactSection from "@/components/ContactSection";
 import FooterSection from "@/components/FooterSection";
 import useSmoothScroll from "@/hooks/use-smooth-scroll";
 
@@ -20,7 +19,6 @@ const Index = () => {
       <ProjectsSection />
       <ProductsSection />
       <CTASection />
-      <ContactSection />
       <FooterSection />
     </div>
   );

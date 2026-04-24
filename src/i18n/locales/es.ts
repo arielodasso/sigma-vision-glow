@@ -6,7 +6,7 @@ const es = {
     products: "Productos",
     about: "Nosotros",
     contact: "Contacto",
-    cta: "Hablemos",
+    cta: "Agendar reunión",
   },
   hero: {
     headline: "Menos promesas.",
@@ -156,7 +156,7 @@ const es = {
   cta: {
     headline: "¿Querés construir tecnología para tu empresa?",
     description: "Podemos ayudarte a desarrollar plataformas, automatizaciones y sistemas inteligentes adaptados a lo que necesitás.",
-    button: "Hablemos",
+    button: "Agendar reunión",
   },
   contact: {
     title: "Contacto",
