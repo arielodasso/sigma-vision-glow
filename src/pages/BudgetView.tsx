@@ -48,7 +48,7 @@ const BudgetView = () => {
   
 
   const load = async () => {
-    const { data } = await supabase.rpc("get_budget_by_slug", { _slug: slug! });
+    const { data } = await (supabase as any).rpc("get_budget_by_slug", { _slug: slug! });
     const row = Array.isArray(data) ? data[0] : data;
     if (!row) setNotFound(true);
     else setBudget(row as any);
