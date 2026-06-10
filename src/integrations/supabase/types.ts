@@ -184,6 +184,34 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_budget_by_slug: {
+        Args: { _slug: string }
+        Returns: {
+          accepted_at: string | null
+          billing: string | null
+          client_email: string | null
+          client_name: string
+          created_at: string
+          delivery_time: string | null
+          development_cost: number | null
+          id: string
+          items: Json
+          monthly_maintenance_cost: number | null
+          observations: string | null
+          payment_method: string | null
+          scope: string | null
+          slug: string
+          status: Database["public"]["Enums"]["budget_status"]
+          updated_at: string
+          work_type: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "budgets"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
