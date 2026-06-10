@@ -66,7 +66,6 @@ const es = {
           "Justa",
           "Unidos Para Amar",
           "Geonosis",
-          "Mind Praxis",
           "Cristian Schauvinhold",
           "OffMarket",
           "Urbetex",

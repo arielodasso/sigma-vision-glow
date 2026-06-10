@@ -6,7 +6,6 @@ const webProjectLinks: Record<string, string> = {
   "Justa": "https://justaagencia.com/",
   "Unidos Para Amar": "https://unidosparaamar.org/",
   "Geonosis": "https://geonosis.com.ar/",
-  "Mind Praxis": "https://mindpraxis.net/",
   "Cristian Schauvinhold": "https://cristianschauvinhold.com/",
   "OffMarket": "https://www.offmarket.com.ar/",
   "Urbetex": "https://urbetex.com/",
