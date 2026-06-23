@@ -12,9 +12,11 @@ import estamosLogo from "@/assets/clients/estamos-unidos.png.asset.json";
 import calistheniaLogo from "@/assets/clients/calisthenia-online.png.asset.json";
 import perisLogo from "@/assets/clients/peris-electricidad.png.asset.json";
 import mobihunterLogo from "@/assets/clients/mobihunter.png.asset.json";
+import icebergLogo from "@/assets/platforms/iceberg.svg.asset.json";
+import marruecosLogo from "@/assets/platforms/viaja-seguro-marruecos.png.asset.json";
 
 const webClients: ClientLogo[] = [
-  { name: "Faztred", url: "https://faztred.com.ar/", logo: faztredLogo.url, theme: "gray" },
+  { name: "Faztred", url: "https://faztred.com.ar/", logo: faztredLogo.url, theme: "dark" },
   { name: "OffMarket", url: "https://www.offmarket.com.ar/", logo: offmarketLogo.url, theme: "dark" },
   { name: "Justa", url: "https://justaagencia.com/", logo: justaLogo.url, theme: "light" },
   { name: "Unidos Para Amar", url: "https://unidosparaamar.org/", logo: unidosLogo.url, theme: "light" },
@@ -26,9 +28,9 @@ const webClients: ClientLogo[] = [
   { name: "Mobihunter", url: "http://mobihunter.io/", logo: mobihunterLogo.url, theme: "dark" },
 ];
 
-const platformLinks: Record<string, string> = {
-  "Iceberg": "https://icebergpol.com/",
-  // "Viaja Seguro a Marruecos" — sitio inactivo, sin enlace
+const platformMeta: Record<string, { url?: string; logo: string; theme: "light" | "dark" | "gray" }> = {
+  "Iceberg": { url: "https://icebergpol.com/", logo: icebergLogo.url, theme: "dark" },
+  "Viaja Seguro a Marruecos": { logo: marruecosLogo.url, theme: "dark" },
 };
 
 const ProjectsSection = () => {
@@ -124,20 +126,42 @@ const ProjectsSection = () => {
 
             <div className="lg:col-span-3 space-y-6">
               {categories.platforms.items.map((project, i) => {
-                const url = platformLinks[project.name];
+                const meta = platformMeta[project.name];
+                const url = meta?.url;
                 const isLink = Boolean(url);
-                const sharedClass =
-                  "block glass-card rounded-2xl p-8 group relative";
+                const logoCardClass =
+                  meta?.theme === "dark"
+                    ? "bg-foreground/[0.04] border-foreground/[0.08] group-hover:border-foreground/[0.18] group-hover:bg-foreground/[0.06]"
+                    : meta?.theme === "gray"
+                    ? "bg-neutral-400 border-neutral-300 group-hover:border-neutral-200"
+                    : "bg-white border-white/80 group-hover:border-white";
+                const sharedClass = "block glass-card rounded-2xl p-6 sm:p-7 group relative";
                 const content = (
                   <>
                     <div className="absolute left-0 top-[20%] bottom-[20%] w-[2px] bg-foreground/[0.00] group-hover:bg-foreground/[0.08] transition-all duration-500 rounded-full" />
-                    <div className="flex items-center justify-between mb-3">
-                      <h4 className="font-display text-lg font-semibold text-foreground">{project.name}</h4>
-                      {isLink && (
-                        <ExternalLink size={14} className="text-foreground/15 group-hover:text-foreground/50 transition-colors" />
+                    <div className="flex items-center gap-5 sm:gap-7">
+                      {meta?.logo && (
+                        <div
+                          className={`h-24 w-32 sm:w-40 shrink-0 rounded-2xl border transition-all duration-300 flex items-center justify-center px-4 ${logoCardClass}`}
+                        >
+                          <img
+                            src={meta.logo}
+                            alt={project.name}
+                            loading="lazy"
+                            className="max-h-14 max-w-full object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                          />
+                        </div>
                       )}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-2 gap-3">
+                          <h4 className="font-display text-lg font-semibold text-foreground">{project.name}</h4>
+                          {isLink && (
+                            <ExternalLink size={14} className="text-foreground/15 group-hover:text-foreground/50 transition-colors shrink-0" />
+                          )}
+                        </div>
+                        <p className="text-muted-foreground leading-relaxed">{project.description}</p>
+                      </div>
                     </div>
-                    <p className="text-muted-foreground leading-relaxed">{project.description}</p>
                   </>
                 );
                 return isLink ? (
@@ -168,6 +192,7 @@ const ProjectsSection = () => {
                 );
               })}
             </div>
+
           </div>
 
           {/* Category 3: Automation */}

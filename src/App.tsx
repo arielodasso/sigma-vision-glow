@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import { HelmetProvider } from "react-helmet-async";
 import FloatingLanguageSelector from "@/components/FloatingLanguageSelector";
+import CursorHalo from "@/components/CursorHalo";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Blog from "./pages/Blog";
@@ -36,6 +37,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <FloatingLanguageSelector />
+          <CursorHalo />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/contacto" element={<About />} />
