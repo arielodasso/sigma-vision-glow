@@ -14,6 +14,7 @@ import perisLogo from "@/assets/clients/peris-electricidad.png.asset.json";
 import mobihunterLogo from "@/assets/clients/mobihunter.png.asset.json";
 import icebergLogo from "@/assets/platforms/iceberg.svg.asset.json";
 import marruecosLogo from "@/assets/platforms/viaja-seguro-marruecos.png.asset.json";
+import trendEngineLogo from "@/assets/platforms/sigma-trend-engine.png.asset.json";
 
 const webClients: ClientLogo[] = [
   { name: "Faztred", url: "https://faztred.com.ar/", logo: faztredLogo.url, theme: "dark" },
@@ -31,6 +32,7 @@ const webClients: ClientLogo[] = [
 const platformMeta: Record<string, { url?: string; logo: string; theme: "light" | "dark" | "gray" }> = {
   "Iceberg": { url: "https://icebergpol.com/", logo: icebergLogo.url, theme: "dark" },
   "Viaja Seguro a Marruecos": { logo: marruecosLogo.url, theme: "dark" },
+  "Sigma Trend Engine": { logo: trendEngineLogo.url, theme: "light" },
 };
 
 const ProjectsSection = () => {
@@ -215,21 +217,47 @@ const ProjectsSection = () => {
             </motion.div>
 
             <div className="lg:col-span-3 space-y-6">
-              {categories.automation.items.map((project, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="glass-card rounded-2xl p-8 relative"
-                >
-                  <div className="absolute left-0 top-[20%] bottom-[20%] w-[2px] bg-foreground/[0.06] rounded-full" />
-                  <h4 className="font-display text-lg font-semibold text-foreground mb-3">{project.name}</h4>
-                  <p className="text-muted-foreground leading-relaxed">{project.description}</p>
-                </motion.div>
-              ))}
+              {categories.automation.items.map((project, i) => {
+                const meta = platformMeta[project.name];
+                const logoCardClass =
+                  meta?.theme === "dark"
+                    ? "bg-foreground/[0.04] border-foreground/[0.08] group-hover:border-foreground/[0.18] group-hover:bg-foreground/[0.06]"
+                    : meta?.theme === "gray"
+                    ? "bg-neutral-400 border-neutral-300 group-hover:border-neutral-200"
+                    : "bg-white border-white/80 group-hover:border-white";
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                    className="glass-card rounded-2xl p-6 sm:p-7 relative group"
+                  >
+                    <div className="absolute left-0 top-[20%] bottom-[20%] w-[2px] bg-foreground/[0.06] rounded-full" />
+                    <div className="flex items-center gap-5 sm:gap-7">
+                      {meta?.logo && (
+                        <div
+                          className={`h-24 w-32 sm:w-40 shrink-0 rounded-2xl border transition-all duration-300 flex items-center justify-center px-4 ${logoCardClass}`}
+                        >
+                          <img
+                            src={meta.logo}
+                            alt={project.name}
+                            loading="lazy"
+                            className="max-h-16 max-w-full object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                          />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-display text-lg font-semibold text-foreground mb-2">{project.name}</h4>
+                        <p className="text-muted-foreground leading-relaxed">{project.description}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
+
           </div>
         </div>
       </div>
