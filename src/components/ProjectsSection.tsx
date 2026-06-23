@@ -89,7 +89,7 @@ const ProjectsSection = () => {
                 <h3 className="font-display text-2xl font-semibold text-foreground">{categories.web.title}</h3>
               </div>
               <p className="text-muted-foreground mb-4 leading-relaxed">{categories.web.description}</p>
-              <p className="text-sm text-foreground/30 leading-relaxed italic">{categories.web.note}</p>
+              
             </motion.div>
 
             <motion.div

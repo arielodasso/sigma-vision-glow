@@ -62,7 +62,7 @@ const en = {
       web: {
         title: "Web development",
         description: "Custom web development for companies, professionals and organizations that need websites designed to communicate, capture clients and structure digital presence.",
-        note: "These websites were developed by Ariel Odasso as a web developer for his own clients and clients of Justa and Hayas Marketing.",
+        note: "",
         items: [
           "Justa",
           "Unidos Para Amar",

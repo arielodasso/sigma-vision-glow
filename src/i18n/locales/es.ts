@@ -62,7 +62,7 @@ const es = {
       web: {
         title: "Desarrollo web",
         description: "Desarrollo web a medida para empresas, profesionales y organizaciones que necesitan sitios diseñados para comunicar, captar clientes y estructurar presencia digital.",
-        note: "Estos sitios fueron desarrollados por Ariel Odasso como desarrollador web para clientes propios, de Justa y Hayas Marketing.",
+        note: "",
         items: [
           "Justa",
           "Unidos Para Amar",
