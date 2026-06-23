@@ -12,6 +12,8 @@ import estamosLogo from "@/assets/clients/estamos-unidos.png.asset.json";
 import calistheniaLogo from "@/assets/clients/calisthenia-online.png.asset.json";
 import perisLogo from "@/assets/clients/peris-electricidad.png.asset.json";
 import mobihunterLogo from "@/assets/clients/mobihunter.png.asset.json";
+import icebergLogo from "@/assets/platforms/iceberg.svg.asset.json";
+import marruecosLogo from "@/assets/platforms/viaja-seguro-marruecos.png.asset.json";
 
 const webClients: ClientLogo[] = [
   { name: "Faztred", url: "https://faztred.com.ar/", logo: faztredLogo.url, theme: "dark" },
@@ -26,9 +28,9 @@ const webClients: ClientLogo[] = [
   { name: "Mobihunter", url: "http://mobihunter.io/", logo: mobihunterLogo.url, theme: "dark" },
 ];
 
-const platformLinks: Record<string, string> = {
-  "Iceberg": "https://icebergpol.com/",
-  // "Viaja Seguro a Marruecos" — sitio inactivo, sin enlace
+const platformMeta: Record<string, { url?: string; logo: string; theme: "light" | "dark" | "gray" }> = {
+  "Iceberg": { url: "https://icebergpol.com/", logo: icebergLogo.url, theme: "dark" },
+  "Viaja Seguro a Marruecos": { logo: marruecosLogo.url, theme: "dark" },
 };
 
 const ProjectsSection = () => {
