@@ -51,9 +51,6 @@ const ProductsSection = () => {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="mb-20"
         >
-          <span className="text-sm text-foreground/40 font-medium tracking-wide uppercase mb-4 block">
-            {t.products.tagline}
-          </span>
           <h2 className="font-display text-4xl sm:text-5xl font-bold text-gradient mb-4">
             {t.products.title}
           </h2>

@@ -50,9 +50,6 @@ const About = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="text-sm text-foreground/40 font-medium tracking-wide uppercase mb-4 block">
-              {t.about.tagline}
-            </span>
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-gradient leading-[1.1] mb-6 max-w-4xl">
               {t.about.title}
             </h1>
