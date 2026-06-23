@@ -1,16 +1,29 @@
 import { useTranslation } from "@/i18n/useTranslation";
 import { motion } from "framer-motion";
-import { Globe, Server, Cpu, ExternalLink } from "lucide-react";
+import { Server, Cpu, ExternalLink, Globe } from "lucide-react";
 import ClientsCarousel, { type ClientLogo } from "@/components/ClientsCarousel";
+import faztredLogo from "@/assets/clients/faztred.png.asset.json";
+import offmarketLogo from "@/assets/clients/offmarket.png.asset.json";
+import justaLogo from "@/assets/clients/justa.png.asset.json";
+import unidosLogo from "@/assets/clients/unidos-para-amar.png.asset.json";
+import geonosisLogo from "@/assets/clients/geonosis.png.asset.json";
+import cristianLogo from "@/assets/clients/cristian-schauvinhold.png.asset.json";
+import estamosLogo from "@/assets/clients/estamos-unidos.png.asset.json";
+import calistheniaLogo from "@/assets/clients/calisthenia-online.png.asset.json";
+import perisLogo from "@/assets/clients/peris-electricidad.png.asset.json";
+import mobihunterLogo from "@/assets/clients/mobihunter.png.asset.json";
 
 const webClients: ClientLogo[] = [
-  { name: "Justa", url: "https://justaagencia.com/" },
-  { name: "Unidos Para Amar", url: "https://unidosparaamar.org/" },
-  { name: "Geonosis", url: "https://geonosis.com.ar/" },
-  { name: "Cristian Schauvinhold", url: "https://cristianschauvinhold.com/" },
-  { name: "OffMarket", url: "https://www.offmarket.com.ar/" },
-  { name: "Urbetex", url: "https://urbetex.com/" },
-  { name: "Estamos Unidos", url: "https://somosestamosunidos.com/" },
+  { name: "Faztred", url: "https://faztred.com.ar/", logo: faztredLogo.url, theme: "light" },
+  { name: "OffMarket", url: "https://www.offmarket.com.ar/", logo: offmarketLogo.url, theme: "dark" },
+  { name: "Justa", url: "https://justaagencia.com/", logo: justaLogo.url, theme: "light" },
+  { name: "Unidos Para Amar", url: "https://unidosparaamar.org/", logo: unidosLogo.url, theme: "light" },
+  { name: "Geonosis", url: "https://geonosis.com.ar/", logo: geonosisLogo.url, theme: "light" },
+  { name: "Cristian Schauvinhold", url: "https://cristianschauvinhold.com/", logo: cristianLogo.url, theme: "light" },
+  { name: "Estamos Unidos", url: "https://somosestamosunidos.com/", logo: estamosLogo.url, theme: "dark" },
+  { name: "Calisthenia Online", url: "https://calisthenia.online/", logo: calistheniaLogo.url, theme: "light" },
+  { name: "Peris Electricidad", url: "https://www.periselectricidad.es/", logo: perisLogo.url, theme: "light" },
+  { name: "Mobihunter", url: "http://mobihunter.io/", logo: mobihunterLogo.url, theme: "dark" },
 ];
 
 const platformLinks: Record<string, string> = {
@@ -76,7 +89,7 @@ const ProjectsSection = () => {
                 <h3 className="font-display text-2xl font-semibold text-foreground">{categories.web.title}</h3>
               </div>
               <p className="text-muted-foreground mb-4 leading-relaxed">{categories.web.description}</p>
-              <p className="text-sm text-foreground/30 leading-relaxed italic">{categories.web.note}</p>
+              
             </motion.div>
 
             <motion.div
