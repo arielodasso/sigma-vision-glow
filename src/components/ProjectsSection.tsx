@@ -1,16 +1,17 @@
 import { useTranslation } from "@/i18n/useTranslation";
 import { motion } from "framer-motion";
 import { Globe, Server, Cpu, ExternalLink } from "lucide-react";
+import ClientsCarousel, { type ClientLogo } from "@/components/ClientsCarousel";
 
-const webProjectLinks: Record<string, string> = {
-  "Justa": "https://justaagencia.com/",
-  "Unidos Para Amar": "https://unidosparaamar.org/",
-  "Geonosis": "https://geonosis.com.ar/",
-  "Cristian Schauvinhold": "https://cristianschauvinhold.com/",
-  "OffMarket": "https://www.offmarket.com.ar/",
-  "Urbetex": "https://urbetex.com/",
-  "Estamos Unidos": "https://somosestamosunidos.com/",
-};
+const webClients: ClientLogo[] = [
+  { name: "Justa", url: "https://justaagencia.com/" },
+  { name: "Unidos Para Amar", url: "https://unidosparaamar.org/" },
+  { name: "Geonosis", url: "https://geonosis.com.ar/" },
+  { name: "Cristian Schauvinhold", url: "https://cristianschauvinhold.com/" },
+  { name: "OffMarket", url: "https://www.offmarket.com.ar/" },
+  { name: "Urbetex", url: "https://urbetex.com/" },
+  { name: "Estamos Unidos", url: "https://somosestamosunidos.com/" },
+];
 
 const platformLinks: Record<string, string> = {
   "Iceberg": "https://icebergpol.com/",
@@ -48,9 +49,6 @@ const ProjectsSection = () => {
           transition={{ duration: 0.6 }}
           className="mb-20"
         >
-          <span className="text-sm text-foreground/40 font-medium tracking-wide uppercase mb-4 block">
-            {t.projects.tagline}
-          </span>
           <h2 className="font-display text-4xl sm:text-5xl font-bold text-gradient mb-4">
             {t.projects.title}
           </h2>
@@ -81,30 +79,15 @@ const ProjectsSection = () => {
               <p className="text-sm text-foreground/30 leading-relaxed italic">{categories.web.note}</p>
             </motion.div>
 
-            <div className="lg:col-span-3 space-y-4">
-              {categories.web.items.map((name, i) => {
-                const url = webProjectLinks[name];
-                return (
-                  <motion.a
-                    key={i}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: i * 0.06 }}
-                    className="flex items-center justify-between gap-4 p-5 rounded-xl border border-foreground/[0.04] hover:border-foreground/[0.12] hover:bg-foreground/[0.03] transition-all duration-300 group"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-2 h-2 rounded-full bg-foreground/20 group-hover:bg-foreground/50 transition-colors" />
-                      <span className="text-foreground/80 font-medium group-hover:text-foreground transition-colors">{name}</span>
-                    </div>
-                    <ExternalLink size={14} className="text-foreground/15 group-hover:text-foreground/50 transition-colors" />
-                  </motion.a>
-                );
-              })}
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6 }}
+              className="lg:col-span-3 self-center"
+            >
+              <ClientsCarousel clients={webClients} />
+            </motion.div>
           </div>
 
           {/* Category 2: Platforms */}

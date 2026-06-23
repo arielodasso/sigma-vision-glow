@@ -2,6 +2,7 @@ const en = {
   navbar: {
     home: "Home",
     solutions: "Solutions",
+    caseStudies: "Case studies",
     projects: "Projects",
     products: "Products",
     about: "About",
@@ -56,12 +57,12 @@ const en = {
   projects: {
     tagline: "Real work",
     title: "Solutions that already exist.",
-    subtitle: "Real projects developed by Ariel Odasso. Not mockups — live systems.",
+    subtitle: "High-performance digital architecture: real solutions running in production environments. We build systems that transform our clients' operations.",
     categories: {
       web: {
         title: "Web development",
         description: "Custom web development for companies, professionals and organizations that need websites designed to communicate, capture clients and structure digital presence.",
-        note: "These websites were developed by Ariel Odasso as a freelance web developer for clients of Justa, a marketing agency specialized in campaigns designed to capture clients and increase sales. Development was carried out under the name Ariel Odasso independently, not under the Sigma Tecnologías brand.",
+        note: "These websites were developed by Ariel Odasso as a web developer for his own clients and clients of Justa and Hayas Marketing.",
         items: [
           "Justa",
           "Unidos Para Amar",

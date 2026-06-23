@@ -73,15 +73,6 @@ const ManifestoSection = () => {
       <div className="container mx-auto px-6 max-w-6xl relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           <div>
-            <motion.span
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.5 }}
-              className="text-sm text-foreground/40 font-medium tracking-wide uppercase mb-4 block"
-            >
-              {t.manifesto.tagline}
-            </motion.span>
 
             {/* Word-by-word reveal like cintelli */}
             <motion.h2
