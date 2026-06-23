@@ -2,6 +2,7 @@ const es = {
   navbar: {
     home: "Inicio",
     solutions: "Soluciones",
+    caseStudies: "Casos de éxito",
     projects: "Proyectos",
     products: "Productos",
     about: "Nosotros",
@@ -56,12 +57,12 @@ const es = {
   projects: {
     tagline: "Trabajo real",
     title: "Soluciones que ya existen.",
-    subtitle: "Proyectos reales desarrollados por Ariel Odasso. No mockups — sistemas en producción.",
+    subtitle: "Arquitectura digital de alto rendimiento: soluciones reales operando en entornos productivos. Construimos sistemas que transforman la operativa de nuestros clientes.",
     categories: {
       web: {
         title: "Desarrollo web",
         description: "Desarrollo web a medida para empresas, profesionales y organizaciones que necesitan sitios diseñados para comunicar, captar clientes y estructurar presencia digital.",
-        note: "Estos sitios fueron desarrollados por Ariel Odasso como desarrollador web para clientes de Justa, una agencia de marketing especializada en campañas diseñadas para captar clientes y aumentar las ventas. El desarrollo fue realizado bajo el nombre de Ariel Odasso de forma independiente, no bajo la marca Sigma Tecnologías.",
+        note: "Estos sitios fueron desarrollados por Ariel Odasso como desarrollador web para clientes propios, de Justa y Hayas Marketing.",
         items: [
           "Justa",
           "Unidos Para Amar",
