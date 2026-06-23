@@ -48,9 +48,6 @@ const ProjectsSection = () => {
           transition={{ duration: 0.6 }}
           className="mb-20"
         >
-          <span className="text-sm text-foreground/40 font-medium tracking-wide uppercase mb-4 block">
-            {t.projects.tagline}
-          </span>
           <h2 className="font-display text-4xl sm:text-5xl font-bold text-gradient mb-4">
             {t.projects.title}
           </h2>
