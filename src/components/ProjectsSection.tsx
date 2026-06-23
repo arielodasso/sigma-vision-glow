@@ -14,7 +14,7 @@ import perisLogo from "@/assets/clients/peris-electricidad.png.asset.json";
 import mobihunterLogo from "@/assets/clients/mobihunter.png.asset.json";
 
 const webClients: ClientLogo[] = [
-  { name: "Faztred", url: "https://faztred.com.ar/", logo: faztredLogo.url, theme: "gray" },
+  { name: "Faztred", url: "https://faztred.com.ar/", logo: faztredLogo.url, theme: "dark" },
   { name: "OffMarket", url: "https://www.offmarket.com.ar/", logo: offmarketLogo.url, theme: "dark" },
   { name: "Justa", url: "https://justaagencia.com/", logo: justaLogo.url, theme: "light" },
   { name: "Unidos Para Amar", url: "https://unidosparaamar.org/", logo: unidosLogo.url, theme: "light" },
