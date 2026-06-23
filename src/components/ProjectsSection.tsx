@@ -238,13 +238,13 @@ const ProjectsSection = () => {
                     <div className="flex items-center gap-5 sm:gap-7">
                       {meta?.logo && (
                         <div
-                          className={`h-24 w-32 sm:w-40 shrink-0 rounded-2xl border transition-all duration-300 flex items-center justify-center px-4 ${logoCardClass}`}
+                          className={`h-32 w-44 sm:w-56 shrink-0 rounded-2xl border transition-all duration-300 flex items-center justify-center px-4 ${logoCardClass}`}
                         >
                           <img
                             src={meta.logo}
                             alt={project.name}
                             loading="lazy"
-                            className="max-h-16 max-w-full object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                            className="max-h-24 max-w-full object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
                           />
                         </div>
                       )}
