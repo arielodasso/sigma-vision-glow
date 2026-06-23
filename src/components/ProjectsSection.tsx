@@ -32,7 +32,7 @@ const webClients: ClientLogo[] = [
 const platformMeta: Record<string, { url?: string; logo: string; theme: "light" | "dark" | "gray" }> = {
   "Iceberg": { url: "https://icebergpol.com/", logo: icebergLogo.url, theme: "dark" },
   "Viaja Seguro a Marruecos": { logo: marruecosLogo.url, theme: "dark" },
-  "Sigma Trend Engine": { logo: trendEngineLogo.url, theme: "light" },
+  "Sigma Trend Engine": { logo: trendEngineLogo.url, theme: "dark" },
 };
 
 const ProjectsSection = () => {
