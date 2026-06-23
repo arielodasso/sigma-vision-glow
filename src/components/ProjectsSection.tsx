@@ -1,15 +1,21 @@
 import { useTranslation } from "@/i18n/useTranslation";
 import { motion } from "framer-motion";
 import { Globe, Server, Cpu, ExternalLink } from "lucide-react";
+import ClientsCarousel, { type ClientLogo } from "@/components/ClientsCarousel";
 
-const webProjectLinks: Record<string, string> = {
-  "Justa": "https://justaagencia.com/",
-  "Unidos Para Amar": "https://unidosparaamar.org/",
-  "Geonosis": "https://geonosis.com.ar/",
-  "Cristian Schauvinhold": "https://cristianschauvinhold.com/",
-  "OffMarket": "https://www.offmarket.com.ar/",
-  "Urbetex": "https://urbetex.com/",
-  "Estamos Unidos": "https://somosestamosunidos.com/",
+const webClients: ClientLogo[] = [
+  { name: "Justa", url: "https://justaagencia.com/" },
+  { name: "Unidos Para Amar", url: "https://unidosparaamar.org/" },
+  { name: "Geonosis", url: "https://geonosis.com.ar/" },
+  { name: "Cristian Schauvinhold", url: "https://cristianschauvinhold.com/" },
+  { name: "OffMarket", url: "https://www.offmarket.com.ar/" },
+  { name: "Urbetex", url: "https://urbetex.com/" },
+  { name: "Estamos Unidos", url: "https://somosestamosunidos.com/" },
+];
+
+const platformLinks: Record<string, string> = {
+  "Iceberg": "https://icebergpol.com/",
+  // "Viaja Seguro a Marruecos" — sitio inactivo, sin enlace
 };
 
 const platformLinks: Record<string, string> = {
