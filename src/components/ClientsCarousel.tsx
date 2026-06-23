@@ -4,7 +4,7 @@ export type ClientLogo = {
   name: string;
   url?: string;
   logo?: string; // imported asset URL
-  theme?: "light" | "dark"; // card background for contrast
+  theme?: "light" | "dark" | "gray"; // card background for contrast
 };
 
 interface Props {
@@ -31,10 +31,13 @@ const ClientsCarousel = ({ clients, speed = 40 }: Props) => {
         style={{ animationDuration: `${speed}s` }}
       >
         {loop.map((c, i) => {
+          const cardClass =
+            c.theme === "dark"
+              ? "bg-foreground/[0.04] border-foreground/[0.08] hover:border-foreground/[0.18] hover:bg-foreground/[0.06]"
+              : c.theme === "gray"
+              ? "bg-neutral-400 border-neutral-300 hover:border-neutral-200"
+              : "bg-white border-white/80 hover:border-white";
           const isDark = c.theme === "dark";
-          const cardClass = isDark
-            ? "bg-foreground/[0.04] border-foreground/[0.08] hover:border-foreground/[0.18] hover:bg-foreground/[0.06]"
-            : "bg-white border-white/80 hover:border-white";
           const inner = (
             <div
               className={`h-24 w-44 sm:w-48 shrink-0 rounded-2xl border transition-all duration-300 flex items-center justify-center px-6 relative group ${cardClass}`}
