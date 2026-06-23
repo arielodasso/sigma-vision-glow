@@ -4,6 +4,7 @@ export type ClientLogo = {
   name: string;
   url?: string;
   logo?: string; // imported asset URL
+  theme?: "light" | "dark"; // card background for contrast
 };
 
 interface Props {
@@ -11,7 +12,7 @@ interface Props {
   speed?: number; // seconds for one full loop
 }
 
-const ClientsCarousel = ({ clients, speed = 35 }: Props) => {
+const ClientsCarousel = ({ clients, speed = 40 }: Props) => {
   // Duplicate the list for a seamless infinite marquee
   const loop = [...clients, ...clients];
 
@@ -30,24 +31,40 @@ const ClientsCarousel = ({ clients, speed = 35 }: Props) => {
         style={{ animationDuration: `${speed}s` }}
       >
         {loop.map((c, i) => {
+          const isDark = c.theme === "dark";
+          const cardClass = isDark
+            ? "bg-foreground/[0.04] border-foreground/[0.08] hover:border-foreground/[0.18] hover:bg-foreground/[0.06]"
+            : "bg-white border-white/80 hover:border-white";
           const inner = (
-            <div className="h-24 w-44 sm:w-48 shrink-0 rounded-2xl border border-foreground/[0.06] bg-foreground/[0.02] hover:border-foreground/[0.14] hover:bg-foreground/[0.04] transition-all duration-300 flex items-center justify-center px-6 relative group">
+            <div
+              className={`h-24 w-44 sm:w-48 shrink-0 rounded-2xl border transition-all duration-300 flex items-center justify-center px-6 relative group ${cardClass}`}
+            >
               {c.logo ? (
                 <img
                   src={c.logo}
                   alt={c.name}
                   loading="lazy"
-                  className="max-h-12 max-w-full object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-300 [filter:grayscale(100%)] group-hover:[filter:grayscale(0%)]"
+                  className="max-h-12 max-w-full object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
                 />
               ) : (
-                <span className="text-foreground/60 font-medium text-sm tracking-wide text-center group-hover:text-foreground transition-colors">
+                <span
+                  className={`font-medium text-sm tracking-wide text-center transition-colors ${
+                    isDark
+                      ? "text-foreground/60 group-hover:text-foreground"
+                      : "text-neutral-700 group-hover:text-neutral-900"
+                  }`}
+                >
                   {c.name}
                 </span>
               )}
               {c.url && (
                 <ExternalLink
                   size={12}
-                  className="absolute top-2 right-2 text-foreground/15 group-hover:text-foreground/50 transition-colors"
+                  className={`absolute top-2 right-2 transition-colors ${
+                    isDark
+                      ? "text-foreground/20 group-hover:text-foreground/60"
+                      : "text-neutral-400 group-hover:text-neutral-700"
+                  }`}
                 />
               )}
             </div>
