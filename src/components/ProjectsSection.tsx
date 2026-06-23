@@ -141,10 +141,10 @@ const ProjectsSection = () => {
                 const content = (
                   <>
                     <div className="absolute left-0 top-[20%] bottom-[20%] w-[2px] bg-foreground/[0.00] group-hover:bg-foreground/[0.08] transition-all duration-500 rounded-full" />
-                    <div className="flex items-center gap-5 sm:gap-7">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-7">
                       {meta?.logo && (
                         <div
-                          className={`h-24 w-32 sm:w-40 shrink-0 rounded-2xl border transition-all duration-300 flex items-center justify-center px-4 ${logoCardClass}`}
+                          className={`h-24 w-full sm:w-40 shrink-0 rounded-2xl border transition-all duration-300 flex items-center justify-center px-4 ${logoCardClass}`}
                         >
                           <img
                             src={meta.logo}
@@ -235,10 +235,10 @@ const ProjectsSection = () => {
                     className="glass-card rounded-2xl p-6 sm:p-7 relative group"
                   >
                     <div className="absolute left-0 top-[20%] bottom-[20%] w-[2px] bg-foreground/[0.06] rounded-full" />
-                    <div className="flex items-center gap-5 sm:gap-7">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-7">
                       {meta?.logo && (
                         <div
-                          className={`h-24 w-32 sm:w-40 shrink-0 rounded-2xl border transition-all duration-300 flex items-center justify-center overflow-hidden ${logoCardClass}`}
+                          className={`h-24 w-full sm:w-40 shrink-0 rounded-2xl border transition-all duration-300 flex items-center justify-center overflow-hidden ${logoCardClass}`}
                         >
                           <img
                             src={meta.logo}
