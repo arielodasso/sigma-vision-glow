@@ -12,7 +12,7 @@ const en = {
   hero: {
     headline: "Less promises.",
     headlineAccent: "More solutions.",
-    description: "We build custom software, digital platforms, automation systems and proprietary technology products. We don't promise — we build.",
+    description: "We build custom software, automation systems and proprietary technology products. <strong>We don't promise, we build.</strong>",
     ctaPrimary: "See solutions",
     ctaSecondary: "See products",
   },
