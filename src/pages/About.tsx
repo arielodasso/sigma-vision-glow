@@ -5,6 +5,7 @@ import { useTranslation } from "@/i18n/useTranslation";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Code, Palette, Wrench, Users, Headphones } from "lucide-react";
 import useSmoothScroll from "@/hooks/use-smooth-scroll";
+import arielPhoto from "@/assets/ariel-odasso.jpg.asset.json";
 
 const About = () => {
   const { t } = useTranslation();
