@@ -74,7 +74,7 @@ const ProductsSection = () => {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.6, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-                className={`glass-card rounded-2xl p-10 flex flex-col justify-between ${isAnalytics ? "glow-yellow" : "glow-blue"}`}
+                className={`glass-card rounded-2xl p-6 sm:p-10 flex flex-col justify-between ${isAnalytics ? "glow-yellow" : "glow-blue"}`}
               >
                 <div>
                   <div className="flex items-center gap-3 mb-8">
@@ -95,7 +95,7 @@ const ProductsSection = () => {
                   </h3>
 
                   <span
-                    className="inline-block text-xs font-medium rounded-full px-4 py-1.5 mb-6"
+                    className="inline-block text-[10px] sm:text-xs font-medium rounded-full px-3 sm:px-4 py-1.5 mb-6 whitespace-nowrap"
                     style={{
                       color: accentColor,
                       background: `${accentColor}10`,
@@ -105,7 +105,7 @@ const ProductsSection = () => {
                     {p.tagline}
                   </span>
 
-                  <p className="text-muted-foreground leading-relaxed mb-10">
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-10">
                     {p.description}
                   </p>
                 </div>
