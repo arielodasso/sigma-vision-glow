@@ -95,7 +95,7 @@ const ProductsSection = () => {
                   </h3>
 
                   <span
-                    className="inline-block text-xs font-medium rounded-full px-4 py-1.5 mb-6"
+                    className="inline-block text-[10px] sm:text-xs font-medium rounded-full px-3 sm:px-4 py-1.5 mb-6 whitespace-nowrap"
                     style={{
                       color: accentColor,
                       background: `${accentColor}10`,
@@ -105,7 +105,7 @@ const ProductsSection = () => {
                     {p.tagline}
                   </span>
 
-                  <p className="text-muted-foreground leading-relaxed mb-10">
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-10">
                     {p.description}
                   </p>
                 </div>
