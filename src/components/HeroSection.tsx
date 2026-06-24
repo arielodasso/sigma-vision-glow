@@ -85,7 +85,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          <h1 className="font-display text-5xl sm:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] font-bold leading-[1.05] tracking-tight mb-8">
+          <h1 className="font-display text-[2.5rem] sm:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] font-bold leading-[1.05] tracking-tight mb-8">
             <span className="text-gradient">{t.hero.headline}</span>
             <br />
             <span className="text-foreground">{t.hero.headlineAccent}</span>
@@ -96,10 +96,9 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="text-lg sm:text-xl text-muted-foreground max-w-2xl leading-relaxed mb-12"
-        >
-          {t.hero.description}
-        </motion.p>
+          className="text-sm sm:text-xl text-muted-foreground max-w-2xl leading-relaxed mb-12 [&_strong]:text-foreground [&_strong]:font-semibold"
+          dangerouslySetInnerHTML={{ __html: t.hero.description }}
+        />
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
