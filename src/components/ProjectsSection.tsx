@@ -92,7 +92,7 @@ const ProjectsSection = () => {
                 </div>
                 <h3 className="font-display text-2xl font-semibold text-foreground">{categories.web.title}</h3>
               </div>
-              <p className="text-muted-foreground mb-4 leading-relaxed">{categories.web.description}</p>
+              <p className="text-sm sm:text-base text-muted-foreground mb-4 leading-relaxed">{categories.web.description}</p>
               
             </motion.div>
 
@@ -123,7 +123,7 @@ const ProjectsSection = () => {
                 </div>
                 <h3 className="font-display text-2xl font-semibold text-foreground">{categories.platforms.title}</h3>
               </div>
-              <p className="text-muted-foreground leading-relaxed">{categories.platforms.description}</p>
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{categories.platforms.description}</p>
             </motion.div>
 
             <div className="lg:col-span-3 space-y-6">
@@ -161,7 +161,7 @@ const ProjectsSection = () => {
                             <ExternalLink size={14} className="text-foreground/15 group-hover:text-foreground/50 transition-colors shrink-0" />
                           )}
                         </div>
-                        <p className="text-muted-foreground leading-relaxed">{project.description}</p>
+                        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{project.description}</p>
                       </div>
                     </div>
                   </>
@@ -213,7 +213,7 @@ const ProjectsSection = () => {
                 </div>
                 <h3 className="font-display text-2xl font-semibold text-foreground">{categories.automation.title}</h3>
               </div>
-              <p className="text-muted-foreground leading-relaxed">{categories.automation.description}</p>
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{categories.automation.description}</p>
             </motion.div>
 
             <div className="lg:col-span-3 space-y-6">
@@ -250,7 +250,7 @@ const ProjectsSection = () => {
                       )}
                       <div className="flex-1 min-w-0">
                         <h4 className="font-display text-lg font-semibold text-foreground mb-2">{project.name}</h4>
-                        <p className="text-muted-foreground leading-relaxed">{project.description}</p>
+                        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{project.description}</p>
                       </div>
                     </div>
                   </motion.div>
