@@ -74,7 +74,7 @@ const ProductsSection = () => {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.6, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-                className={`glass-card rounded-2xl p-10 flex flex-col justify-between ${isAnalytics ? "glow-yellow" : "glow-blue"}`}
+                className={`glass-card rounded-2xl p-6 sm:p-10 flex flex-col justify-between ${isAnalytics ? "glow-yellow" : "glow-blue"}`}
               >
                 <div>
                   <div className="flex items-center gap-3 mb-8">
