@@ -51,10 +51,10 @@ const ProductsSection = () => {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="mb-20"
         >
-          <h2 className="font-display text-4xl sm:text-5xl font-bold text-gradient mb-4">
+          <h2 className="font-display text-3xl sm:text-5xl font-bold text-gradient mb-4">
             {t.products.title}
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl">
+          <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl">
             {t.products.subtitle}
           </p>
         </motion.div>
