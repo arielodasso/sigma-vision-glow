@@ -50,10 +50,10 @@ const ServicesSection = () => {
           transition={{ duration: 0.6 }}
           className="mb-20"
         >
-          <h2 className="font-display text-4xl sm:text-5xl font-bold text-gradient mb-4">
+          <h2 className="font-display text-3xl sm:text-5xl font-bold text-gradient mb-4">
             {t.services.title}
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl">
+          <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl">
             {t.services.subtitle}
           </p>
         </motion.div>
