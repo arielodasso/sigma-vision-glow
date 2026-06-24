@@ -76,7 +76,7 @@ const ProjectsSection = () => {
 
         <div className="space-y-32">
           {/* Category 1: Web Development */}
-          <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
