@@ -101,7 +101,7 @@ const ManifestoSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              className="text-lg text-muted-foreground leading-relaxed"
+              className="text-sm sm:text-lg text-muted-foreground leading-relaxed"
             >
               {t.manifesto.description}
             </motion.p>
