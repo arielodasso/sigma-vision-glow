@@ -5,6 +5,7 @@ import { useTranslation } from "@/i18n/useTranslation";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Code, Palette, Wrench, Users, Headphones } from "lucide-react";
 import useSmoothScroll from "@/hooks/use-smooth-scroll";
+import arielPhoto from "@/assets/ariel-odasso.jpg.asset.json";
 
 const About = () => {
   const { t } = useTranslation();
@@ -60,20 +61,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* Philosophy banner */}
-      <section className="border-y border-foreground/[0.04] bg-surface-elevated">
-        <div className="container mx-auto px-6 max-w-6xl py-20 lg:py-28">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="font-display text-2xl sm:text-3xl lg:text-4xl font-semibold text-foreground/90 leading-relaxed max-w-4xl"
-          >
-            {t.about.philosophy}
-          </motion.p>
-        </div>
-      </section>
 
       {/* Founder + Values grid */}
       <section className="section-padding">
@@ -88,8 +75,8 @@ const About = () => {
               className="lg:col-span-2 lg:sticky lg:top-32 lg:self-start"
             >
               <div className="glass-card rounded-2xl p-8 lg:p-10">
-                <div className="w-14 h-14 rounded-2xl bg-foreground/[0.06] border border-foreground/[0.06] flex items-center justify-center mb-6">
-                  <span className="font-display text-xl font-bold text-foreground">AO</span>
+                <div className="w-20 h-20 rounded-2xl overflow-hidden border border-foreground/[0.06] mb-6">
+                  <img src={arielPhoto.url} alt="Ariel Odasso" className="w-full h-full object-cover" />
                 </div>
                 <h3 className="font-display text-2xl font-bold text-foreground mb-1">{t.about.founder}</h3>
                 <p className="text-sm text-foreground/40 mb-5">{t.about.founderRole}</p>

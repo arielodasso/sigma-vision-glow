@@ -12,7 +12,7 @@ const en = {
   hero: {
     headline: "Less promises.",
     headlineAccent: "More solutions.",
-    description: "We build custom software, digital platforms, automation systems and proprietary technology products. We don't promise — we build.",
+    description: "We build custom software, automation systems and proprietary technology products. <strong>We don't promise, we build.</strong>",
     ctaPrimary: "See solutions",
     ctaSecondary: "See products",
   },
@@ -121,10 +121,10 @@ const en = {
   about: {
     tagline: "About us",
     title: "A technology brand with a product mindset.",
-    description: "Sigma Technologies is a brand created by Ariel Odasso, a web developer with 5+ years building real solutions for companies and agencies.",
+    description: "Sigma Technologies is a brand created by Ariel Odasso, a programming technician with 5+ years building real solutions for companies and agencies.",
     founder: "Ariel Odasso",
-    founderRole: "Founder · Web Developer",
-    bio: "Web Developer specialized in WordPress, with proven experience in PrestaShop, e-commerce and productive platforms. I work side by side with the client or agency, with direct communication and no intermediaries.",
+    founderRole: "Founder · Programming Technician",
+    bio: "Programming technician with experience in WordPress, PrestaShop, e-commerce and productive platforms. I work side by side with the client or agency, with direct communication and no intermediaries.",
     background: [
       "5+ years building real solutions",
       "E-commerce and productive site projects",
