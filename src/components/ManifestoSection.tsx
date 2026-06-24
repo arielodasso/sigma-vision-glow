@@ -80,7 +80,7 @@ const ManifestoSection = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
-              className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] mb-6 flex flex-wrap gap-x-[0.3em]"
+              className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] mb-6 flex flex-wrap gap-x-[0.3em]"
             >
               {headlineWords.map((word, i) => (
                 <motion.span key={i} variants={wordChild} className="text-gradient inline-block">
@@ -101,7 +101,7 @@ const ManifestoSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              className="text-lg text-muted-foreground leading-relaxed"
+              className="text-sm sm:text-lg text-muted-foreground leading-relaxed"
             >
               {t.manifesto.description}
             </motion.p>

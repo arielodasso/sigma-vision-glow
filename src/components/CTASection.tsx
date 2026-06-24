@@ -47,10 +47,10 @@ const CTASection = () => {
           transition={{ duration: 0.7 }}
           className="text-center"
         >
-          <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-gradient leading-[1.1] mb-6">
+          <h2 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold text-gradient leading-[1.1] mb-6">
             {t.cta.headline}
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+          <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
             {t.cta.description}
           </p>
           <button

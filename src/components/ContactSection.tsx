@@ -97,8 +97,8 @@ const ContactSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <h2 className="font-display text-4xl sm:text-5xl font-bold text-gradient mb-4">{t.contact.title}</h2>
-          <p className="text-lg text-muted-foreground">{t.contact.subtitle}</p>
+          <h2 className="font-display text-3xl sm:text-5xl font-bold text-gradient mb-4">{t.contact.title}</h2>
+          <p className="text-sm sm:text-lg text-muted-foreground">{t.contact.subtitle}</p>
         </motion.div>
 
         <motion.div
