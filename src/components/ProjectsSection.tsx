@@ -90,7 +90,7 @@ const ProjectsSection = () => {
                 <div className="w-10 h-10 rounded-xl bg-foreground/[0.04] border border-foreground/[0.06] flex items-center justify-center">
                   <Globe size={20} className="text-foreground/50" />
                 </div>
-                <h3 className="font-display text-2xl font-semibold text-foreground">{categories.web.title}</h3>
+                <h3 className="font-display text-xl sm:text-2xl font-semibold text-foreground">{categories.web.title}</h3>
               </div>
               <p className="text-sm sm:text-base text-muted-foreground mb-4 leading-relaxed">{categories.web.description}</p>
               
@@ -121,7 +121,7 @@ const ProjectsSection = () => {
                 <div className="w-10 h-10 rounded-xl bg-foreground/[0.04] border border-foreground/[0.06] flex items-center justify-center">
                   <Server size={20} className="text-foreground/50" />
                 </div>
-                <h3 className="font-display text-2xl font-semibold text-foreground">{categories.platforms.title}</h3>
+                <h3 className="font-display text-xl sm:text-2xl font-semibold text-foreground">{categories.platforms.title}</h3>
               </div>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{categories.platforms.description}</p>
             </motion.div>
@@ -156,7 +156,7 @@ const ProjectsSection = () => {
                       )}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-2 gap-3">
-                          <h4 className="font-display text-lg font-semibold text-foreground">{project.name}</h4>
+                          <h4 className="font-display text-base sm:text-lg font-semibold text-foreground">{project.name}</h4>
                           {isLink && (
                             <ExternalLink size={14} className="text-foreground/15 group-hover:text-foreground/50 transition-colors shrink-0" />
                           )}
@@ -211,7 +211,7 @@ const ProjectsSection = () => {
                 <div className="w-10 h-10 rounded-xl bg-foreground/[0.04] border border-foreground/[0.06] flex items-center justify-center">
                   <Cpu size={20} className="text-foreground/50" />
                 </div>
-                <h3 className="font-display text-2xl font-semibold text-foreground">{categories.automation.title}</h3>
+                <h3 className="font-display text-xl sm:text-2xl font-semibold text-foreground">{categories.automation.title}</h3>
               </div>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{categories.automation.description}</p>
             </motion.div>
@@ -249,7 +249,7 @@ const ProjectsSection = () => {
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-display text-lg font-semibold text-foreground mb-2">{project.name}</h4>
+                        <h4 className="font-display text-base sm:text-lg font-semibold text-foreground mb-2">{project.name}</h4>
                         <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{project.description}</p>
                       </div>
                     </div>
