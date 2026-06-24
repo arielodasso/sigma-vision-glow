@@ -60,20 +60,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* Philosophy banner */}
-      <section className="border-y border-foreground/[0.04] bg-surface-elevated">
-        <div className="container mx-auto px-6 max-w-6xl py-20 lg:py-28">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="font-display text-2xl sm:text-3xl lg:text-4xl font-semibold text-foreground/90 leading-relaxed max-w-4xl"
-          >
-            {t.about.philosophy}
-          </motion.p>
-        </div>
-      </section>
 
       {/* Founder + Values grid */}
       <section className="section-padding">
