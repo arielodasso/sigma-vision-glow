@@ -76,8 +76,9 @@ const ServicesSection = () => {
                 <div className={`w-12 h-12 rounded-xl bg-foreground/[0.04] border border-foreground/[0.06] flex items-center justify-center mb-6 ${accent === "sigma-yellow" ? "group-hover:bg-sigma-yellow/[0.08] group-hover:border-sigma-yellow/[0.15]" : "group-hover:bg-sigma-blue/[0.08] group-hover:border-sigma-blue/[0.15]"} transition-colors`}>
                   <Icon size={24} className={`text-foreground/50 ${accent === "sigma-yellow" ? "group-hover:text-sigma-yellow" : "group-hover:text-sigma-blue"} transition-colors`} />
                 </div>
-                <h3 className="font-display text-xl text-foreground font-semibold mb-3">{s.title}</h3>
-                <p className="text-muted-foreground leading-relaxed mb-4">{s.description}</p>
+                <h3 className="font-display text-lg sm:text-xl text-foreground font-semibold mb-3">{s.title}</h3>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4">{s.description}</p>
+
                 <p className="text-sm text-foreground/40 border-t border-foreground/[0.04] pt-4">{s.outcomes}</p>
               </motion.div>
             );

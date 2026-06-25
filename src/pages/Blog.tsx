@@ -78,8 +78,9 @@ const Blog = () => {
             transition={{ duration: 0.7 }}
             className="mb-14"
           >
-            <h1 className="font-display text-4xl sm:text-5xl font-bold text-gradient mb-3">Blog</h1>
-            <p className="text-base text-muted-foreground max-w-2xl">
+            <h1 className="font-display text-3xl sm:text-5xl font-bold text-gradient mb-3">Blog</h1>
+            <p className="text-sm sm:text-base text-muted-foreground max-w-2xl">
+
               Desarrollo web, SaaS, automatización, inteligencia artificial aplicada y casos reales.
             </p>
           </motion.div>
@@ -138,7 +139,8 @@ const Blog = () => {
                           <span>{formatDate(featuredPost.published_at)}</span>
                         )}
                       </div>
-                      <h2 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3 group-hover:text-foreground/80 transition-colors leading-tight">
+                      <h2 className="font-display text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-3 group-hover:text-foreground/80 transition-colors leading-tight">
+
                         {featuredPost.title}
                       </h2>
                       {featuredPost.excerpt && (

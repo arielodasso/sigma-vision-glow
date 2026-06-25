@@ -51,10 +51,11 @@ const About = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-gradient leading-[1.1] mb-6 max-w-4xl">
+            <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold text-gradient leading-[1.1] mb-6 max-w-4xl">
               {t.about.title}
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
+            <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
+
               {t.about.description}
             </p>
           </motion.div>
@@ -78,7 +79,7 @@ const About = () => {
                 <div className="w-20 h-20 rounded-2xl overflow-hidden border border-foreground/[0.06] mb-6">
                   <img src={arielPhoto.url} alt="Ariel Odasso" className="w-full h-full object-cover" />
                 </div>
-                <h3 className="font-display text-2xl font-bold text-foreground mb-1">{t.about.founder}</h3>
+                <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-1">{t.about.founder}</h3>
                 <p className="text-sm text-foreground/40 mb-5">{t.about.founderRole}</p>
                 <p className="text-muted-foreground leading-relaxed mb-6 text-sm">{t.about.bio}</p>
 
