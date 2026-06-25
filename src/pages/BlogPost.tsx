@@ -161,7 +161,7 @@ const BlogPost = () => {
             </h1>
 
             {post.excerpt && (
-              <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-3xl">
+              <p className="text-sm sm:text-lg text-muted-foreground leading-relaxed mb-8 max-w-3xl">
                 {post.excerpt}
               </p>
             )}
@@ -198,7 +198,7 @@ const BlogPost = () => {
       {related.length > 0 && (
         <section className="border-t border-foreground/[0.04] py-20">
           <div className="container mx-auto px-6 max-w-4xl">
-            <h3 className="font-display text-2xl font-bold text-foreground mb-10">Más artículos</h3>
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-10">Más artículos</h3>
             <div className="grid md:grid-cols-3 gap-6">
               {related.map((r) => (
                 <Link
