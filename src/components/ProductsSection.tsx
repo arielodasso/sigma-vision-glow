@@ -88,7 +88,7 @@ const ProductsSection = () => {
                     </div>
                   </div>
 
-                  <h3 className="font-display text-2xl font-bold text-foreground mb-2">
+                  <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-2">
                     {p.name.startsWith("Sigma") ? (
                       <>Sigma<span style={{ color: accentColor }}>{p.name.slice(5)}</span></>
                     ) : p.name}
