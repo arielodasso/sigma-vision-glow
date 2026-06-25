@@ -156,6 +156,7 @@ const BlogPost = () => {
             </div>
 
             <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.15] mb-6">
+
               {post.title}
             </h1>
 
