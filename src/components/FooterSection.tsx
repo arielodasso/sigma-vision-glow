@@ -8,7 +8,7 @@ const FooterSection = () => {
   const links: { label: string; href: string; isRoute?: boolean }[] = [
     { label: t.footer.solutions, href: "/#soluciones" },
     { label: t.footer.products, href: "/#productos" },
-    { label: t.footer.about, href: "/#filosofia" },
+    { label: t.footer.about, href: "/contacto", isRoute: true },
     { label: "Blog", href: "/blog", isRoute: true },
     { label: "Academy", href: "/academy", isRoute: true },
     { label: t.footer.contact, href: "/contacto", isRoute: true },
