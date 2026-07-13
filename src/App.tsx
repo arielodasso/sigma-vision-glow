@@ -25,6 +25,7 @@ import AcademyTemplates from "./pages/academy/AcademyTemplates";
 import AcademyUseCases from "./pages/academy/AcademyUseCases";
 import AcademyAdvanced from "./pages/academy/AcademyAdvanced";
 import NotFound from "./pages/NotFound";
+import OAuthConsent from "./pages/OAuthConsent";
 
 const queryClient = new QueryClient();
 
@@ -60,6 +61,7 @@ const App = () => (
               <Route path="casos-de-uso" element={<AcademyUseCases />} />
               <Route path="avanzado" element={<AcademyAdvanced />} />
             </Route>
+            <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
