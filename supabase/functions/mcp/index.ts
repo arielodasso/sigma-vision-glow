@@ -3,7 +3,7 @@
 // supabase function: mcp
 // Bundled from src/lib/mcp/index.ts by @lovable.dev/mcp-js.
 // src/lib/mcp/index.ts
-import { defineMcp } from "npm:@lovable.dev/mcp-js@0.20.1";
+import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.20.1";
 
 // src/lib/mcp/tools/list-blog-posts.ts
 import { createClient } from "npm:@supabase/supabase-js@^2.98.0";
@@ -103,11 +103,16 @@ var get_brand_info_default = defineTool3({
 });
 
 // src/lib/mcp/index.ts
+var projectRef = "qxkeungqbgaytxdfhccn";
 var mcp_default = defineMcp({
   name: "sigma-tecnologias-mcp",
   title: "Sigma Tecnolog\xEDas MCP",
   version: "0.1.0",
   instructions: "Tools to explore Sigma Tecnolog\xEDas \u2014 a software studio led by Ariel Odasso. Use `get_brand_info` for positioning and services, `list_blog_posts` to browse published articles, and `get_blog_post` to read a specific post by slug.",
+  auth: auth.oauth.issuer({
+    issuer: `https://${projectRef}.supabase.co/auth/v1`,
+    acceptedAudiences: "authenticated"
+  }),
   tools: [get_brand_info_default, list_blog_posts_default, get_blog_post_default]
 });
 
