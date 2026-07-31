@@ -81,8 +81,21 @@
           <a href="/contacto" style="color:#fff">Contacto</a>
         </nav>
       </div>
+      <div id="boot-loader" style="display:none;position:fixed;inset:0;background:#0A0A0A;align-items:center;justify-content:center;z-index:9999">
+        <div style="width:36px;height:36px;border:2px solid rgba(255,255,255,.15);border-top-color:#fff;border-radius:50%;animation:sigma-spin .8s linear infinite"></div>
+      </div>
+      <style>@keyframes sigma-spin{to{transform:rotate(360deg)}}</style>
+      <script>
+        (function () {
+          var f = document.getElementById('static-fallback');
+          var l = document.getElementById('boot-loader');
+          if (f) f.style.display = 'none';
+          if (l) l.style.display = 'flex';
+        })();
+      </script>
     </div>
     <script type="module" src="/src/main.tsx"></script>
+
   </body>
 
 </html>
