@@ -22,8 +22,7 @@ Deno.serve(async (req) => {
     .eq("published", true)
     .order("published_at", { ascending: false });
 
-  const baseUrl = "https://sigmatecnologiasarg.com";
-  const now = new Date().toISOString().split("T")[0];
+  const baseUrl = "https://www.sigmatecnologiasarg.com";
 
   const staticPages = [
     { loc: "/", priority: "1.0", changefreq: "weekly" },
@@ -38,7 +37,6 @@ Deno.serve(async (req) => {
     xml += `
   <url>
     <loc>${baseUrl}${page.loc}</loc>
-    <lastmod>${now}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`;
@@ -46,11 +44,12 @@ Deno.serve(async (req) => {
 
   if (posts) {
     for (const post of posts) {
-      const lastmod = (post.updated_at || post.published_at || now).split("T")[0];
+      const source = post.updated_at || post.published_at;
+      const lastmod = source ? String(source).split("T")[0] : null;
       xml += `
   <url>
-    <loc>${baseUrl}/blog/${post.slug}</loc>
-    <lastmod>${lastmod}</lastmod>
+    <loc>${baseUrl}/blog/${post.slug}</loc>${lastmod ? `
+    <lastmod>${lastmod}</lastmod>` : ""}
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>`;
