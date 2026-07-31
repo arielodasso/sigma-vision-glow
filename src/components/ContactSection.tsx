@@ -63,6 +63,7 @@ const ContactSection = () => {
         title: t.contact.successTitle,
         description: t.contact.successMessage,
       });
+      navigate("/agradecimiento");
     } catch (err) {
       console.error("[ContactSection] send-contact failed:", err);
       setSendFailed(true);
