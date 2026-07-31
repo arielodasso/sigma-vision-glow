@@ -119,9 +119,7 @@ const BlogAdmin = () => {
   const fetchSitemap = async () => {
     setSitemapLoading(true);
     try {
-      const res = await fetch(
-        `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID || 'qxkeungqbgaytxdfhccn'}.supabase.co/functions/v1/sitemap`
-      );
+      const res = await fetch("/sitemap.xml", { cache: "no-store" });
       const xml = await res.text();
       setSitemapXml(xml);
       setShowSitemap(true);
