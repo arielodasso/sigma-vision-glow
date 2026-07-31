@@ -60,7 +60,29 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Contenido estático para crawlers sin JavaScript. React lo reemplaza al montar. -->
+      <div id="static-fallback" style="max-width:960px;margin:0 auto;padding:96px 24px;font-family:Montserrat,system-ui,sans-serif;color:#fff;background:#0A0A0A">
+        <h1 style="font-size:2.5rem;line-height:1.1;font-weight:700;margin:0 0 24px">Menos promesas. Más soluciones.</h1>
+        <p style="font-size:1rem;line-height:1.7;color:#a1a1a1;margin:0 0 32px">
+          Sigma Tecnologías es un estudio de software liderado por Ariel Odasso. Desarrollamos software a medida,
+          plataformas digitales, automatizaciones con inteligencia artificial y productos tecnológicos propios como
+          Sigma Analytics y Sigma Trend Engine.
+        </p>
+        <h2 style="font-size:1.25rem;font-weight:600;margin:0 0 12px">Qué hacemos</h2>
+        <ul style="color:#a1a1a1;line-height:1.8;margin:0 0 32px;padding-left:20px">
+          <li>Desarrollo web y software a medida</li>
+          <li>Plataformas y sistemas digitales</li>
+          <li>Automatización y sistemas inteligentes con IA</li>
+        </ul>
+        <nav aria-label="Navegación principal">
+          <a href="/" style="color:#fff;margin-right:16px">Inicio</a>
+          <a href="/blog" style="color:#fff;margin-right:16px">Blog</a>
+          <a href="/contacto" style="color:#fff">Contacto</a>
+        </nav>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
+
 </html>
