@@ -19,6 +19,7 @@ const ContactSection = () => {
   const [bookingOpen, setBookingOpen] = useState(false);
   const { t } = useTranslation();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const validate = (data: Record<string, string>): Errors => {
     const e: Errors = {};
