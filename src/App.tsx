@@ -26,6 +26,7 @@ import AcademyUseCases from "./pages/academy/AcademyUseCases";
 import AcademyAdvanced from "./pages/academy/AcademyAdvanced";
 import NotFound from "./pages/NotFound";
 import OAuthConsent from "./pages/OAuthConsent";
+import ThankYou from "./pages/ThankYou";
 
 const queryClient = new QueryClient();
 
