@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { Check, X } from "lucide-react";
 
 const SCHEDULE_URL =
   "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2PpWB3iEynhEfWzNK523UydioImJl74qXNFHBkB-O68h2YSwZm9x34jFwbm7yl7ErrcAV6EX5U?gv=true";
@@ -15,6 +16,7 @@ interface BookingModalProps {
 
 const BookingModal = ({ open, onClose }: BookingModalProps) => {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!open) return;
@@ -27,7 +29,23 @@ const BookingModal = ({ open, onClose }: BookingModalProps) => {
     };
   }, [open, onClose]);
 
+  // Google Calendar notifies the parent window once the appointment is booked.
+  useEffect(() => {
+    if (!open) return;
+    const onMessage = (event: MessageEvent) => {
+      if (!/(^|\.)google\.com$/.test(new URL(event.origin).hostname)) return;
+      const raw = typeof event.data === "string" ? event.data : JSON.stringify(event.data ?? "");
+      if (/book|confirm|success/i.test(raw)) {
+        onClose();
+        navigate("/confirmacion");
+      }
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [open, onClose, navigate]);
+
   if (typeof document === "undefined") return null;
+
 
   return createPortal(
     <AnimatePresence>
