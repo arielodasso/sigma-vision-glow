@@ -1,4 +1,5 @@
 import { useState, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import { Send, Loader2, MessageCircle, Calendar, AlertCircle } from "lucide-react";
 import { useTranslation } from "@/i18n/useTranslation";
 import { useToast } from "@/hooks/use-toast";
@@ -18,6 +19,7 @@ const ContactSection = () => {
   const [bookingOpen, setBookingOpen] = useState(false);
   const { t } = useTranslation();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const validate = (data: Record<string, string>): Errors => {
     const e: Errors = {};
@@ -61,6 +63,7 @@ const ContactSection = () => {
         title: t.contact.successTitle,
         description: t.contact.successMessage,
       });
+      navigate("/agradecimiento");
     } catch (err) {
       console.error("[ContactSection] send-contact failed:", err);
       setSendFailed(true);

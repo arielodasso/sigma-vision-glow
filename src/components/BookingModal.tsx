@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { Check, X } from "lucide-react";
 
 const SCHEDULE_URL =
   "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2PpWB3iEynhEfWzNK523UydioImJl74qXNFHBkB-O68h2YSwZm9x34jFwbm7yl7ErrcAV6EX5U?gv=true";
@@ -15,6 +16,7 @@ interface BookingModalProps {
 
 const BookingModal = ({ open, onClose }: BookingModalProps) => {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!open) return;
@@ -27,7 +29,23 @@ const BookingModal = ({ open, onClose }: BookingModalProps) => {
     };
   }, [open, onClose]);
 
+  // Google Calendar notifies the parent window once the appointment is booked.
+  useEffect(() => {
+    if (!open) return;
+    const onMessage = (event: MessageEvent) => {
+      if (!/(^|\.)google\.com$/.test(new URL(event.origin).hostname)) return;
+      const raw = typeof event.data === "string" ? event.data : JSON.stringify(event.data ?? "");
+      if (/book|confirm|success/i.test(raw)) {
+        onClose();
+        navigate("/confirmacion");
+      }
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [open, onClose, navigate]);
+
   if (typeof document === "undefined") return null;
+
 
   return createPortal(
     <AnimatePresence>
@@ -71,6 +89,23 @@ const BookingModal = ({ open, onClose }: BookingModalProps) => {
               className="flex-1 w-full bg-white"
               style={{ border: 0 }}
             />
+            <div className="flex items-center justify-between gap-4 px-6 py-3 border-t border-foreground/[0.06]">
+              <p className="text-[11px] text-foreground/40">
+                ¿Ya completaste la reserva?
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  navigate("/confirmacion");
+                }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium border border-foreground/[0.1] text-foreground/80 hover:bg-foreground/[0.05] transition-colors"
+              >
+                <Check size={13} />
+                Confirmar reunión
+              </button>
+            </div>
+
           </motion.div>
         </motion.div>
       )}
