@@ -89,6 +89,23 @@ const BookingModal = ({ open, onClose }: BookingModalProps) => {
               className="flex-1 w-full bg-white"
               style={{ border: 0 }}
             />
+            <div className="flex items-center justify-between gap-4 px-6 py-3 border-t border-foreground/[0.06]">
+              <p className="text-[11px] text-foreground/40">
+                ¿Ya completaste la reserva?
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  navigate("/confirmacion");
+                }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium border border-foreground/[0.1] text-foreground/80 hover:bg-foreground/[0.05] transition-colors"
+              >
+                <Check size={13} />
+                Confirmar reunión
+              </button>
+            </div>
+
           </motion.div>
         </motion.div>
       )}
