@@ -62,10 +62,10 @@ const Blog = () => {
       <Helmet>
         <title>Blog — Sigma Tecnologías | Desarrollo web, SaaS e IA</title>
         <meta name="description" content="Artículos sobre desarrollo web, plataformas SaaS, automatización e inteligencia artificial aplicada. Casos reales y soluciones técnicas." />
-        <link rel="canonical" href="https://sigmatecnologiasarg.com/blog" />
+        <link rel="canonical" href="https://www.sigmatecnologiasarg.com/blog" />
         <meta property="og:title" content="Blog — Sigma Tecnologías" />
         <meta property="og:description" content="Desarrollo web, SaaS, automatización e inteligencia artificial aplicada." />
-        <meta property="og:url" content="https://sigmatecnologiasarg.com/blog" />
+        <meta property="og:url" content="https://www.sigmatecnologiasarg.com/blog" />
         <meta property="og:type" content="website" />
       </Helmet>
       <Navbar />

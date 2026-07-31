@@ -81,10 +81,10 @@ const BlogPost = () => {
       <Helmet>
         <title>{post.title} — Sigma Tecnologías</title>
         {post.excerpt && <meta name="description" content={post.excerpt} />}
-        <link rel="canonical" href={`https://sigmatecnologiasarg.com/blog/${post.slug}`} />
+        <link rel="canonical" href={`https://www.sigmatecnologiasarg.com/blog/${post.slug}`} />
         <meta property="og:title" content={post.title} />
         {post.excerpt && <meta property="og:description" content={post.excerpt} />}
-        <meta property="og:url" content={`https://sigmatecnologiasarg.com/blog/${post.slug}`} />
+        <meta property="og:url" content={`https://www.sigmatecnologiasarg.com/blog/${post.slug}`} />
         <meta property="og:type" content="article" />
         {post.image_url && <meta property="og:image" content={post.image_url} />}
         {post.published_at && <meta property="article:published_time" content={post.published_at} />}
@@ -104,19 +104,19 @@ const BlogPost = () => {
             "author": {
               "@type": "Organization",
               "name": "Sigma Tecnologías",
-              "url": "https://sigmatecnologiasarg.com"
+              "url": "https://www.sigmatecnologiasarg.com"
             },
             "publisher": {
               "@type": "Organization",
               "name": "Sigma Tecnologías",
               "logo": {
                 "@type": "ImageObject",
-                "url": "https://sigmatecnologiasarg.com/placeholder.svg"
+                "url": "https://www.sigmatecnologiasarg.com/placeholder.svg"
               }
             },
             "mainEntityOfPage": {
               "@type": "WebPage",
-              "@id": `https://sigmatecnologiasarg.com/blog/${post.slug}`
+              "@id": `https://www.sigmatecnologiasarg.com/blog/${post.slug}`
             },
             ...(post.category ? { "articleSection": post.category } : {})
           })}
