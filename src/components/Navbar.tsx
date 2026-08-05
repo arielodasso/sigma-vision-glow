@@ -60,13 +60,11 @@ const Navbar = () => {
             : "bg-card/60 backdrop-blur-md border border-foreground/[0.04]"
         }`}>
           <Link to="/" onClick={scrollToTop} className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-xl bg-foreground/[0.06] border border-foreground/[0.08] flex items-center justify-center group-hover:bg-foreground/10 transition-colors">
-              <img
-                src={sigmaIsologo.url}
-                alt="Isologo Sigma Tecnologías"
-                className="w-[55%] h-[55%] object-contain"
-              />
-            </div>
+            <img
+              src={sigmaIsologo.url}
+              alt="Isologo Sigma Tecnologías"
+              className="h-8 w-8 object-contain"
+            />
             <span className="font-display text-base font-bold text-foreground tracking-tight">
               Sigma<span className="font-medium text-foreground/50">Tecnologías</span>
             </span>
