@@ -3,6 +3,8 @@ import { useTranslation } from "@/i18n/useTranslation";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
 import VideoModal from "@/components/VideoModal";
+import analyticsIsologo from "@/assets/brand/sigma-analytics.png.asset.json";
+import trendIsologo from "@/assets/brand/sigma-trend-engine.png.asset.json";
 
 const ProductsSection = () => {
   const { t } = useTranslation();
