@@ -2,6 +2,7 @@ import { Outlet, Link, useLocation } from "react-router-dom";
 import { BookOpen, Play, Layout, Lightbulb, Rocket, GraduationCap, ExternalLink, ChevronLeft, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import sigmaIsologo from "@/assets/brand/sigma-isologo-2.png.asset.json";
 
 const sidebarSections = [
   {
