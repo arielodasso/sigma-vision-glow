@@ -1,6 +1,6 @@
 import { useTranslation } from "@/i18n/useTranslation";
 import { Link, useLocation } from "react-router-dom";
-import sigmaIsologo from "@/assets/brand/sigma-isologo.png.asset.json";
+import sigmaIsologo from "@/assets/brand/sigma-isologo-2.png.asset.json";
 
 const FooterSection = () => {
   const { t } = useTranslation();
