@@ -106,7 +106,7 @@ const ContactSubmissions = () => {
       ) : filtered.length === 0 ? (
         <div className="text-center py-16 rounded-xl border border-foreground/[0.06] bg-card">
           <Mail size={28} className="text-foreground/30 mx-auto mb-3" />
-          <p className="text-sm text-foreground/50">No hay mensajes para mostrar.</p>
+          <p className="text-sm text-foreground/50">Todavía no recibiste mensajes desde el formulario de contacto.</p>
         </div>
       ) : (
         <div className="space-y-2">

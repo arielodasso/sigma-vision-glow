@@ -3,6 +3,7 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { FileText, Receipt, Mail, LogOut, Menu, X } from "lucide-react";
 import BlogAdminLogin from "@/components/BlogAdminLogin";
+import sigmaIsologo from "@/assets/brand/sigma-isologo-2.png.asset.json";
 
 const AdminLayout = () => {
   const [session, setSession] = useState<any>(null);
@@ -51,11 +52,19 @@ const AdminLayout = () => {
       >
         <div className="h-full flex flex-col p-5">
           <div className="flex items-center justify-between mb-8 px-2">
-            <span className="font-display text-lg font-bold text-foreground">Admin</span>
+            <NavLink to="/admin/blog" className="flex items-center gap-2.5 min-w-0">
+              <img src={sigmaIsologo.url} alt="Isologo Sigma Tecnologías" className="h-8 w-8 object-contain shrink-0" />
+              <span className="font-display text-sm font-bold text-foreground tracking-tight truncate">
+                Sigma<span className="font-medium text-foreground/50">Tecnologías</span>
+              </span>
+            </NavLink>
             <button onClick={() => setOpen(false)} className="lg:hidden text-foreground/50">
               <X size={18} />
             </button>
           </div>
+          <p className="px-3 mb-3 text-[10px] font-semibold tracking-widest text-muted-foreground/60 uppercase">
+            Administración
+          </p>
 
           <nav className="flex-1 space-y-1">
             <NavLink to="/admin/blog" end className={linkClass}>

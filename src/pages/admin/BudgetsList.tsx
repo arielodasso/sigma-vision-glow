@@ -54,20 +54,24 @@ const BudgetsList = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-10">
-        <h1 className="font-display text-3xl font-bold text-foreground">Presupuestos</h1>
+      <div className="flex flex-wrap items-start justify-between gap-4 mb-10">
+        <div>
+          <h1 className="font-display text-3xl font-bold text-foreground">Presupuestos</h1>
+          <p className="text-sm text-muted-foreground mt-1">Generá y compartí propuestas con tus clientes.</p>
+        </div>
         <Link
           to="/admin/presupuestos/nuevo"
           className="flex items-center gap-2 bg-foreground text-background px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors"
         >
-          <Plus size={14} /> Nuevo
+          <Plus size={14} /> Nuevo presupuesto
         </Link>
       </div>
 
       {loading ? (
-        <p className="text-sm text-muted-foreground">Cargando...</p>
+        <p className="text-sm text-muted-foreground">Cargando presupuestos...</p>
       ) : budgets.length === 0 ? (
-        <p className="text-sm text-muted-foreground py-12 text-center">No hay presupuestos aún.</p>
+        <p className="text-sm text-muted-foreground py-12 text-center">Todavía no creaste presupuestos. Empezá con "Nuevo presupuesto".</p>
+
       ) : (
         <div className="space-y-3">
           {budgets.map((b) => (

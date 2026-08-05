@@ -2,6 +2,7 @@ import { useState, FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import sigmaIsologo from "@/assets/brand/sigma-isologo-2.png.asset.json";
 
 const BlogAdminLogin = () => {
   const [email, setEmail] = useState("");
@@ -31,11 +32,14 @@ const BlogAdminLogin = () => {
     <div className="min-h-screen bg-background flex items-center justify-center px-6">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 rounded-xl bg-foreground flex items-center justify-center mx-auto mb-4">
-            <span className="text-background font-display font-bold text-lg">Σ</span>
+          <div className="flex items-center justify-center gap-3 mb-5">
+            <img src={sigmaIsologo.url} alt="Isologo Sigma Tecnologías" className="h-9 w-9 object-contain" />
+            <span className="font-display text-base font-bold text-foreground tracking-tight">
+              Sigma<span className="font-medium text-foreground/50">Tecnologías</span>
+            </span>
           </div>
-          <h1 className="font-display text-xl font-bold text-foreground">Blog Admin</h1>
-          <p className="text-sm text-muted-foreground mt-1">Iniciá sesión para gestionar artículos</p>
+          <h1 className="font-display text-xl font-bold text-foreground">Panel de administración</h1>
+          <p className="text-sm text-muted-foreground mt-1">Ingresá con tu cuenta para gestionar el sitio</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">

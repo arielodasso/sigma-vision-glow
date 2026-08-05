@@ -1,7 +1,7 @@
 import { useState, useEffect, FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Trash2, Edit2, Eye, EyeOff, Map, ChevronLeft, ChevronRight } from "lucide-react";
+import { Trash2, Pencil, Eye, EyeOff, ExternalLink, Map, ChevronLeft, ChevronRight, Search, Plus } from "lucide-react";
 
 interface BlogPost {
   id: string;
@@ -24,6 +24,7 @@ const BlogAdmin = () => {
   const [sitemapXml, setSitemapXml] = useState("");
   const [sitemapLoading, setSitemapLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
   const PAGE_SIZE = 6;
   const { toast } = useToast();
 
@@ -134,17 +135,34 @@ const BlogAdmin = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-10">
-        <h1 className="font-display text-3xl font-bold text-foreground">Blog</h1>
-        <button
-          onClick={fetchSitemap}
-          disabled={sitemapLoading}
-          className="flex items-center gap-2 text-sm text-foreground/50 hover:text-foreground transition-colors"
-        >
-          <Map size={14} />
-          {sitemapLoading ? "Cargando..." : "Ver Sitemap"}
-        </button>
+      <div className="flex flex-wrap items-start justify-between gap-4 mb-10">
+        <div>
+          <h1 className="font-display text-3xl font-bold text-foreground">Blog</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Creá, editá y publicá los artículos del sitio.
+          </p>
+        </div>
+        <div className="flex items-center gap-4">
+          {editing && (
+            <button
+              onClick={resetForm}
+              className="flex items-center gap-2 text-sm text-foreground/50 hover:text-foreground transition-colors"
+            >
+              <Plus size={14} />
+              Nuevo artículo
+            </button>
+          )}
+          <button
+            onClick={fetchSitemap}
+            disabled={sitemapLoading}
+            className="flex items-center gap-2 text-sm text-foreground/50 hover:text-foreground transition-colors"
+          >
+            <Map size={14} />
+            {sitemapLoading ? "Cargando..." : "Ver sitemap"}
+          </button>
+        </div>
       </div>
+
 
       {showSitemap && (
         <div className="mb-8 p-5 rounded-xl border border-foreground/[0.08] bg-card">
@@ -168,6 +186,14 @@ const BlogAdmin = () => {
 
       <div className="grid lg:grid-cols-2 gap-10">
         <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="pb-1">
+            <h2 className="font-display text-lg font-semibold text-foreground">
+              {editing ? "Editando artículo" : "Nuevo artículo"}
+            </h2>
+            <p className="text-xs text-foreground/40 mt-1">
+              {editing ? `Estás modificando "${editing.title}".` : "Completá los campos y guardalo como borrador o publicalo."}
+            </p>
+          </div>
           <div>
             <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Título</label>
             <input
@@ -179,19 +205,20 @@ const BlogAdmin = () => {
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Slug</label>
+            <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Slug (URL)</label>
             <input value={slug} onChange={(e) => setSlug(e.target.value)} className={inputClass} placeholder="url-del-articulo" />
+            <p className="text-xs text-foreground/30 mt-1.5">Se publicará en /blog/{slug || "url-del-articulo"}</p>
           </div>
           <div>
             <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Extracto</label>
-            <textarea value={excerpt} onChange={(e) => setExcerpt(e.target.value)} rows={2} className={inputClass} placeholder="Breve descripción..." />
+            <textarea value={excerpt} onChange={(e) => setExcerpt(e.target.value)} rows={2} className={inputClass} placeholder="Resumen breve que aparece en el listado y en buscadores" />
           </div>
           <div>
             <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Contenido (HTML)</label>
             <textarea required value={content} onChange={(e) => setContent(e.target.value)} rows={10} className={inputClass} placeholder="<p>Contenido del artículo...</p>" />
           </div>
           <div>
-            <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">URL de imagen</label>
+            <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Imagen de portada (URL)</label>
             <input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} className={inputClass} placeholder="https://..." />
           </div>
           <div>
@@ -200,43 +227,89 @@ const BlogAdmin = () => {
           </div>
           <label className="flex items-center gap-3 cursor-pointer">
             <input type="checkbox" checked={published} onChange={(e) => setPublished(e.target.checked)} className="accent-foreground" />
-            <span className="text-sm text-foreground/70">Publicar</span>
+            <span className="text-sm text-foreground/70">Publicar en el sitio</span>
           </label>
           <div className="flex gap-3">
             <button type="submit" disabled={saving} className="bg-foreground text-background px-6 py-3 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors disabled:opacity-50">
-              {editing ? "Actualizar" : "Crear artículo"}
+              {saving ? "Guardando..." : editing ? "Guardar cambios" : "Crear artículo"}
             </button>
             {editing && (
               <button type="button" onClick={resetForm} className="text-sm text-foreground/50 hover:text-foreground px-4">
-                Cancelar
+                Cancelar edición
               </button>
             )}
           </div>
+
         </form>
 
         <div className="space-y-3">
-          <h2 className="font-display text-lg font-semibold text-foreground mb-4">Artículos ({posts.length})</h2>
+          <div className="flex items-baseline justify-between mb-3">
+            <h2 className="font-display text-lg font-semibold text-foreground">Artículos publicados y borradores</h2>
+            <span className="text-xs text-foreground/40">{posts.length} en total</span>
+          </div>
+
+          <div className="relative mb-4">
+            <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/30" />
+            <input
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+              placeholder="Buscar por título, slug o categoría"
+              className={`${inputClass} pl-10`}
+            />
+          </div>
+
           {posts.length === 0 && (
-            <p className="text-sm text-muted-foreground py-8 text-center">No hay artículos aún.</p>
+            <p className="text-sm text-muted-foreground py-8 text-center">
+              Todavía no creaste ningún artículo. Usá el formulario para publicar el primero.
+            </p>
           )}
           {(() => {
-            const totalPages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE));
+            const q = search.trim().toLowerCase();
+            const filtered = q
+              ? posts.filter((p) =>
+                  [p.title, p.slug, p.category || ""].some((v) => v.toLowerCase().includes(q))
+                )
+              : posts;
+            const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
             const safePage = Math.min(page, totalPages);
             const start = (safePage - 1) * PAGE_SIZE;
-            const visible = posts.slice(start, start + PAGE_SIZE);
+            const visible = filtered.slice(start, start + PAGE_SIZE);
             return (
               <>
+                {posts.length > 0 && filtered.length === 0 && (
+                  <p className="text-sm text-muted-foreground py-8 text-center">
+                    No encontramos artículos que coincidan con "{search}".
+                  </p>
+                )}
                 {visible.map((post) => (
-                  <div key={post.id} className="flex items-center justify-between gap-4 p-4 rounded-xl border border-foreground/[0.06] hover:border-foreground/[0.10] transition-colors">
-                    <div className="min-w-0">
+                  <div
+                    key={post.id}
+                    className={`flex items-center justify-between gap-4 p-4 rounded-xl border transition-colors ${
+                      editing?.id === post.id
+                        ? "border-foreground/25 bg-foreground/[0.03]"
+                        : "border-foreground/[0.06] hover:border-foreground/[0.12]"
+                    }`}
+                  >
+                    <button onClick={() => loadPost(post)} className="min-w-0 text-left flex-1">
                       <p className="text-sm font-medium text-foreground truncate">{post.title}</p>
-                      <p className="text-xs text-foreground/30">{post.category} · {post.published ? "publicado" : "borrador"}</p>
-                    </div>
-                    <div className="flex items-center gap-2 shrink-0">
+                      <div className="flex items-center gap-2 mt-1">
+                        <span
+                          className={`text-[10px] uppercase tracking-wide px-2 py-0.5 rounded-full border ${
+                            post.published
+                              ? "border-foreground/20 text-foreground/70"
+                              : "border-foreground/10 text-foreground/35"
+                          }`}
+                        >
+                          {post.published ? "Publicado" : "Borrador"}
+                        </span>
+                        <span className="text-xs text-foreground/30 truncate">/blog/{post.slug}</span>
+                      </div>
+                    </button>
+                    <div className="flex items-center gap-1 shrink-0">
                       <button
                         onClick={() => togglePublish(post)}
                         className="p-2 text-foreground/30 hover:text-foreground transition-colors"
-                        title={post.published ? "Despublicar" : "Publicar"}
+                        title={post.published ? "Pasar a borrador" : "Publicar ahora"}
                       >
                         {post.published ? <Eye size={14} /> : <EyeOff size={14} />}
                       </button>
@@ -245,19 +318,20 @@ const BlogAdmin = () => {
                         target="_blank"
                         rel="noreferrer"
                         className="p-2 text-foreground/30 hover:text-foreground transition-colors"
-                        title="Ver artículo"
+                        title="Abrir artículo en el sitio"
                       >
-                        <Eye size={14} />
+                        <ExternalLink size={14} />
                       </a>
-                      <button onClick={() => loadPost(post)} className="p-2 text-foreground/30 hover:text-foreground transition-colors" title="Editar">
-                        <Edit2 size={14} />
+                      <button onClick={() => loadPost(post)} className="p-2 text-foreground/30 hover:text-foreground transition-colors" title="Editar artículo">
+                        <Pencil size={14} />
                       </button>
-                      <button onClick={() => deletePost(post.id)} className="p-2 text-foreground/30 hover:text-destructive transition-colors" title="Eliminar">
+                      <button onClick={() => deletePost(post.id)} className="p-2 text-foreground/30 hover:text-destructive transition-colors" title="Eliminar artículo">
                         <Trash2 size={14} />
                       </button>
                     </div>
                   </div>
                 ))}
+
 
                 {totalPages > 1 && (
                   <div className="flex items-center justify-between pt-4">
