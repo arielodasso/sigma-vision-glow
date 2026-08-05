@@ -186,6 +186,14 @@ const BlogAdmin = () => {
 
       <div className="grid lg:grid-cols-2 gap-10">
         <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="pb-1">
+            <h2 className="font-display text-lg font-semibold text-foreground">
+              {editing ? "Editando artículo" : "Nuevo artículo"}
+            </h2>
+            <p className="text-xs text-foreground/40 mt-1">
+              {editing ? `Estás modificando "${editing.title}".` : "Completá los campos y guardalo como borrador o publicalo."}
+            </p>
+          </div>
           <div>
             <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Título</label>
             <input
@@ -197,19 +205,20 @@ const BlogAdmin = () => {
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Slug</label>
+            <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Slug (URL)</label>
             <input value={slug} onChange={(e) => setSlug(e.target.value)} className={inputClass} placeholder="url-del-articulo" />
+            <p className="text-xs text-foreground/30 mt-1.5">Se publicará en /blog/{slug || "url-del-articulo"}</p>
           </div>
           <div>
             <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Extracto</label>
-            <textarea value={excerpt} onChange={(e) => setExcerpt(e.target.value)} rows={2} className={inputClass} placeholder="Breve descripción..." />
+            <textarea value={excerpt} onChange={(e) => setExcerpt(e.target.value)} rows={2} className={inputClass} placeholder="Resumen breve que aparece en el listado y en buscadores" />
           </div>
           <div>
             <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Contenido (HTML)</label>
             <textarea required value={content} onChange={(e) => setContent(e.target.value)} rows={10} className={inputClass} placeholder="<p>Contenido del artículo...</p>" />
           </div>
           <div>
-            <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">URL de imagen</label>
+            <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Imagen de portada (URL)</label>
             <input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} className={inputClass} placeholder="https://..." />
           </div>
           <div>
@@ -218,18 +227,19 @@ const BlogAdmin = () => {
           </div>
           <label className="flex items-center gap-3 cursor-pointer">
             <input type="checkbox" checked={published} onChange={(e) => setPublished(e.target.checked)} className="accent-foreground" />
-            <span className="text-sm text-foreground/70">Publicar</span>
+            <span className="text-sm text-foreground/70">Publicar en el sitio</span>
           </label>
           <div className="flex gap-3">
             <button type="submit" disabled={saving} className="bg-foreground text-background px-6 py-3 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors disabled:opacity-50">
-              {editing ? "Actualizar" : "Crear artículo"}
+              {saving ? "Guardando..." : editing ? "Guardar cambios" : "Crear artículo"}
             </button>
             {editing && (
               <button type="button" onClick={resetForm} className="text-sm text-foreground/50 hover:text-foreground px-4">
-                Cancelar
+                Cancelar edición
               </button>
             )}
           </div>
+
         </form>
 
         <div className="space-y-3">
