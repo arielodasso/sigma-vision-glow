@@ -77,13 +77,11 @@ const ProductsSection = () => {
                 className={`glass-card rounded-2xl p-6 sm:p-10 flex flex-col justify-between ${isAnalytics ? "glow-yellow" : "glow-blue"}`}
               >
                 <div>
-                  <div className="flex items-center gap-3 mb-8">
-                    <img
-                      src={isAnalytics ? analyticsIsologo.url : trendIsologo.url}
-                      alt={`Isologo ${p.name}`}
-                      className="w-11 h-11 rounded-xl object-contain"
-                    />
-                  </div>
+                  <img
+                    src={isAnalytics ? analyticsIsologo.url : trendIsologo.url}
+                    alt={`Isologo ${p.name}`}
+                    className="h-8 w-8 object-contain mb-8"
+                  />
 
 
                   <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-2">
