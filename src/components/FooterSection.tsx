@@ -38,13 +38,11 @@ const FooterSection = () => {
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10">
           <div>
             <Link to="/" onClick={scrollToTop} className="flex items-center gap-3 mb-3">
-              <div className="w-9 h-9 rounded-xl bg-foreground/[0.06] border border-foreground/[0.08] flex items-center justify-center">
-                <img
-                  src={sigmaIsologo.url}
-                  alt="Isologo Sigma Tecnologías"
-                  className="w-[55%] h-[55%] object-contain"
-                />
-              </div>
+              <img
+                src={sigmaIsologo.url}
+                alt="Isologo Sigma Tecnologías"
+                className="h-8 w-8 object-contain"
+              />
               <span className="font-display text-base font-bold text-foreground tracking-tight">
                 {t.footer.brand}<span className="font-medium text-foreground/50">{t.footer.brandSuffix}</span>
               </span>
