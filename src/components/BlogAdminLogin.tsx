@@ -2,6 +2,7 @@ import { useState, FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
+import sigmaIsologo from "@/assets/brand/sigma-isologo-2.png.asset.json";
 
 const BlogAdminLogin = () => {
   const [email, setEmail] = useState("");
