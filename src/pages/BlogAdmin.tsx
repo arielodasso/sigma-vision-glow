@@ -1,7 +1,7 @@
 import { useState, useEffect, FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Trash2, Edit2, Eye, EyeOff, Map, ChevronLeft, ChevronRight } from "lucide-react";
+import { Trash2, Pencil, Eye, EyeOff, ExternalLink, Map, ChevronLeft, ChevronRight, Search, Plus } from "lucide-react";
 
 interface BlogPost {
   id: string;
