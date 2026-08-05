@@ -80,7 +80,7 @@ const ProductsSection = () => {
                   <img
                     src={isAnalytics ? analyticsIsologo.url : trendIsologo.url}
                     alt={`Isologo ${p.name}`}
-                    className="h-8 w-8 object-contain mb-8"
+                    className="h-8 w-8 object-contain mb-4"
                   />
 
 
