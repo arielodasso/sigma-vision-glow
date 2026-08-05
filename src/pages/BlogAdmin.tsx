@@ -135,17 +135,34 @@ const BlogAdmin = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-10">
-        <h1 className="font-display text-3xl font-bold text-foreground">Blog</h1>
-        <button
-          onClick={fetchSitemap}
-          disabled={sitemapLoading}
-          className="flex items-center gap-2 text-sm text-foreground/50 hover:text-foreground transition-colors"
-        >
-          <Map size={14} />
-          {sitemapLoading ? "Cargando..." : "Ver Sitemap"}
-        </button>
+      <div className="flex flex-wrap items-start justify-between gap-4 mb-10">
+        <div>
+          <h1 className="font-display text-3xl font-bold text-foreground">Blog</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Creá, editá y publicá los artículos del sitio.
+          </p>
+        </div>
+        <div className="flex items-center gap-4">
+          {editing && (
+            <button
+              onClick={resetForm}
+              className="flex items-center gap-2 text-sm text-foreground/50 hover:text-foreground transition-colors"
+            >
+              <Plus size={14} />
+              Nuevo artículo
+            </button>
+          )}
+          <button
+            onClick={fetchSitemap}
+            disabled={sitemapLoading}
+            className="flex items-center gap-2 text-sm text-foreground/50 hover:text-foreground transition-colors"
+          >
+            <Map size={14} />
+            {sitemapLoading ? "Cargando..." : "Ver sitemap"}
+          </button>
+        </div>
       </div>
+
 
       {showSitemap && (
         <div className="mb-8 p-5 rounded-xl border border-foreground/[0.08] bg-card">
