@@ -66,8 +66,6 @@ const ProductsSection = () => {
             const variant = variants[i];
             const isAnalytics = variant === "analytics";
             const accentColor = isAnalytics ? "#E2FC03" : "#4C7AFF";
-            const isologoBg = isAnalytics ? "#E2FC03" : "#001fb3";
-            const isologoText = isAnalytics ? "#0B0D10" : "#fff";
 
             return (
               <motion.div
