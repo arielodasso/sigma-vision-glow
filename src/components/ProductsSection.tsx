@@ -3,6 +3,8 @@ import { useTranslation } from "@/i18n/useTranslation";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
 import VideoModal from "@/components/VideoModal";
+import analyticsIsologo from "@/assets/brand/sigma-analytics.png.asset.json";
+import trendIsologo from "@/assets/brand/sigma-trend-engine.png.asset.json";
 
 const ProductsSection = () => {
   const { t } = useTranslation();
@@ -64,8 +66,6 @@ const ProductsSection = () => {
             const variant = variants[i];
             const isAnalytics = variant === "analytics";
             const accentColor = isAnalytics ? "#E2FC03" : "#4C7AFF";
-            const isologoBg = isAnalytics ? "#E2FC03" : "#001fb3";
-            const isologoText = isAnalytics ? "#0B0D10" : "#fff";
 
             return (
               <motion.div
@@ -78,15 +78,13 @@ const ProductsSection = () => {
               >
                 <div>
                   <div className="flex items-center gap-3 mb-8">
-                    <div
-                      className="w-11 h-11 rounded-xl flex items-center justify-center"
-                      style={{ background: isologoBg }}
-                    >
-                      <span className="font-display font-bold text-xl" style={{ color: isologoText }}>
-                        Σ
-                      </span>
-                    </div>
+                    <img
+                      src={isAnalytics ? analyticsIsologo.url : trendIsologo.url}
+                      alt={`Isologo ${p.name}`}
+                      className="w-11 h-11 rounded-xl object-contain"
+                    />
                   </div>
+
 
                   <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-2">
                     {p.name.startsWith("Sigma") ? (
