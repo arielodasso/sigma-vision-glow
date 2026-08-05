@@ -39,10 +39,8 @@ const AcademyLayout = () => {
 
   const SidebarContent = () => (
     <>
-      <Link to="/academy" className="flex items-center gap-2.5 px-4 pt-6 pb-8">
-        <div className="w-8 h-8 rounded-lg bg-foreground flex items-center justify-center">
-          <span className="text-background font-display font-bold text-sm">Σ</span>
-        </div>
+      <Link to="/academy" className="flex items-center gap-3 px-4 pt-6 pb-8">
+        <img src={sigmaIsologo.url} alt="Isologo Sigma Tecnologías" className="h-8 w-8 object-contain" />
         <span className="font-display text-sm font-bold text-foreground tracking-tight">
           Sigma <span className="font-medium text-foreground/50">Academy</span>
         </span>
