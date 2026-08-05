@@ -172,7 +172,7 @@ Deno.serve(async (req) => {
     const safeCompany = sanitize(trimCompany);
     const safeMessage = sanitize(trimMessage);
 
-    const DEFAULT_TO = ["arielodassotec@gmail.com", "info@sigmatecnologiasarg.com"];
+    const DEFAULT_TO = ["arielodassotec@gmail.com", "contacto@sigmatecnologiasarg.com"];
     let toList: string[] = DEFAULT_TO;
     let ccList: string[] = [];
 
