@@ -216,28 +216,73 @@ const BlogAdmin = () => {
         </form>
 
         <div className="space-y-3">
-          <h2 className="font-display text-lg font-semibold text-foreground mb-4">Artículos ({posts.length})</h2>
+          <div className="flex items-baseline justify-between mb-3">
+            <h2 className="font-display text-lg font-semibold text-foreground">Artículos publicados y borradores</h2>
+            <span className="text-xs text-foreground/40">{posts.length} en total</span>
+          </div>
+
+          <div className="relative mb-4">
+            <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/30" />
+            <input
+              value={search}
+              onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+              placeholder="Buscar por título, slug o categoría"
+              className={`${inputClass} pl-10`}
+            />
+          </div>
+
           {posts.length === 0 && (
-            <p className="text-sm text-muted-foreground py-8 text-center">No hay artículos aún.</p>
+            <p className="text-sm text-muted-foreground py-8 text-center">
+              Todavía no creaste ningún artículo. Usá el formulario para publicar el primero.
+            </p>
           )}
           {(() => {
-            const totalPages = Math.max(1, Math.ceil(posts.length / PAGE_SIZE));
+            const q = search.trim().toLowerCase();
+            const filtered = q
+              ? posts.filter((p) =>
+                  [p.title, p.slug, p.category || ""].some((v) => v.toLowerCase().includes(q))
+                )
+              : posts;
+            const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
             const safePage = Math.min(page, totalPages);
             const start = (safePage - 1) * PAGE_SIZE;
-            const visible = posts.slice(start, start + PAGE_SIZE);
+            const visible = filtered.slice(start, start + PAGE_SIZE);
             return (
               <>
+                {posts.length > 0 && filtered.length === 0 && (
+                  <p className="text-sm text-muted-foreground py-8 text-center">
+                    No encontramos artículos que coincidan con "{search}".
+                  </p>
+                )}
                 {visible.map((post) => (
-                  <div key={post.id} className="flex items-center justify-between gap-4 p-4 rounded-xl border border-foreground/[0.06] hover:border-foreground/[0.10] transition-colors">
-                    <div className="min-w-0">
+                  <div
+                    key={post.id}
+                    className={`flex items-center justify-between gap-4 p-4 rounded-xl border transition-colors ${
+                      editing?.id === post.id
+                        ? "border-foreground/25 bg-foreground/[0.03]"
+                        : "border-foreground/[0.06] hover:border-foreground/[0.12]"
+                    }`}
+                  >
+                    <button onClick={() => loadPost(post)} className="min-w-0 text-left flex-1">
                       <p className="text-sm font-medium text-foreground truncate">{post.title}</p>
-                      <p className="text-xs text-foreground/30">{post.category} · {post.published ? "publicado" : "borrador"}</p>
-                    </div>
-                    <div className="flex items-center gap-2 shrink-0">
+                      <div className="flex items-center gap-2 mt-1">
+                        <span
+                          className={`text-[10px] uppercase tracking-wide px-2 py-0.5 rounded-full border ${
+                            post.published
+                              ? "border-foreground/20 text-foreground/70"
+                              : "border-foreground/10 text-foreground/35"
+                          }`}
+                        >
+                          {post.published ? "Publicado" : "Borrador"}
+                        </span>
+                        <span className="text-xs text-foreground/30 truncate">/blog/{post.slug}</span>
+                      </div>
+                    </button>
+                    <div className="flex items-center gap-1 shrink-0">
                       <button
                         onClick={() => togglePublish(post)}
                         className="p-2 text-foreground/30 hover:text-foreground transition-colors"
-                        title={post.published ? "Despublicar" : "Publicar"}
+                        title={post.published ? "Pasar a borrador" : "Publicar ahora"}
                       >
                         {post.published ? <Eye size={14} /> : <EyeOff size={14} />}
                       </button>
@@ -246,19 +291,20 @@ const BlogAdmin = () => {
                         target="_blank"
                         rel="noreferrer"
                         className="p-2 text-foreground/30 hover:text-foreground transition-colors"
-                        title="Ver artículo"
+                        title="Abrir artículo en el sitio"
                       >
-                        <Eye size={14} />
+                        <ExternalLink size={14} />
                       </a>
-                      <button onClick={() => loadPost(post)} className="p-2 text-foreground/30 hover:text-foreground transition-colors" title="Editar">
-                        <Edit2 size={14} />
+                      <button onClick={() => loadPost(post)} className="p-2 text-foreground/30 hover:text-foreground transition-colors" title="Editar artículo">
+                        <Pencil size={14} />
                       </button>
-                      <button onClick={() => deletePost(post.id)} className="p-2 text-foreground/30 hover:text-destructive transition-colors" title="Eliminar">
+                      <button onClick={() => deletePost(post.id)} className="p-2 text-foreground/30 hover:text-destructive transition-colors" title="Eliminar artículo">
                         <Trash2 size={14} />
                       </button>
                     </div>
                   </div>
                 ))}
+
 
                 {totalPages > 1 && (
                   <div className="flex items-center justify-between pt-4">
