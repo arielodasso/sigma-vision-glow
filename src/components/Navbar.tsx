@@ -4,6 +4,7 @@ import { useTranslation } from "@/i18n/useTranslation";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import BookingModal from "@/components/BookingModal";
+import sigmaIsologo from "@/assets/brand/sigma-isologo.png.asset.json";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
