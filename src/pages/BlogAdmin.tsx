@@ -24,6 +24,7 @@ const BlogAdmin = () => {
   const [sitemapXml, setSitemapXml] = useState("");
   const [sitemapLoading, setSitemapLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
   const PAGE_SIZE = 6;
   const { toast } = useToast();
 
