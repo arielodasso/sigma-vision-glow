@@ -3,6 +3,7 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { FileText, Receipt, Mail, LogOut, Menu, X } from "lucide-react";
 import BlogAdminLogin from "@/components/BlogAdminLogin";
+import sigmaIsologo from "@/assets/brand/sigma-isologo-2.png.asset.json";
 
 const AdminLayout = () => {
   const [session, setSession] = useState<any>(null);
