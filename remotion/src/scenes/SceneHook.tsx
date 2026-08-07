@@ -15,7 +15,7 @@ export const SceneHook: React.FC = () => {
       style={{
         fontFamily,
         justifyContent: "center",
-        padding: v ? "0 90px" : "0 150px",
+        padding: v ? "230px 90px 90px" : "0 150px",
       }}
     >
       <div style={{ transform: `translateY(${push}px)`, maxWidth: v ? "100%" : "72%" }}>
