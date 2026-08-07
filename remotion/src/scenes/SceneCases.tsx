@@ -138,7 +138,7 @@ export const SceneCases: React.FC = () => {
                 theme="dark"
                 w={v ? 150 : 172}
                 h={v ? 74 : 82}
-                logoMax={v ? 40 : 46}
+                logoMax={v ? 52 : 58}
                 style={{ background: "rgba(244,245,246,0.06)" }}
               />
               <div style={{ minWidth: 0 }}>
