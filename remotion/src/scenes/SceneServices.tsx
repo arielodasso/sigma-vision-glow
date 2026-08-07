@@ -20,7 +20,7 @@ export const SceneServices: React.FC = () => {
       style={{
         fontFamily,
         justifyContent: "center",
-        padding: v ? "0 80px" : "0 130px",
+        padding: v ? "230px 80px 90px" : "0 130px",
       }}
     >
       <div style={{ transform: `translateY(${drift}px)` }}>
@@ -61,7 +61,7 @@ export const SceneServices: React.FC = () => {
               >
                 <span
                   style={{
-                    color: i % 2 === 0 ? C.yellow : C.blue,
+                    color: C.dim,
                     fontSize: v ? 22 : 22,
                     fontWeight: 700,
                     letterSpacing: "0.1em",

@@ -32,7 +32,7 @@ export const SceneHook: React.FC = () => {
             style={{
               width: interpolate(bar, [0, 1], [0, v ? 70 : 96]),
               height: 3,
-              background: C.yellow,
+              background: C.muted,
             }}
           />
           <span
@@ -102,7 +102,7 @@ export const SceneHook: React.FC = () => {
             width: v ? 130 : 170,
             height: v ? 130 : 170,
             borderRadius: "50%",
-            border: `1px solid ${C.blue}55`,
+            border: `1px solid ${C.line2}`,
           }}
         />
       </div>
