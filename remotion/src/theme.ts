@@ -10,9 +10,12 @@ export const C = {
   bgSoft: "#101113",
   fg: "#F4F5F6",
   muted: "#8B8D93",
+  dim: "#5C5E64",
   line: "rgba(244,245,246,0.10)",
+  line2: "rgba(244,245,246,0.18)",
+  // brand product colors — ONLY for Sigma Analytics / Sigma Trend Engine
   yellow: "#E2FC03",
   blue: "#4C7AFF",
 };
 
-export const TOTAL = 726;
+export const TOTAL = 756;

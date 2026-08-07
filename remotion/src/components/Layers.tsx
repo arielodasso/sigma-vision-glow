@@ -1,5 +1,5 @@
-import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate } from "remotion";
-import { C } from "../theme";
+import { AbsoluteFill, Img, staticFile, useCurrentFrame, useVideoConfig, interpolate } from "remotion";
+import { C, fontFamily } from "../theme";
 
 export const PersistentBackground: React.FC = () => {
   const frame = useCurrentFrame();
@@ -25,11 +25,11 @@ export const PersistentBackground: React.FC = () => {
           WebkitMaskImage: "radial-gradient(80% 70% at 50% 45%, black 0%, transparent 100%)",
         }}
       />
-      {/* accent glows */}
+      {/* neutral light drift */}
       <AbsoluteFill
         style={{
-          background: `radial-gradient(30% 24% at ${18 + p * 12}% ${80 - p * 25}%, rgba(226,252,3,0.055) 0%, transparent 70%),
-                       radial-gradient(34% 26% at ${82 - p * 14}% ${22 + p * 30}%, rgba(76,122,255,0.075) 0%, transparent 70%)`,
+          background: `radial-gradient(32% 26% at ${18 + p * 12}% ${80 - p * 25}%, rgba(244,245,246,0.05) 0%, transparent 70%),
+                       radial-gradient(36% 28% at ${82 - p * 14}% ${22 + p * 30}%, rgba(244,245,246,0.045) 0%, transparent 70%)`,
         }}
       />
       <AbsoluteFill
@@ -50,3 +50,48 @@ export const Vignette: React.FC = () => (
     }}
   />
 );
+
+/** Horizontal lockup: isologo + wordmark. Used as a persistent header in vertical. */
+export const Lockup: React.FC<{ size?: number }> = ({ size = 54 }) => (
+  <div style={{ display: "flex", alignItems: "center", gap: size * 0.32, fontFamily }}>
+    <Img
+      src={staticFile("images/isologo.png")}
+      alt="Sigma Tecnologías"
+      style={{ width: size, height: size, objectFit: "contain" }}
+    />
+    <span
+      style={{
+        fontSize: size * 0.6,
+        fontWeight: 700,
+        letterSpacing: "-0.02em",
+        color: C.fg,
+        whiteSpace: "nowrap",
+      }}
+    >
+      Sigma <span style={{ color: C.muted, fontWeight: 600 }}>Tecnologías</span>
+    </span>
+  </div>
+);
+
+/** Fixed top bar for the vertical composition. */
+export const VerticalHeader: React.FC = () => {
+  const frame = useCurrentFrame();
+  const opacity = interpolate(frame, [0, 18], [0, 1], { extrapolateRight: "clamp" });
+  return (
+    <AbsoluteFill style={{ pointerEvents: "none" }}>
+      <div
+        style={{
+          position: "absolute",
+          top: 92,
+          left: 0,
+          right: 0,
+          display: "flex",
+          justifyContent: "center",
+          opacity,
+        }}
+      >
+        <Lockup size={58} />
+      </div>
+    </AbsoluteFill>
+  );
+};
