@@ -1,4 +1,11 @@
-import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate } from "remotion";
+import {
+  AbsoluteFill,
+  Img,
+  staticFile,
+  useCurrentFrame,
+  useVideoConfig,
+  interpolate,
+} from "remotion";
 import { C, fontFamily } from "../theme";
 import { rise, breathe } from "../components/motion";
 
@@ -7,13 +14,13 @@ const products = [
     name: "Sigma Analytics",
     tagline: "Analítica de rendimiento para fútbol",
     color: C.yellow,
-    ink: "#0A0A0A",
+    logo: "sigma-analytics.png",
   },
   {
     name: "Sigma Trend Engine",
     tagline: "Motor de tendencias con IA",
     color: C.blue,
-    ink: "#FFFFFF",
+    logo: "sigma-trend-engine.png",
   },
 ];
 
@@ -25,14 +32,18 @@ export const SceneProducts: React.FC = () => {
 
   return (
     <AbsoluteFill
-      style={{ fontFamily, justifyContent: "center", padding: v ? "0 80px" : "0 140px" }}
+      style={{
+        fontFamily,
+        justifyContent: "center",
+        padding: v ? "230px 80px 90px" : "0 140px",
+      }}
     >
       <div style={{ transform: `translateY(${drift}px)` }}>
         <h2
           style={{
             ...rise(frame, fps, 0),
             margin: 0,
-            fontSize: v ? 70 : 88,
+            fontSize: v ? 66 : 88,
             fontWeight: 800,
             letterSpacing: "-0.03em",
             color: C.fg,
@@ -44,7 +55,7 @@ export const SceneProducts: React.FC = () => {
           style={{
             ...rise(frame, fps, 8),
             color: C.muted,
-            fontSize: v ? 28 : 28,
+            fontSize: v ? 27 : 28,
             marginTop: 14,
             fontWeight: 500,
           }}
@@ -54,7 +65,7 @@ export const SceneProducts: React.FC = () => {
 
         <div
           style={{
-            marginTop: v ? 56 : 60,
+            marginTop: v ? 50 : 60,
             display: "grid",
             gridTemplateColumns: v ? "1fr" : "1fr 1fr",
             gap: v ? 28 : 36,
@@ -71,30 +82,23 @@ export const SceneProducts: React.FC = () => {
                 background: "linear-gradient(150deg, rgba(255,255,255,0.05), rgba(255,255,255,0.012))",
               }}
             >
-              <div
+              <Img
+                src={staticFile(`images/${p.logo}`)}
+                alt={p.name}
                 style={{
                   transform: breathe(frame + i * 30, 4, 0.035),
-                  width: 62,
-                  height: 62,
-                  borderRadius: 16,
-                  background: p.color,
-                  color: p.ink,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 34,
-                  fontWeight: 700,
+                  width: 64,
+                  height: 64,
+                  objectFit: "contain",
                 }}
-              >
-                Σ
-              </div>
+              />
               <div
                 style={{
                   color: C.fg,
-                  fontSize: v ? 42 : 44,
+                  fontSize: v ? 40 : 44,
                   fontWeight: 700,
                   letterSpacing: "-0.02em",
-                  marginTop: 22,
+                  marginTop: 18,
                 }}
               >
                 {p.name}
@@ -102,7 +106,7 @@ export const SceneProducts: React.FC = () => {
               <div
                 style={{
                   color: p.color,
-                  fontSize: v ? 25 : 24,
+                  fontSize: v ? 24 : 24,
                   fontWeight: 600,
                   marginTop: 8,
                 }}
