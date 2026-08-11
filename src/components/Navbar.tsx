@@ -4,7 +4,7 @@ import { useTranslation } from "@/i18n/useTranslation";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import BookingModal from "@/components/BookingModal";
-import sigmaIsologo from "@/assets/brand/sigma-isologo-2.png.asset.json";
+import sigmaIsologo from "@/assets/brand/sigma-isologo-3.png.asset.json";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -63,6 +63,8 @@ const Navbar = () => {
             <img
               src={sigmaIsologo.url}
               alt="Isologo Sigma Tecnologías"
+              width={32}
+              height={32}
               className="h-8 w-8 object-contain"
             />
             <span className="font-display text-base font-bold text-foreground tracking-tight">
