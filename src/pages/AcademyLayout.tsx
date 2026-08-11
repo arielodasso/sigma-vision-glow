@@ -1,8 +1,43 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { BookOpen, Play, Layout, Lightbulb, Rocket, GraduationCap, ExternalLink, ChevronLeft, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import sigmaIsologo from "@/assets/brand/sigma-isologo-2.png.asset.json";
+
+const academyMeta: Record<string, { path: string; title: string; description: string }> = {
+  "/academy": {
+    path: "/academy",
+    title: "Sigma Academy | Recursos de IA y software",
+    description: "Hub de recursos de Sigma Tecnologías: guías de inteligencia artificial, videos, plantillas y casos de uso para construir mejores productos digitales.",
+  },
+  "/academy/guias": {
+    path: "/academy/guias",
+    title: "Guías de IA | Sigma Academy",
+    description: "Guías prácticas para aplicar inteligencia artificial en tu negocio: automatización, agentes y flujos de trabajo explicados paso a paso.",
+  },
+  "/academy/videos": {
+    path: "/academy/videos",
+    title: "Videos | Sigma Academy",
+    description: "Videos y demos sobre desarrollo de software, automatización con IA y productos digitales, seleccionados por Sigma Tecnologías.",
+  },
+  "/academy/plantillas": {
+    path: "/academy/plantillas",
+    title: "Plantillas | Sigma Academy",
+    description: "Plantillas y recursos listos para usar que aceleran la construcción de plataformas digitales y automatizaciones con inteligencia artificial.",
+  },
+  "/academy/casos-de-uso": {
+    path: "/academy/casos-de-uso",
+    title: "Casos de uso de IA | Sigma Academy",
+    description: "Casos de uso reales de inteligencia artificial y automatización aplicados a empresas, agencias y productos digitales.",
+  },
+  "/academy/avanzado": {
+    path: "/academy/avanzado",
+    title: "Temas avanzados | Sigma Academy",
+    description: "Temas avanzados de arquitectura, integración de IA y escalabilidad de software para equipos técnicos y product builders.",
+  },
+};
+
 
 const sidebarSections = [
   {
