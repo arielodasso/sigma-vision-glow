@@ -49,18 +49,32 @@ export const Outro: React.FC = () => {
               opacity: ringOp,
             }}
           />
-          <Img
-            src={staticFile("images/isologo.png")}
-            alt="Sigma Tecnologías"
+          <div
             style={{
               width: logoSize,
               height: logoSize,
-              objectFit: "contain",
+              borderRadius: logoSize * 0.22,
+              background: "#ffffff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden",
               opacity: interpolate(logoS, [0, 1], [0, 1]),
               transform: `scale(${interpolate(logoS, [0, 1], [0.82, 1])})`,
               filter: `blur(${interpolate(logoS, [0, 0.6, 1], [14, 2, 0])}px)`,
             }}
-          />
+          >
+            <Img
+              src={staticFile("images/isologo-2026.png")}
+              alt="Sigma Tecnologías"
+              style={{
+                width: logoSize * 0.78,
+                height: logoSize * 0.78,
+                objectFit: "contain",
+              }}
+            />
+          </div>
+
         </div>
 
         <div
