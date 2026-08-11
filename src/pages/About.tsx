@@ -1,4 +1,6 @@
+import { Helmet } from "react-helmet-async";
 import Navbar from "@/components/Navbar";
+
 import FooterSection from "@/components/FooterSection";
 import ContactSection from "@/components/ContactSection";
 import { useTranslation } from "@/i18n/useTranslation";
