@@ -89,8 +89,20 @@ const AcademyLayout = () => {
     </>
   );
 
+  const meta = academyMeta[location.pathname] ?? academyMeta["/academy"];
+
   return (
     <div className="min-h-screen bg-background flex">
+      <Helmet>
+        <title>{meta.title}</title>
+        <meta name="description" content={meta.description} />
+        <link rel="canonical" href={`https://www.sigmatecnologiasarg.com${meta.path}`} />
+        <meta property="og:title" content={meta.title} />
+        <meta property="og:description" content={meta.description} />
+        <meta property="og:url" content={`https://www.sigmatecnologiasarg.com${meta.path}`} />
+        <meta property="og:type" content="website" />
+      </Helmet>
+
       {/* Desktop sidebar */}
       <aside className="hidden lg:flex flex-col w-60 border-r border-border fixed top-0 left-0 h-screen overflow-y-auto">
         <SidebarContent />
