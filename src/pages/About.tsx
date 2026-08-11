@@ -41,6 +41,16 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Contacto | Sigma Tecnologías</title>
+        <meta name="description" content="Hablemos de tu proyecto: software a medida, plataformas digitales y automatización con IA. Contactá directo con Ariel Odasso, fundador de Sigma Tecnologías." />
+        <link rel="canonical" href="https://www.sigmatecnologiasarg.com/contacto" />
+        <meta property="og:title" content="Contacto | Sigma Tecnologías" />
+        <meta property="og:description" content="Hablemos de tu proyecto: software a medida, plataformas digitales y automatización con inteligencia artificial." />
+        <meta property="og:url" content="https://www.sigmatecnologiasarg.com/contacto" />
+        <meta property="og:type" content="website" />
+      </Helmet>
+
       <Navbar />
 
       {/* Hero */}
