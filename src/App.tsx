@@ -16,6 +16,7 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import BudgetsList from "./pages/admin/BudgetsList";
 import BudgetEditor from "./pages/admin/BudgetEditor";
 import ContactSubmissions from "./pages/admin/ContactSubmissions";
+import Quoter from "./pages/admin/Quoter";
 import BudgetView from "./pages/BudgetView";
 import AcademyLayout from "./pages/AcademyLayout";
 import AcademyHome from "./pages/academy/AcademyHome";
@@ -56,6 +57,7 @@ const App = () => (
               <Route path="presupuestos/nuevo" element={<BudgetEditor />} />
               <Route path="presupuestos/:id" element={<BudgetEditor />} />
               <Route path="contactos" element={<ContactSubmissions />} />
+              <Route path="cotizador" element={<Quoter />} />
             </Route>
             <Route path="/academy" element={<AcademyLayout />}>
               <Route index element={<AcademyHome />} />
