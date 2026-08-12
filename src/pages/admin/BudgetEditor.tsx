@@ -28,7 +28,7 @@ const BudgetEditor = () => {
   const { toast } = useToast();
   const location = useLocation();
   const prefill = (location.state as any)?.prefill as
-    | { clientName?: string; items?: Item[]; workType?: string; scope?: string }
+    | { clientName?: string; items?: Item[]; workType?: string; scope?: string; deliveryTime?: string }
     | undefined;
 
 
@@ -57,6 +57,7 @@ const BudgetEditor = () => {
         if (prefill.workType) setWorkType(prefill.workType);
         if (prefill.scope) setScope(prefill.scope);
         if (prefill.items?.length) setItems(prefill.items);
+        if (prefill.deliveryTime) setDeliveryTime(prefill.deliveryTime);
       }
       return;
     }
