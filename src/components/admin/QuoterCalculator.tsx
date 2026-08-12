@@ -94,7 +94,7 @@ const QuoterCalculator = ({ onApply, applyLabel, showClientField = true }: Props
   const marginMult = 1 + (Number(params.margin) || 0) / 100;
   const riskMult = 1 + (Number(params.risk) || 0) / 100;
   const factor = REGIONS[params.region].factor;
-  const effectiveDevRate = devCost * riskMult * marginMult * factor;
+  const effectiveDevRate = devCost * marginMult * factor;
 
   const rows = useMemo(
     () =>
