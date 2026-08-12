@@ -229,6 +229,37 @@ const BudgetEditor = () => {
         </div>
       )}
 
+      <div className="mb-8 border border-foreground/[0.08] rounded-2xl overflow-hidden">
+        <button
+          type="button"
+          onClick={() => setCalcOpen((v) => !v)}
+          className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-foreground/[0.03] transition-colors"
+        >
+          <Calculator size={16} className="text-foreground/60" />
+          <span className="text-sm font-semibold text-foreground">Calculadora interna de horas</span>
+          <ChevronDown
+            size={16}
+            className={`ml-auto text-foreground/40 transition-transform ${calcOpen ? "rotate-180" : ""}`}
+          />
+        </button>
+        {calcOpen && (
+          <div className="px-5 pb-5 pt-1 border-t border-foreground/[0.06]">
+            <QuoterCalculator
+              showClientField={false}
+              applyLabel="Aplicar al presupuesto"
+              onApply={(p) => {
+                if (p.items?.length) setItems(p.items);
+                if (p.scope) setScope(p.scope);
+                if (p.workType && !workType) setWorkType(p.workType);
+                if (p.deliveryTime) setDeliveryTime(p.deliveryTime);
+                setCalcOpen(false);
+                toast({ title: "Datos aplicados al presupuesto" });
+              }}
+            />
+          </div>
+        )}
+      </div>
+
       <form onSubmit={handleSubmit} className="space-y-5">
         <Field label="Estado">
           <select
