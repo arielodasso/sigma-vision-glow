@@ -2,7 +2,8 @@ import { FormEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, ExternalLink, Copy, Plus, X } from "lucide-react";
+import { ArrowLeft, ExternalLink, Copy, Plus, X, Calculator, ChevronDown } from "lucide-react";
+import QuoterCalculator from "@/components/admin/QuoterCalculator";
 
 const inputClass =
   "w-full bg-card border border-foreground/[0.08] rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-foreground/25 focus:outline-none focus:border-foreground/20 transition-colors";
@@ -27,7 +28,7 @@ const BudgetEditor = () => {
   const { toast } = useToast();
   const location = useLocation();
   const prefill = (location.state as any)?.prefill as
-    | { clientName?: string; items?: Item[]; workType?: string; scope?: string }
+    | { clientName?: string; items?: Item[]; workType?: string; scope?: string; deliveryTime?: string }
     | undefined;
 
 
@@ -46,6 +47,7 @@ const BudgetEditor = () => {
   const [monthlyCost, setMonthlyCost] = useState("");
   const [status, setStatus] = useState<Status>("draft");
   const [acceptedAt, setAcceptedAt] = useState<string | null>(null);
+  const [calcOpen, setCalcOpen] = useState(false);
 
   useEffect(() => {
     if (isNew) {
@@ -55,6 +57,7 @@ const BudgetEditor = () => {
         if (prefill.workType) setWorkType(prefill.workType);
         if (prefill.scope) setScope(prefill.scope);
         if (prefill.items?.length) setItems(prefill.items);
+        if (prefill.deliveryTime) setDeliveryTime(prefill.deliveryTime);
       }
       return;
     }
@@ -228,6 +231,37 @@ const BudgetEditor = () => {
           )}
         </div>
       )}
+
+      <div className="mb-8 border border-foreground/[0.08] rounded-2xl overflow-hidden">
+        <button
+          type="button"
+          onClick={() => setCalcOpen((v) => !v)}
+          className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-foreground/[0.03] transition-colors"
+        >
+          <Calculator size={16} className="text-foreground/60" />
+          <span className="text-sm font-semibold text-foreground">Calculadora interna de horas</span>
+          <ChevronDown
+            size={16}
+            className={`ml-auto text-foreground/40 transition-transform ${calcOpen ? "rotate-180" : ""}`}
+          />
+        </button>
+        {calcOpen && (
+          <div className="px-5 pb-5 pt-1 border-t border-foreground/[0.06]">
+            <QuoterCalculator
+              showClientField={false}
+              applyLabel="Aplicar al presupuesto"
+              onApply={(p) => {
+                if (p.items?.length) setItems(p.items);
+                if (p.scope) setScope(p.scope);
+                if (p.workType && !workType) setWorkType(p.workType);
+                if (p.deliveryTime) setDeliveryTime(p.deliveryTime);
+                setCalcOpen(false);
+                toast({ title: "Datos aplicados al presupuesto" });
+              }}
+            />
+          </div>
+        )}
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <Field label="Estado">
