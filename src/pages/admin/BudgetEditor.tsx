@@ -2,7 +2,8 @@ import { FormEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, ExternalLink, Copy, Plus, X } from "lucide-react";
+import { ArrowLeft, ExternalLink, Copy, Plus, X, Calculator, ChevronDown } from "lucide-react";
+import QuoterCalculator from "@/components/admin/QuoterCalculator";
 
 const inputClass =
   "w-full bg-card border border-foreground/[0.08] rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-foreground/25 focus:outline-none focus:border-foreground/20 transition-colors";
@@ -46,6 +47,7 @@ const BudgetEditor = () => {
   const [monthlyCost, setMonthlyCost] = useState("");
   const [status, setStatus] = useState<Status>("draft");
   const [acceptedAt, setAcceptedAt] = useState<string | null>(null);
+  const [calcOpen, setCalcOpen] = useState(false);
 
   useEffect(() => {
     if (isNew) {
