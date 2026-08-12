@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, ExternalLink, Copy, Plus, X } from "lucide-react";
@@ -25,6 +25,11 @@ const BudgetEditor = () => {
   const isNew = !id || id === "nuevo";
   const navigate = useNavigate();
   const { toast } = useToast();
+  const location = useLocation();
+  const prefill = (location.state as any)?.prefill as
+    | { clientName?: string; items?: Item[]; workType?: string; scope?: string }
+    | undefined;
+
 
   const [loading, setLoading] = useState(!isNew);
   const [saving, setSaving] = useState(false);
@@ -45,6 +50,12 @@ const BudgetEditor = () => {
   useEffect(() => {
     if (isNew) {
       setSlug(randomSlug());
+      if (prefill) {
+        if (prefill.clientName) setClientName(prefill.clientName);
+        if (prefill.workType) setWorkType(prefill.workType);
+        if (prefill.scope) setScope(prefill.scope);
+        if (prefill.items?.length) setItems(prefill.items);
+      }
       return;
     }
     (async () => {
