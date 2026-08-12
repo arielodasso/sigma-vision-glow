@@ -50,6 +50,12 @@ const BudgetEditor = () => {
   useEffect(() => {
     if (isNew) {
       setSlug(randomSlug());
+      if (prefill) {
+        if (prefill.clientName) setClientName(prefill.clientName);
+        if (prefill.workType) setWorkType(prefill.workType);
+        if (prefill.scope) setScope(prefill.scope);
+        if (prefill.items?.length) setItems(prefill.items);
+      }
       return;
     }
     (async () => {
