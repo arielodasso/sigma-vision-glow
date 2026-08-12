@@ -36,11 +36,11 @@ const DEFAULT_PARAMS: Params = {
 const STORAGE_KEY = "sigma_cotizador_params";
 
 const PRESETS: { label: string; name: string; dev: number; qa: number }[] = [
-  { label: "Sitio Web / Landing Dinámica", name: "Sitio Web / Landing Dinámica", dev: 15, qa: 3 },
-  { label: "MVP SaaS / Web App", name: "MVP SaaS / Web App", dev: 40, qa: 10 },
-  { label: "Sistema de Gestión / Dashboard B2B", name: "Sistema de Gestión / Dashboard B2B", dev: 60, qa: 15 },
-  { label: "Software a Medida Complejo", name: "Software a Medida Complejo", dev: 100, qa: 20 },
-  { label: "Bot / Automatización / IA", name: "Bot / Automatización / IA", dev: 20, qa: 5 },
+  { label: "Landing Page / Sitio Web", name: "Landing Page / Sitio Web", dev: 15, qa: 5 },
+  { label: "Bot / Automatización IA", name: "Bot / Automatización IA", dev: 20, qa: 5 },
+  { label: "Panel Admin / Dashboard", name: "Panel Admin / Dashboard", dev: 40, qa: 10 },
+  { label: "MVP SaaS / Web App", name: "MVP SaaS / Web App", dev: 100, qa: 30 },
+  { label: "Plataforma / App Compleja", name: "Plataforma / App Compleja", dev: 200, qa: 80 },
 ];
 
 const uid = () => Math.random().toString(36).slice(2, 9);
