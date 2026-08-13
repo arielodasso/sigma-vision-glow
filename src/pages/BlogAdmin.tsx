@@ -379,6 +379,26 @@ const BlogAdmin = () => {
           })()}
         </div>
       </div>
+
+      {showMedia && (
+        <div className="fixed inset-0 z-50 bg-background/90 backdrop-blur-sm p-4 sm:p-8 overflow-y-auto">
+          <div className="max-w-4xl mx-auto bg-card border border-foreground/[0.08] rounded-2xl p-6">
+            <div className="flex items-start justify-between mb-5">
+              <div>
+                <h3 className="font-display text-lg font-semibold text-foreground">Biblioteca multimedia</h3>
+                <p className="text-xs text-foreground/40 mt-1">Elegí un archivo para usarlo como portada.</p>
+              </div>
+              <button onClick={() => setShowMedia(false)} className="text-foreground/40 hover:text-foreground">
+                <X size={18} />
+              </button>
+            </div>
+            <MediaLibrary
+              compact
+              onSelect={(asset) => { setImageUrl(asset.url); setShowMedia(false); }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
