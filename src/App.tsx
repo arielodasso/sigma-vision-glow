@@ -60,6 +60,8 @@ const App = () => (
               <Route path="presupuestos/:id" element={<BudgetEditor />} />
               <Route path="contactos" element={<ContactSubmissions />} />
               <Route path="cotizador" element={<Quoter />} />
+              <Route path="multimedia" element={<Media />} />
+              <Route path="seo" element={<SeoDashboard />} />
             </Route>
             <Route path="/academy" element={<AcademyLayout />}>
               <Route index element={<AcademyHome />} />
