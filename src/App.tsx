@@ -17,6 +17,8 @@ import BudgetsList from "./pages/admin/BudgetsList";
 import BudgetEditor from "./pages/admin/BudgetEditor";
 import ContactSubmissions from "./pages/admin/ContactSubmissions";
 import Quoter from "./pages/admin/Quoter";
+import Media from "./pages/admin/Media";
+import SeoDashboard from "./pages/admin/SeoDashboard";
 import BudgetView from "./pages/BudgetView";
 import AcademyLayout from "./pages/AcademyLayout";
 import AcademyHome from "./pages/academy/AcademyHome";
