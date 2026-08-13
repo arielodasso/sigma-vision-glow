@@ -89,7 +89,7 @@ const About = () => {
             >
               <div className="glass-card rounded-2xl p-8 lg:p-10">
                 <div className="w-20 h-20 rounded-2xl overflow-hidden border border-foreground/[0.06] mb-6">
-                  <img src={arielPhoto.url} alt="Ariel Odasso" className="w-full h-full object-cover" />
+                  <img loading="lazy" decoding="async" src={arielPhoto.url} alt="Ariel Odasso" className="w-full h-full object-cover" />
                 </div>
                 <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-1">{t.about.founder}</h3>
                 <p className="text-sm text-foreground/40 mb-5">{t.about.founderRole}</p>

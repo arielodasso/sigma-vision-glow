@@ -44,6 +44,8 @@ const ClientsCarousel = ({ clients, speed = 40 }: Props) => {
             >
               {c.logo ? (
                 <img
+                          loading="lazy"
+                          decoding="async"
                   src={c.logo}
                   alt={c.name}
                   loading="lazy"

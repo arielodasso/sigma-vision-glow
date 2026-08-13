@@ -147,6 +147,8 @@ const ProjectsSection = () => {
                           className={`h-24 w-full sm:w-40 shrink-0 rounded-2xl border transition-all duration-300 flex items-center justify-center px-4 ${logoCardClass}`}
                         >
                           <img
+                          loading="lazy"
+                          decoding="async"
                             src={meta.logo}
                             alt={project.name}
                             loading="lazy"
@@ -241,6 +243,8 @@ const ProjectsSection = () => {
                           className={`h-24 w-full sm:w-40 shrink-0 rounded-2xl border transition-all duration-300 flex items-center justify-center overflow-hidden ${logoCardClass}`}
                         >
                           <img
+                          loading="lazy"
+                          decoding="async"
                             src={meta.logo}
                             alt={project.name}
                             loading="lazy"

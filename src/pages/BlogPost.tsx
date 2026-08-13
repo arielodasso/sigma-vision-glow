@@ -176,6 +176,8 @@ const BlogPost = () => {
               className="mb-12"
             >
               <img
+                          loading="lazy"
+                          decoding="async"
                 src={post.image_url}
                 alt={post.title}
                 className="w-full rounded-2xl aspect-[21/9] object-cover"
@@ -208,7 +210,7 @@ const BlogPost = () => {
                 >
                   {r.image_url && (
                     <div className="aspect-video overflow-hidden">
-                      <img src={r.image_url} alt={r.title} className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500" />
+                      <img loading="lazy" decoding="async" src={r.image_url} alt={r.title} className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500" />
                     </div>
                   )}
                   <div className="p-5">
