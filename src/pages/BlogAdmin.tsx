@@ -218,8 +218,26 @@ const BlogAdmin = () => {
             <textarea required value={content} onChange={(e) => setContent(e.target.value)} rows={10} className={inputClass} placeholder="<p>Contenido del artículo...</p>" />
           </div>
           <div>
-            <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Imagen de portada (URL)</label>
-            <input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} className={inputClass} placeholder="https://..." />
+            <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Imagen de portada</label>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} className={inputClass} placeholder="https://... o elegí de la biblioteca" />
+              <button
+                type="button"
+                onClick={() => setShowMedia(true)}
+                className="shrink-0 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-foreground/10 text-sm text-foreground/70 hover:text-foreground hover:bg-foreground/[0.04] transition-colors"
+              >
+                <ImageIcon size={14} /> Biblioteca
+              </button>
+            </div>
+            {imageUrl && (
+              <div className="mt-3 rounded-xl overflow-hidden border border-foreground/[0.08] max-w-xs">
+                {/\.(mp4|webm|mov)(\?|$)/i.test(imageUrl) ? (
+                  <video src={imageUrl} className="w-full aspect-video object-cover" muted playsInline controls />
+                ) : (
+                  <img src={imageUrl} alt="Vista previa de portada" loading="lazy" className="w-full aspect-video object-cover" />
+                )}
+              </div>
+            )}
           </div>
           <div>
             <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Categoría</label>
