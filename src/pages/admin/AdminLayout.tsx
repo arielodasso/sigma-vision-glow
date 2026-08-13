@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { FileText, Receipt, Mail, Calculator, LogOut, Menu, X } from "lucide-react";
+import { FileText, Receipt, Mail, Calculator, LogOut, Menu, X, Image as ImageIcon, BarChart3 } from "lucide-react";
 import BlogAdminLogin from "@/components/BlogAdminLogin";
 import sigmaIsologo from "@/assets/brand/sigma-isologo-2.png.asset.json";
 
