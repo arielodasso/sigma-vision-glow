@@ -79,6 +79,14 @@ const AdminLayout = () => {
               <Calculator size={16} />
               Cotizador
             </NavLink>
+            <NavLink to="/admin/multimedia" className={linkClass}>
+              <ImageIcon size={16} />
+              Multimedia
+            </NavLink>
+            <NavLink to="/admin/seo" className={linkClass}>
+              <BarChart3 size={16} />
+              SEO
+            </NavLink>
             <NavLink to="/admin/contactos" className={linkClass}>
               <Mail size={16} />
               Contactos
