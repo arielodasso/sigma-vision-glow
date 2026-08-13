@@ -147,9 +147,10 @@ const ProjectsSection = () => {
                           className={`h-24 w-full sm:w-40 shrink-0 rounded-2xl border transition-all duration-300 flex items-center justify-center px-4 ${logoCardClass}`}
                         >
                           <img
+                          loading="lazy"
+                          decoding="async"
                             src={meta.logo}
                             alt={project.name}
-                            loading="lazy"
                             className="max-h-14 max-w-full object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
                           />
                         </div>
@@ -241,9 +242,10 @@ const ProjectsSection = () => {
                           className={`h-24 w-full sm:w-40 shrink-0 rounded-2xl border transition-all duration-300 flex items-center justify-center overflow-hidden ${logoCardClass}`}
                         >
                           <img
+                          loading="lazy"
+                          decoding="async"
                             src={meta.logo}
                             alt={project.name}
-                            loading="lazy"
                             className="h-[150%] w-[150%] object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
                           />
                         </div>

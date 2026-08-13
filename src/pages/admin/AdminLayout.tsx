@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { FileText, Receipt, Mail, Calculator, LogOut, Menu, X } from "lucide-react";
+import { FileText, Receipt, Mail, Calculator, LogOut, Menu, X, Image as ImageIcon, BarChart3 } from "lucide-react";
 import BlogAdminLogin from "@/components/BlogAdminLogin";
 import sigmaIsologo from "@/assets/brand/sigma-isologo-2.png.asset.json";
 
@@ -78,6 +78,14 @@ const AdminLayout = () => {
             <NavLink to="/admin/cotizador" className={linkClass}>
               <Calculator size={16} />
               Cotizador
+            </NavLink>
+            <NavLink to="/admin/multimedia" className={linkClass}>
+              <ImageIcon size={16} />
+              Multimedia
+            </NavLink>
+            <NavLink to="/admin/seo" className={linkClass}>
+              <BarChart3 size={16} />
+              SEO
             </NavLink>
             <NavLink to="/admin/contactos" className={linkClass}>
               <Mail size={16} />

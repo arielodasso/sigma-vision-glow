@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,28 +9,38 @@ import { HelmetProvider } from "react-helmet-async";
 import FloatingLanguageSelector from "@/components/FloatingLanguageSelector";
 import CursorHalo from "@/components/CursorHalo";
 import Index from "./pages/Index";
-import About from "./pages/About";
-import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogPost";
-import BlogAdmin from "./pages/BlogAdmin";
-import AdminLayout from "./pages/admin/AdminLayout";
-import BudgetsList from "./pages/admin/BudgetsList";
-import BudgetEditor from "./pages/admin/BudgetEditor";
-import ContactSubmissions from "./pages/admin/ContactSubmissions";
-import Quoter from "./pages/admin/Quoter";
-import BudgetView from "./pages/BudgetView";
-import AcademyLayout from "./pages/AcademyLayout";
-import AcademyHome from "./pages/academy/AcademyHome";
-import AcademyGuides from "./pages/academy/AcademyGuides";
-import AcademyVideos from "./pages/academy/AcademyVideos";
-import AcademyTemplates from "./pages/academy/AcademyTemplates";
-import AcademyUseCases from "./pages/academy/AcademyUseCases";
-import AcademyAdvanced from "./pages/academy/AcademyAdvanced";
-import NotFound from "./pages/NotFound";
-import OAuthConsent from "./pages/OAuthConsent";
-import ThankYou from "./pages/ThankYou";
 
-const queryClient = new QueryClient();
+// Rutas no críticas: se cargan bajo demanda para acelerar la primera carga.
+const About = lazy(() => import("./pages/About"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
+const BlogAdmin = lazy(() => import("./pages/BlogAdmin"));
+const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
+const BudgetsList = lazy(() => import("./pages/admin/BudgetsList"));
+const BudgetEditor = lazy(() => import("./pages/admin/BudgetEditor"));
+const ContactSubmissions = lazy(() => import("./pages/admin/ContactSubmissions"));
+const Quoter = lazy(() => import("./pages/admin/Quoter"));
+const Media = lazy(() => import("./pages/admin/Media"));
+const SeoDashboard = lazy(() => import("./pages/admin/SeoDashboard"));
+const BudgetView = lazy(() => import("./pages/BudgetView"));
+const AcademyLayout = lazy(() => import("./pages/AcademyLayout"));
+const AcademyHome = lazy(() => import("./pages/academy/AcademyHome"));
+const AcademyGuides = lazy(() => import("./pages/academy/AcademyGuides"));
+const AcademyVideos = lazy(() => import("./pages/academy/AcademyVideos"));
+const AcademyTemplates = lazy(() => import("./pages/academy/AcademyTemplates"));
+const AcademyUseCases = lazy(() => import("./pages/academy/AcademyUseCases"));
+const AcademyAdvanced = lazy(() => import("./pages/academy/AcademyAdvanced"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
+const ThankYou = lazy(() => import("./pages/ThankYou"));
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { staleTime: 5 * 60 * 1000, gcTime: 30 * 60 * 1000, refetchOnWindowFocus: false, retry: 1 },
+  },
+});
+
+const RouteFallback = () => <div className="min-h-screen bg-background" aria-hidden="true" />;
 
 const App = () => (
   <HelmetProvider>
@@ -41,6 +52,7 @@ const App = () => (
         <BrowserRouter>
           <FloatingLanguageSelector />
           <CursorHalo />
+          <Suspense fallback={<RouteFallback />}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/contacto" element={<About />} />
@@ -58,6 +70,8 @@ const App = () => (
               <Route path="presupuestos/:id" element={<BudgetEditor />} />
               <Route path="contactos" element={<ContactSubmissions />} />
               <Route path="cotizador" element={<Quoter />} />
+              <Route path="multimedia" element={<Media />} />
+              <Route path="seo" element={<SeoDashboard />} />
             </Route>
             <Route path="/academy" element={<AcademyLayout />}>
               <Route index element={<AcademyHome />} />
@@ -70,6 +84,7 @@ const App = () => (
             <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </Suspense>
         </BrowserRouter>
         </TooltipProvider>
       </LanguageProvider>

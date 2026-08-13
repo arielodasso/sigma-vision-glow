@@ -161,6 +161,42 @@ export type Database = {
         }
         Relationships: []
       }
+      media_assets: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          kind: string
+          mime_type: string | null
+          name: string
+          path: string
+          size_bytes: number | null
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          kind?: string
+          mime_type?: string | null
+          name: string
+          path: string
+          size_bytes?: number | null
+          url: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          kind?: string
+          mime_type?: string | null
+          name?: string
+          path?: string
+          size_bytes?: number | null
+          url?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string

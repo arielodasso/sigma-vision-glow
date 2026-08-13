@@ -119,6 +119,8 @@ const Blog = () => {
                     {featuredPost.image_url && (
                       <div className="aspect-[16/10] lg:aspect-auto lg:min-h-[360px] overflow-hidden">
                         <img
+                          loading="lazy"
+                          decoding="async"
                           src={featuredPost.image_url}
                           alt={featuredPost.title}
                           className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700"
@@ -174,6 +176,8 @@ const Blog = () => {
                         {post.image_url && (
                           <div className="aspect-[16/10] overflow-hidden">
                             <img
+                          loading="lazy"
+                          decoding="async"
                               src={post.image_url}
                               alt={post.title}
                               className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
