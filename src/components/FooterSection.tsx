@@ -46,7 +46,7 @@ const FooterSection = () => {
                 className="h-8 w-8 object-contain"
               />
               <span className="font-display text-base font-bold text-foreground tracking-tight">
-                {t.footer.brand}<span className="font-medium text-foreground/50">{t.footer.brandSuffix}</span>
+                {t.footer.brand}<span className="font-bold text-foreground/50">{t.footer.brandSuffix}</span>
               </span>
             </Link>
           </div>

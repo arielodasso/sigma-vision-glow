@@ -55,7 +55,7 @@ const AdminLayout = () => {
             <NavLink to="/admin/blog" className="flex items-center gap-2.5 min-w-0">
               <img src={sigmaIsologo.url} alt="Isologo Sigma Tecnologías" className="h-8 w-8 object-contain shrink-0" />
               <span className="font-display text-sm font-bold text-foreground tracking-tight truncate">
-                Sigma<span className="font-medium text-foreground/50">Tecnologías</span>
+                Sigma<span className="font-bold text-foreground/50">Tecnologías</span>
               </span>
             </NavLink>
             <button onClick={() => setOpen(false)} className="lg:hidden text-foreground/50">

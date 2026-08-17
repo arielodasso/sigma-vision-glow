@@ -88,7 +88,7 @@ export const Outro: React.FC = () => {
             textAlign: "center",
           }}
         >
-          Sigma <span style={{ color: C.muted, fontWeight: 700 }}>Tecnologías</span>
+          Sigma <span style={{ color: C.muted, fontWeight: 800 }}>Tecnologías</span>
         </div>
 
         <div

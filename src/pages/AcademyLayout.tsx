@@ -78,7 +78,7 @@ const AcademyLayout = () => {
       <Link to="/academy" className="flex items-center gap-3 px-4 pt-6 pb-8">
         <img src={sigmaIsologo.url} alt="Isologo Sigma Tecnologías" className="h-8 w-8 object-contain" />
         <span className="font-display text-sm font-bold text-foreground tracking-tight">
-          Sigma <span className="font-medium text-foreground/50">Academy</span>
+          Sigma <span className="font-bold text-foreground/50">Academy</span>
         </span>
       </Link>
 
@@ -153,7 +153,7 @@ const AcademyLayout = () => {
             <span className="text-background font-display font-bold text-xs">Σ</span>
           </div>
           <span className="font-display text-sm font-bold text-foreground">
-            Sigma <span className="font-medium text-foreground/50">Academy</span>
+            Sigma <span className="font-bold text-foreground/50">Academy</span>
           </span>
         </Link>
       </div>
