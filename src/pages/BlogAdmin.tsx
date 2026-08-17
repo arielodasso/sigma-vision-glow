@@ -87,17 +87,26 @@ const BlogAdmin = () => {
     };
 
     try {
-      if (editing) {
-        await supabase.from("blog_posts").update(postData as any).eq("id", editing.id);
-        toast({ title: "Artículo actualizado" });
-      } else {
-        await supabase.from("blog_posts").insert(postData as any);
-        toast({ title: "Artículo creado" });
+      const { error } = editing
+        ? await supabase.from("blog_posts").update(postData as any).eq("id", editing.id)
+        : await supabase.from("blog_posts").insert(postData as any);
+
+      if (error) {
+        toast({
+          title: "No se pudo guardar el artículo",
+          description: error.message.includes("row-level security")
+            ? "Tu cuenta no tiene permisos de administrador para editar el blog."
+            : error.message,
+          variant: "destructive",
+        });
+        return;
       }
+
+      toast({ title: editing ? "Artículo actualizado" : "Artículo creado" });
       resetForm();
       fetchPosts();
-    } catch {
-      toast({ title: "Error", variant: "destructive" });
+    } catch (err) {
+      toast({ title: "Error", description: (err as Error).message, variant: "destructive" });
     } finally {
       setSaving(false);
     }
@@ -105,17 +114,25 @@ const BlogAdmin = () => {
 
   const deletePost = async (id: string) => {
     if (!confirm("¿Eliminar este artículo?")) return;
-    await supabase.from("blog_posts").delete().eq("id", id);
+    const { error } = await supabase.from("blog_posts").delete().eq("id", id);
+    if (error) {
+      toast({ title: "No se pudo eliminar", description: error.message, variant: "destructive" });
+      return;
+    }
     fetchPosts();
     toast({ title: "Artículo eliminado" });
   };
 
   const togglePublish = async (post: BlogPost) => {
     const newPublished = !post.published;
-    await supabase.from("blog_posts").update({
+    const { error } = await supabase.from("blog_posts").update({
       published: newPublished,
       published_at: newPublished ? new Date().toISOString() : null,
     } as any).eq("id", post.id);
+    if (error) {
+      toast({ title: "No se pudo cambiar el estado", description: error.message, variant: "destructive" });
+      return;
+    }
     fetchPosts();
   };
 
