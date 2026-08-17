@@ -68,7 +68,7 @@ const Navbar = () => {
               className="h-8 w-8 object-contain"
             />
             <span className="font-display text-base font-bold text-foreground tracking-tight">
-              Sigma<span className="font-medium text-foreground/50">Tecnologías</span>
+              Sigma<span className="font-bold text-foreground/50">Tecnologías</span>
             </span>
           </Link>
 

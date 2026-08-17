@@ -100,7 +100,7 @@ const AcademyAdvanced = () => {
             </div>
             <h3 className="font-display font-bold text-foreground text-sm">{topic.title}</h3>
             <p className="mt-2 text-xs text-muted-foreground leading-relaxed">{topic.desc}</p>
-            <span className="inline-flex items-center gap-1 mt-3 text-xs font-medium text-foreground/50 group-hover:text-foreground">
+            <span className="inline-flex items-center gap-1 mt-3 text-xs font-bold text-foreground/50 group-hover:text-foreground">
               Ver documentación →
             </span>
           </motion.a>

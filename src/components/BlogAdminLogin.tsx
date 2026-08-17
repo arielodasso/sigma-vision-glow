@@ -35,7 +35,7 @@ const BlogAdminLogin = () => {
           <div className="flex items-center justify-center gap-3 mb-5">
             <img src={sigmaIsologo.url} alt="Isologo Sigma Tecnologías" className="h-9 w-9 object-contain" />
             <span className="font-display text-base font-bold text-foreground tracking-tight">
-              Sigma<span className="font-medium text-foreground/50">Tecnologías</span>
+              Sigma<span className="font-bold text-foreground/50">Tecnologías</span>
             </span>
           </div>
           <h1 className="font-display text-xl font-bold text-foreground">Panel de administración</h1>

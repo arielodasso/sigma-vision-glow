@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 const inputClass =
   "w-full bg-card border border-foreground/[0.08] rounded-xl px-4 py-2.5 text-sm text-foreground placeholder:text-foreground/25 focus:outline-none focus:border-foreground/20 transition-colors";
 
-const labelClass = "block text-xs font-medium text-foreground/50 mb-1.5";
+const labelClass = "block text-xs font-bold text-foreground/50 mb-1.5";
 
 export type Region = "ar" | "latam" | "us";
 
