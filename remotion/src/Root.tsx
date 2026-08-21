@@ -1,7 +1,9 @@
 import { Composition } from "remotion";
 import { MainVideo } from "./MainVideo";
 import { Outro } from "./Outro";
+import { Testimonial, TESTIMONIAL_TOTAL } from "./Testimonial";
 import { TOTAL } from "./theme";
+
 
 export const RemotionRoot = () => (
   <>
