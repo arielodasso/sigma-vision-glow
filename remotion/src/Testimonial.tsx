@@ -54,7 +54,7 @@ const FaztredPlate: React.FC<{ size: number; delay?: number }> = ({ size, delay 
       <Img
         src={staticFile("images/faztred.png")}
         alt="Faztred Industrial Solutions"
-        style={{ maxWidth: "76%", maxHeight: "62%", objectFit: "contain" }}
+        style={{ maxWidth: "86%", maxHeight: "72%", objectFit: "contain" }}
       />
     </div>
   );
