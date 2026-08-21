@@ -24,6 +24,22 @@ export const RemotionRoot = () => (
       height={1920}
     />
     <Composition
+      id="testimonial-vertical"
+      component={Testimonial}
+      durationInFrames={TESTIMONIAL_TOTAL}
+      fps={30}
+      width={1080}
+      height={1920}
+    />
+    <Composition
+      id="testimonial"
+      component={Testimonial}
+      durationInFrames={TESTIMONIAL_TOTAL}
+      fps={30}
+      width={1920}
+      height={1080}
+    />
+    <Composition
       id="outro"
       component={Outro}
       durationInFrames={195}
