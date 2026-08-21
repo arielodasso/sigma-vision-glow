@@ -6,13 +6,8 @@ import {
   useVideoConfig,
   interpolate,
   spring,
-  Sequence,
+  Series,
 } from "remotion";
-import {
-  TransitionSeries,
-  linearTiming,
-} from "@remotion/transitions";
-import { fade } from "@remotion/transitions/fade";
 import { C, fontFamily } from "./theme";
 import { PersistentBackground, Vignette } from "./components/Layers";
 import { rise, breathe } from "./components/motion";
@@ -31,17 +26,38 @@ const HIGHLIGHT = [
 
 /* ---------- shared bits ---------- */
 
-const FaztredPlate: React.FC<{ size: number; delay?: number }> = ({ size, delay = 0 }) => {
+/** Wraps a scene with its own fade in / fade out so scenes never overlap. */
+const SceneShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const frame = useCurrentFrame();
+  const { durationInFrames } = useVideoConfig();
+  const opacity =
+    interpolate(frame, [0, 12], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) *
+    interpolate(frame, [durationInFrames - 14, durationInFrames - 2], [1, 0], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    });
+  return <AbsoluteFill style={{ opacity }}>{children}</AbsoluteFill>;
+};
+
+const FaztredPlate: React.FC<{ size: number; delay?: number; animated?: boolean }> = ({
+  size,
+  delay = 0,
+  animated = true,
+}) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const s = spring({ frame: frame - delay, fps, config: { damping: 18, stiffness: 110 } });
+  const s = animated
+    ? spring({ frame: frame - delay, fps, config: { damping: 18, stiffness: 110 } })
+    : 1;
   return (
     <div
       style={{
         width: size,
-        height: size * 0.42,
+        height: size * 0.4,
         borderRadius: size * 0.09,
-        background: "#DCDDE0",
+        background: "#101114",
+        border: `1px solid ${C.line2}`,
+        boxShadow: "0 18px 60px rgba(0,0,0,0.55)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -54,7 +70,7 @@ const FaztredPlate: React.FC<{ size: number; delay?: number }> = ({ size, delay 
       <Img
         src={staticFile("images/faztred.png")}
         alt="Faztred Industrial Solutions"
-        style={{ maxWidth: "86%", maxHeight: "72%", objectFit: "contain" }}
+        style={{ maxWidth: "84%", maxHeight: "78%", objectFit: "contain" }}
       />
     </div>
   );
@@ -107,13 +123,13 @@ const WordQuote: React.FC<{
     <div
       style={{
         fontSize,
-        lineHeight: 1.34,
+        lineHeight: 1.38,
         fontWeight: 600,
-        letterSpacing: "-0.02em",
+        letterSpacing: "-0.015em",
         color: C.dim,
         display: "flex",
         flexWrap: "wrap",
-        gap: `${fontSize * 0.14}px ${fontSize * 0.3}px`,
+        gap: `${fontSize * 0.16}px ${fontSize * 0.3}px`,
       }}
     >
       {words.map((w, i) => {
@@ -174,6 +190,7 @@ const SceneOpen: React.FC = () => {
             height: v ? 200 : 180,
             borderRadius: 40,
             background: "#ffffff",
+            boxShadow: "0 18px 60px rgba(0,0,0,0.55)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -196,7 +213,7 @@ const SceneOpen: React.FC = () => {
         >
           ×
         </div>
-        <FaztredPlate size={v ? 380 : 340} delay={16} />
+        <FaztredPlate size={v ? 400 : 360} delay={16} />
       </div>
 
       <div
@@ -233,9 +250,9 @@ const QuoteScene: React.FC<{ index: number }> = ({ index }) => {
   const { fps, width, height } = useVideoConfig();
   const v = height > width;
   const text = QUOTES[index];
-  const fontSize = v ? (index === 2 ? 54 : 48) : index === 2 ? 58 : 50;
+  const fontSize = v ? (index === 2 ? 44 : 39) : index === 2 ? 46 : 40;
 
-  const barW = interpolate(frame, [4, 40], [0, 1], { extrapolateRight: "clamp" });
+  const barW = interpolate(frame, [10, 46], [0, 1], { extrapolateRight: "clamp" });
 
   return (
     <AbsoluteFill
@@ -245,19 +262,24 @@ const QuoteScene: React.FC<{ index: number }> = ({ index }) => {
         padding: v ? "0 92px" : "0 190px",
       }}
     >
-      <div style={{ transform: `translateY(${interpolate(frame, [0, 200], [10, -14])}px)` }}>
+      <div style={{ transform: `translateY(${interpolate(frame, [0, 200], [8, -12])}px)` }}>
+        {/* Faztred logo present in every frame */}
+        <div style={{ marginBottom: v ? 30 : 26 }}>
+          <FaztredPlate size={v ? 300 : 260} delay={0} />
+        </div>
+
         <div
           style={{
             display: "flex",
             alignItems: "center",
             gap: 20,
-            ...rise(frame, fps, 0, 24),
+            ...rise(frame, fps, 8, 20),
           }}
         >
           <div style={{ height: 2, width: 54 * barW, background: C.fg, opacity: 0.6 }} />
           <span
             style={{
-              fontSize: v ? 22 : 21,
+              fontSize: v ? 21 : 20,
               letterSpacing: "0.22em",
               textTransform: "uppercase",
               color: C.dim,
@@ -270,64 +292,148 @@ const QuoteScene: React.FC<{ index: number }> = ({ index }) => {
 
         <div
           style={{
-            marginTop: v ? 46 : 40,
-            fontSize: v ? 150 : 140,
+            marginTop: v ? 30 : 26,
+            fontSize: v ? 96 : 92,
             lineHeight: 0.6,
             color: C.line2,
             fontWeight: 800,
-            opacity: interpolate(frame, [2, 26], [0, 1], { extrapolateRight: "clamp" }),
+            opacity: interpolate(frame, [10, 32], [0, 1], { extrapolateRight: "clamp" }),
           }}
         >
           “
         </div>
 
-        <div style={{ marginTop: v ? 34 : 30 }}>
+        <div style={{ marginTop: v ? 30 : 26 }}>
           <WordQuote
             text={text}
             highlight={HIGHLIGHT[index]}
             fontSize={fontSize}
-            delay={14}
-            step={v ? 2.2 : 2.2}
+            delay={20}
+            step={2.1}
           />
         </div>
       </div>
 
-      <Sequence from={0}>
-        <div
-          style={{
-            position: "absolute",
-            bottom: v ? 130 : 96,
-            left: v ? 92 : 190,
-            display: "flex",
-            gap: 12,
-            alignItems: "center",
-          }}
-        >
-          {[0, 1, 2].map((i) => (
-            <div
-              key={i}
-              style={{
-                width: i === index ? 46 : 12,
-                height: 4,
-                borderRadius: 4,
-                background: i === index ? C.fg : C.line2,
-                opacity: i === index ? 0.85 : 1,
-              }}
-            />
-          ))}
-        </div>
-      </Sequence>
+      <div
+        style={{
+          position: "absolute",
+          bottom: v ? 130 : 84,
+          left: v ? 92 : 190,
+          display: "flex",
+          gap: 12,
+          alignItems: "center",
+        }}
+      >
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            style={{
+              width: i === index ? 46 : 12,
+              height: 4,
+              borderRadius: 4,
+              background: i === index ? C.fg : C.line2,
+              opacity: i === index ? 0.85 : 1,
+            }}
+          />
+        ))}
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+const Shot: React.FC<{ file: string; delay: number; w: number; tilt: number }> = ({
+  file,
+  delay,
+  w,
+  tilt,
+}) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const s = spring({ frame: frame - delay, fps, config: { damping: 20, stiffness: 90 } });
+  const drift = Math.sin((frame - delay) * 0.03) * 6;
+  return (
+    <div
+      style={{
+        width: w,
+        borderRadius: 18,
+        overflow: "hidden",
+        border: `1px solid ${C.line2}`,
+        boxShadow: "0 30px 90px rgba(0,0,0,0.6)",
+        opacity: interpolate(s, [0, 1], [0, 1]),
+        transform: `translateY(${interpolate(s, [0, 1], [60, drift])}px) scale(${interpolate(
+          s,
+          [0, 1],
+          [0.92, 1],
+        )}) rotate(${tilt}deg)`,
+        filter: `blur(${interpolate(s, [0, 0.6, 1], [14, 2, 0])}px)`,
+      }}
+    >
+      <Img src={staticFile(`images/${file}`)} alt="faztred.com.ar" style={{ width: "100%", display: "block" }} />
+    </div>
+  );
+};
+
+const SceneWeb: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps, width, height } = useVideoConfig();
+  const v = height > width;
+
+  return (
+    <AbsoluteFill
+      style={{
+        fontFamily,
+        alignItems: "center",
+        justifyContent: "center",
+        padding: v ? "0 80px" : "0 130px",
+        gap: v ? 40 : 34,
+      }}
+    >
+      <div
+        style={{
+          ...rise(frame, fps, 0, 22),
+          fontSize: v ? 44 : 46,
+          fontWeight: 800,
+          letterSpacing: "-0.03em",
+          color: C.fg,
+          textAlign: "center",
+        }}
+      >
+        El resultado: <span style={{ color: C.muted }}>faztred.com.ar</span>
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          flexDirection: v ? "column" : "row",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: v ? 36 : 44,
+        }}
+      >
+        <Shot file="faztred-web-1.png" delay={8} w={v ? 880 : 780} tilt={v ? 0 : -1.2} />
+        <Shot file="faztred-web-3.png" delay={22} w={v ? 760 : 640} tilt={v ? 0 : 1.4} />
+      </div>
+
+      <div
+        style={{
+          ...rise(frame, fps, 34),
+          fontSize: v ? 26 : 25,
+          color: C.muted,
+          fontWeight: 600,
+          letterSpacing: "0.05em",
+          textAlign: "center",
+        }}
+      >
+        Sitio, SEO, conversiones y Google Ads
+      </div>
     </AbsoluteFill>
   );
 };
 
 const SceneClose: React.FC = () => {
   const frame = useCurrentFrame();
-  const { fps, width, height, durationInFrames } = useVideoConfig();
+  const { fps, width, height } = useVideoConfig();
   const v = height > width;
-  const out = interpolate(frame, [durationInFrames - 14, durationInFrames], [1, 0], {
-    extrapolateLeft: "clamp",
-  });
   const glow = 0.4 + Math.sin(frame * 0.07) * 0.22;
 
   return (
@@ -337,16 +443,23 @@ const SceneClose: React.FC = () => {
         alignItems: "center",
         justifyContent: "center",
         padding: v ? "0 90px" : "0 140px",
-        opacity: out,
       }}
     >
-      <div style={{ transform: breathe(frame, 4, 0.022), display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div
+        style={{
+          transform: breathe(frame, 4, 0.022),
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <div
           style={{
             width: v ? 176 : 156,
             height: v ? 176 : 156,
             borderRadius: 36,
             background: "#ffffff",
+            boxShadow: "0 18px 60px rgba(0,0,0,0.55)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -384,7 +497,7 @@ const SceneClose: React.FC = () => {
             fontWeight: 500,
           }}
         >
-          No prometemos, construimos.
+          Menos promesas. Más soluciones.
         </div>
 
         <div style={{ ...rise(frame, fps, 30), marginTop: v ? 48 : 42 }}>
@@ -426,45 +539,44 @@ const SceneClose: React.FC = () => {
 
 /* ---------- root ---------- */
 
-const T = 20;
-export const TESTIMONIAL_TOTAL = 100 + 250 + 260 + 190 + 160 - 4 * T;
+const D = [95, 215, 225, 175, 150, 165];
+export const TESTIMONIAL_TOTAL = D.reduce((a, b) => a + b, 0);
 
 export const Testimonial: React.FC = () => (
   <AbsoluteFill>
     <PersistentBackground />
-    <TransitionSeries>
-      <TransitionSeries.Sequence durationInFrames={100}>
-        <SceneOpen />
-      </TransitionSeries.Sequence>
-      <TransitionSeries.Transition
-        presentation={fade()}
-        timing={linearTiming({ durationInFrames: T })}
-      />
-      <TransitionSeries.Sequence durationInFrames={250}>
-        <QuoteScene index={0} />
-      </TransitionSeries.Sequence>
-      <TransitionSeries.Transition
-        presentation={fade()}
-        timing={linearTiming({ durationInFrames: T })}
-      />
-      <TransitionSeries.Sequence durationInFrames={260}>
-        <QuoteScene index={1} />
-      </TransitionSeries.Sequence>
-      <TransitionSeries.Transition
-        presentation={fade()}
-        timing={linearTiming({ durationInFrames: T })}
-      />
-      <TransitionSeries.Sequence durationInFrames={190}>
-        <QuoteScene index={2} />
-      </TransitionSeries.Sequence>
-      <TransitionSeries.Transition
-        presentation={fade()}
-        timing={linearTiming({ durationInFrames: T })}
-      />
-      <TransitionSeries.Sequence durationInFrames={160}>
-        <SceneClose />
-      </TransitionSeries.Sequence>
-    </TransitionSeries>
+    <Series>
+      <Series.Sequence durationInFrames={D[0]}>
+        <SceneShell>
+          <SceneOpen />
+        </SceneShell>
+      </Series.Sequence>
+      <Series.Sequence durationInFrames={D[1]}>
+        <SceneShell>
+          <QuoteScene index={0} />
+        </SceneShell>
+      </Series.Sequence>
+      <Series.Sequence durationInFrames={D[2]}>
+        <SceneShell>
+          <QuoteScene index={1} />
+        </SceneShell>
+      </Series.Sequence>
+      <Series.Sequence durationInFrames={D[3]}>
+        <SceneShell>
+          <QuoteScene index={2} />
+        </SceneShell>
+      </Series.Sequence>
+      <Series.Sequence durationInFrames={D[4]}>
+        <SceneShell>
+          <SceneWeb />
+        </SceneShell>
+      </Series.Sequence>
+      <Series.Sequence durationInFrames={D[5]}>
+        <SceneShell>
+          <SceneClose />
+        </SceneShell>
+      </Series.Sequence>
+    </Series>
     <Vignette />
   </AbsoluteFill>
 );
