@@ -11,3 +11,15 @@ verify_jwt = false
 
 [functions.generate-budget-pdf]
 verify_jwt = false
+
+[functions.team-invite]
+verify_jwt = false
+
+[functions.client-invite]
+verify_jwt = false
+
+[functions.notify-task]
+verify_jwt = false
+
+[functions.docs-signed-url]
+verify_jwt = false

@@ -127,7 +127,7 @@ Deno.serve(async (req) => {
       );
     }
 
-    const { name, email, company, message, subject, to, cc, attachments, skipDefaultRecipients } = body as Record<string, unknown>;
+    const { name, email, company, whatsapp, service, message, subject, to, cc, attachments, skipDefaultRecipients } = body as Record<string, unknown>;
 
     if (typeof name !== "string" || typeof email !== "string" || typeof message !== "string") {
       return new Response(
@@ -139,6 +139,8 @@ Deno.serve(async (req) => {
     const trimName = name.trim();
     const trimEmail = email.trim();
     const trimCompany = typeof company === "string" ? company.trim() : "";
+    const trimWhatsapp = typeof whatsapp === "string" ? whatsapp.trim() : "";
+    const trimService = typeof service === "string" ? service.trim() : "";
     const trimMessage = message.trim();
     const trimSubject = typeof subject === "string" ? subject.trim().slice(0, 200) : "";
 
@@ -170,6 +172,8 @@ Deno.serve(async (req) => {
     const safeName = sanitize(trimName);
     const safeEmail = sanitize(trimEmail);
     const safeCompany = sanitize(trimCompany);
+    const safeWhatsapp = sanitize(trimWhatsapp);
+    const safeService = sanitize(trimService);
     const safeMessage = sanitize(trimMessage);
 
     const DEFAULT_TO = ["arielodassotec@gmail.com", "contacto@sigmatecnologiasarg.com"];
@@ -200,6 +204,8 @@ Deno.serve(async (req) => {
           name: trimName,
           email: trimEmail,
           company: trimCompany || null,
+          whatsapp: trimWhatsapp || null,
+          service: trimService || null,
           message: trimMessage,
           status: "pending",
           user_agent: userAgent.slice(0, 500),
@@ -240,6 +246,14 @@ Deno.serve(async (req) => {
               <td style="padding: 8px 0; color: rgba(255,255,255,0.6); font-size: 14px;">Empresa:</td>
               <td style="padding: 8px 0; color: #ffffff; font-size: 14px;">${safeCompany}</td>
             </tr>` : ""}
+            ${safeWhatsapp ? `<tr>
+              <td style="padding: 8px 0; color: rgba(255,255,255,0.6); font-size: 14px;">WhatsApp:</td>
+              <td style="padding: 8px 0; color: #ffffff; font-size: 14px;">${safeWhatsapp}</td>
+            </tr>` : ""}
+            ${safeService ? `<tr>
+              <td style="padding: 8px 0; color: rgba(255,255,255,0.6); font-size: 14px;">Servicio:</td>
+              <td style="padding: 8px 0; color: #ffffff; font-size: 14px;">${safeService}</td>
+            </tr>` : ""}
           </table>`
           }
           <div style="margin-top: 24px; padding: 20px; background: rgba(255,255,255,0.06); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
@@ -250,7 +264,7 @@ Deno.serve(async (req) => {
     `;
 
     const finalSubject = trimSubject ||
-      `Nuevo contacto: ${trimName}${trimCompany ? ` - ${trimCompany}` : ""}`;
+      `Nuevo contacto: ${trimName}${trimCompany ? ` - ${trimCompany}` : ""}${trimService ? ` (${trimService})` : ""}`;
 
     const emailPayload: Record<string, unknown> = {
       to: toList,

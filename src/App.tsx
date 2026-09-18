@@ -12,6 +12,9 @@ import Index from "./pages/Index";
 
 // Rutas no críticas: se cargan bajo demanda para acelerar la primera carga.
 const About = lazy(() => import("./pages/About"));
+const Nosotros = lazy(() => import("./pages/Nosotros"));
+const ServicesIndex = lazy(() => import("./pages/ServicesIndex"));
+const ServicePage = lazy(() => import("./pages/ServicePage"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const BlogAdmin = lazy(() => import("./pages/BlogAdmin"));
@@ -33,6 +36,36 @@ const AcademyAdvanced = lazy(() => import("./pages/academy/AcademyAdvanced"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 const ThankYou = lazy(() => import("./pages/ThankYou"));
+
+// Admin - Tareas
+const TasksAdmin = lazy(() => import("./pages/admin/tasks/TasksAdmin"));
+// Admin - Contenidos
+const ContentBlog = lazy(() => import("./pages/admin/content/ContentBlog"));
+const ContentTestimonials = lazy(() => import("./pages/admin/content/ContentTestimonials"));
+const ContentFaqs = lazy(() => import("./pages/admin/content/ContentFaqs"));
+const ContentMedia = lazy(() => import("./pages/admin/content/ContentMedia"));
+const ContentSeo = lazy(() => import("./pages/admin/content/ContentSeo"));
+// Admin - Agenda
+const AgendaAdmin = lazy(() => import("./pages/admin/agenda/AgendaAdmin"));
+// Admin - Clientes
+const ClientsAdmin = lazy(() => import("./pages/admin/clients/ClientsAdmin"));
+const ClientBudgets = lazy(() => import("./pages/admin/clients/ClientBudgets"));
+const ClientDocuments = lazy(() => import("./pages/admin/clients/ClientDocuments"));
+const ClientInvites = lazy(() => import("./pages/admin/clients/ClientInvites"));
+const ClientPortal = lazy(() => import("./pages/admin/clients/ClientPortal"));
+// Admin - Equipo
+const TeamDirectory = lazy(() => import("./pages/admin/team/TeamDirectory"));
+const TeamRoles = lazy(() => import("./pages/admin/team/TeamRoles"));
+const TeamInvites = lazy(() => import("./pages/admin/team/TeamInvites"));
+const TeamOrgChart = lazy(() => import("./pages/admin/team/TeamOrgChart"));
+// Admin - Chat
+const TeamChat = lazy(() => import("./pages/admin/chat/TeamChat"));
+// Admin - Conocimiento
+const KnowledgeDocs = lazy(() => import("./pages/admin/knowledge/KnowledgeDocs"));
+const KnowledgeHelp = lazy(() => import("./pages/admin/knowledge/KnowledgeHelp"));
+const KnowledgePortal = lazy(() => import("./pages/admin/knowledge/KnowledgePortal"));
+// Admin - Configuración
+const SettingsAdmin = lazy(() => import("./pages/admin/settings/SettingsAdmin"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,6 +89,9 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/contacto" element={<About />} />
+            <Route path="/nosotros" element={<Nosotros />} />
+            <Route path="/servicios" element={<ServicesIndex />} />
+            <Route path="/servicios/:slug" element={<ServicePage />} />
             <Route path="/confirmacion" element={<ThankYou variant="booking" />} />
             <Route path="/confirmación" element={<ThankYou variant="booking" />} />
             <Route path="/agradecimiento" element={<ThankYou variant="contact" />} />
@@ -65,6 +101,29 @@ const App = () => (
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<BlogAdmin />} />
               <Route path="blog" element={<BlogAdmin />} />
+              <Route path="tareas" element={<TasksAdmin />} />
+              <Route path="contenidos" element={<ContentBlog />} />
+              <Route path="contenidos/blog" element={<ContentBlog />} />
+              <Route path="contenidos/testimonios" element={<ContentTestimonials />} />
+              <Route path="contenidos/faqs" element={<ContentFaqs />} />
+              <Route path="contenidos/multimedia" element={<ContentMedia />} />
+              <Route path="contenidos/seo" element={<ContentSeo />} />
+              <Route path="agenda" element={<AgendaAdmin />} />
+              <Route path="clientes" element={<ClientsAdmin />} />
+              <Route path="clientes/presupuestos" element={<ClientBudgets />} />
+              <Route path="clientes/documentos" element={<ClientDocuments />} />
+              <Route path="clientes/invitaciones" element={<ClientInvites />} />
+              <Route path="clientes/portal" element={<ClientPortal />} />
+              <Route path="equipo" element={<TeamDirectory />} />
+              <Route path="equipo/roles" element={<TeamRoles />} />
+              <Route path="equipo/invitaciones" element={<TeamInvites />} />
+              <Route path="equipo/organigrama" element={<TeamOrgChart />} />
+              <Route path="chat" element={<TeamChat />} />
+              <Route path="conocimiento" element={<KnowledgeDocs />} />
+              <Route path="conocimiento/documentos" element={<KnowledgeDocs />} />
+              <Route path="conocimiento/ayuda" element={<KnowledgeHelp />} />
+              <Route path="conocimiento/portal" element={<KnowledgePortal />} />
+              <Route path="configuracion" element={<SettingsAdmin />} />
               <Route path="presupuestos" element={<BudgetsList />} />
               <Route path="presupuestos/nuevo" element={<BudgetEditor />} />
               <Route path="presupuestos/:id" element={<BudgetEditor />} />

@@ -1,7 +1,8 @@
 const es = {
   navbar: {
     home: "Inicio",
-    solutions: "Soluciones",
+    solutions: "Servicios",
+    servicesAll: "Todos los servicios",
     caseStudies: "Casos de éxito",
     projects: "Proyectos",
     products: "Productos",
@@ -82,8 +83,12 @@ const es = {
             description: "Plataforma digital que procesa archivos y lee datos de Google Sheets para generar gráficos y visualizaciones estructuradas.",
           },
           {
-            name: "Viaja Seguro a Marruecos",
-            description: "Plataforma de viajes con panel de administración para gestionar tours y contenido estructurado.",
+            name: "Faztred",
+            description: "Plataforma digital con lógica de backend y datos estructurados.",
+          },
+          {
+            name: "Sigma Trend Engine",
+            description: "Motor de IA que analiza contenido de redes sociales y detecta tendencias emergentes para agencias de marketing. Procesa datos de múltiples plataformas y genera documentos estratégicos.",
           },
         ],
       },
@@ -159,16 +164,21 @@ const es = {
     button: "Agendar reunión",
   },
   contact: {
-    title: "Contacto",
-    subtitle: "Contanos sobre tu proyecto y te respondemos.",
+    title: "¿Querés construir tecnología para tu empresa?",
+    subtitle: "Contanos tu proyecto con una breve propuesta y agendá una reunión sin compromiso. Te respondemos con diagnósticos concretos.",
     name: "Nombre",
     namePlaceholder: "Tu nombre",
     email: "Email",
     emailPlaceholder: "tu@email.com",
     company: "Empresa",
-    companyPlaceholder: "Tu empresa (opcional)",
-    message: "Mensaje",
-    messagePlaceholder: "Contanos sobre tu proyecto...",
+    companyPlaceholder: "Tu empresa",
+    whatsapp: "WhatsApp",
+    whatsappPlaceholder: "Tu número de WhatsApp",
+    need: "Qué necesitás",
+    needPlaceholder: "Elegí el servicio",
+    additional: "Información adicional",
+    additionalPlaceholder: "Contanos brevemente sobre tu proyecto...",
+    notifyMe: "Avisame en este WhatsApp cuando me respondan",
     submit: "Enviar mensaje",
     successTitle: "¡Mensaje enviado!",
     successMessage: "Te responderemos lo antes posible.",
@@ -179,7 +189,7 @@ const es = {
   footer: {
     brand: "Sigma",
     brandSuffix: "Tecnologías",
-    solutions: "Soluciones",
+    solutions: "Servicios",
     products: "Productos",
     projects: "Proyectos",
     about: "Nosotros",
@@ -187,6 +197,15 @@ const es = {
     designedBy: "Desarrollado por",
     designerName: "Ariel Odasso",
     designerUrl: "https://arielodasso.com",
+  },
+  testimonials: {
+    title: "Lo que dicen nuestros clientes",
+    subtitle: "Experiencias reales de empresas que confiaron en nosotros.",
+  },
+  faqs: {
+    title: "Preguntas frecuentes",
+    subtitle: "Respuestas rápidas para las dudas más comunes sobre nuestros servicios y proceso.",
+    generalCategory: "General",
   },
 };
 

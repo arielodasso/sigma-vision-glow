@@ -6,10 +6,12 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import BookingModal from "./BookingModal";
+import { services } from "@/data/services";
+import { analytics } from "@/lib/analytics";
 
 const WHATSAPP_URL = "https://wa.me/5492494556374?text=Hola%2C%20vengo%20del%20sitio%20y%20quiero%20escribirles%20directamente.";
 
-type Errors = Partial<Record<"name" | "email" | "message", string>>;
+type Errors = Partial<Record<"name" | "email" | "whatsapp" | "need", string>>;
 
 const ContactSection = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -27,8 +29,8 @@ const ContactSection = () => {
     else if (data.name.trim().length > 100) e.name = "Máximo 100 caracteres";
     if (!data.email?.trim()) e.email = "Ingresá tu email";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim())) e.email = "Email inválido";
-    if (!data.message?.trim()) e.message = "Contanos sobre tu proyecto";
-    else if (data.message.trim().length > 4000) e.message = "Máximo 4000 caracteres";
+    if (data.whatsapp?.trim() && !/^[+0-9 ()-]{6,20}$/.test(data.whatsapp.trim())) e.whatsapp = "WhatsApp inválido";
+    if (!data.need?.trim()) e.need = "Elegí qué necesitás";
     return e;
   };
 
@@ -41,6 +43,8 @@ const ContactSection = () => {
       name: (formData.get("name") as string) || "",
       email: (formData.get("email") as string) || "",
       company: (formData.get("company") as string) || "",
+      whatsapp: (formData.get("whatsapp") as string) || "",
+      service: (formData.get("need") as string) || "",
       message: (formData.get("message") as string) || "",
     };
 
@@ -59,6 +63,7 @@ const ContactSection = () => {
       if (error) throw error;
       if (data && (data as { error?: string }).error) throw new Error((data as { error: string }).error);
       setSubmitted(true);
+      analytics.submitContacto(payload.service);
       toast({
         title: t.contact.successTitle,
         description: t.contact.successMessage,
@@ -123,54 +128,84 @@ const ContactSection = () => {
             </motion.div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+              <div className="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-sm font-medium text-foreground/60 mb-2">{t.contact.name}</label>
+                  <input
+                    required
+                    name="name"
+                    type="text"
+                    maxLength={100}
+                    className={`${inputBase} ${errors.name ? errorRing : ""}`}
+                    placeholder={t.contact.namePlaceholder}
+                    onChange={() => errors.name && setErrors((p) => ({ ...p, name: undefined }))}
+                  />
+                  {errors.name && <p className="mt-1.5 text-xs text-red-400">{errors.name}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-foreground/60 mb-2">{t.contact.company}</label>
+                  <input
+                    name="company"
+                    type="text"
+                    maxLength={100}
+                    className={inputBase}
+                    placeholder={t.contact.companyPlaceholder}
+                  />
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label className="block text-sm font-medium text-foreground/60 mb-2">{t.contact.email}</label>
+                  <input
+                    required
+                    name="email"
+                    type="email"
+                    maxLength={255}
+                    className={`${inputBase} ${errors.email ? errorRing : ""}`}
+                    placeholder={t.contact.emailPlaceholder}
+                    onChange={() => errors.email && setErrors((p) => ({ ...p, email: undefined }))}
+                  />
+                  {errors.email && <p className="mt-1.5 text-xs text-red-400">{errors.email}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-foreground/60 mb-2">{t.contact.whatsapp}</label>
+                  <input
+                    name="whatsapp"
+                    type="tel"
+                    maxLength={20}
+                    className={`${inputBase} ${errors.whatsapp ? errorRing : ""}`}
+                    placeholder={t.contact.whatsappPlaceholder}
+                    onChange={() => errors.whatsapp && setErrors((p) => ({ ...p, whatsapp: undefined }))}
+                  />
+                  {errors.whatsapp && <p className="mt-1.5 text-xs text-red-400">{errors.whatsapp}</p>}
+                </div>
+              </div>
               <div>
-                <label className="block text-sm font-medium text-foreground/60 mb-2">{t.contact.name}</label>
-                <input
+                <label className="block text-sm font-medium text-foreground/60 mb-2">{t.contact.need}</label>
+                <select
                   required
-                  name="name"
-                  type="text"
-                  maxLength={100}
-                  className={`${inputBase} ${errors.name ? errorRing : ""}`}
-                  placeholder={t.contact.namePlaceholder}
-                  onChange={() => errors.name && setErrors((p) => ({ ...p, name: undefined }))}
-                />
-                {errors.name && <p className="mt-1.5 text-xs text-red-400">{errors.name}</p>}
+                  name="need"
+                  defaultValue=""
+                  className={`${inputBase} ${errors.need ? errorRing : ""} bg-card`}
+                  onChange={() => errors.need && setErrors((p) => ({ ...p, need: undefined }))}
+                >
+                  <option value="" disabled>{t.contact.needPlaceholder}</option>
+                  {services.map((s) => (
+                    <option key={s.slug} value={s.slug}>{s.name}</option>
+                  ))}
+                  <option value="otro">Otro</option>
+                </select>
+                {errors.need && <p className="mt-1.5 text-xs text-red-400">{errors.need}</p>}
               </div>
               <div>
-                <label className="block text-sm font-medium text-foreground/60 mb-2">{t.contact.email}</label>
-                <input
-                  required
-                  name="email"
-                  type="email"
-                  maxLength={255}
-                  className={`${inputBase} ${errors.email ? errorRing : ""}`}
-                  placeholder={t.contact.emailPlaceholder}
-                  onChange={() => errors.email && setErrors((p) => ({ ...p, email: undefined }))}
-                />
-                {errors.email && <p className="mt-1.5 text-xs text-red-400">{errors.email}</p>}
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-foreground/60 mb-2">{t.contact.company}</label>
-                <input
-                  name="company"
-                  type="text"
-                  maxLength={100}
-                  className={inputBase}
-                  placeholder={t.contact.companyPlaceholder}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-foreground/60 mb-2">{t.contact.message}</label>
+                <label className="block text-sm font-medium text-foreground/60 mb-2">{t.contact.additional}</label>
                 <textarea
-                  required
                   name="message"
                   rows={4}
                   maxLength={4000}
-                  className={`${inputBase} resize-none ${errors.message ? errorRing : ""}`}
-                  placeholder={t.contact.messagePlaceholder}
-                  onChange={() => errors.message && setErrors((p) => ({ ...p, message: undefined }))}
+                  className={`${inputBase} resize-none`}
+                  placeholder={t.contact.additionalPlaceholder}
                 />
-                {errors.message && <p className="mt-1.5 text-xs text-red-400">{errors.message}</p>}
               </div>
 
               <button

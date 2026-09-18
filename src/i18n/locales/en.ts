@@ -1,7 +1,8 @@
 const en = {
   navbar: {
     home: "Home",
-    solutions: "Solutions",
+    solutions: "Services",
+    servicesAll: "All services",
     caseStudies: "Case studies",
     projects: "Projects",
     products: "Products",
@@ -82,8 +83,12 @@ const en = {
             description: "Digital platform that processes uploaded files and reads data from Google Sheets to generate structured charts and visualizations.",
           },
           {
-            name: "Viaja Seguro a Marruecos",
-            description: "Travel platform with backend administration panel to manage tours and structured content.",
+            name: "Faztred",
+            description: "Digital platform with backend logic and structured data.",
+          },
+          {
+            name: "Sigma Trend Engine",
+            description: "AI-powered engine that analyzes social media content and detects emerging trends for marketing agencies. Processes data from multiple platforms and generates structured strategic documents.",
           },
         ],
       },
@@ -159,16 +164,21 @@ const en = {
     button: "Book a meeting",
   },
   contact: {
-    title: "Contact",
-    subtitle: "Tell us about your project and we'll get back to you.",
+    title: "Want to build technology for your company?",
+    subtitle: "Tell us about your project and book a meeting with no commitment. We reply with concrete assessments.",
     name: "Name",
     namePlaceholder: "Your name",
     email: "Email",
     emailPlaceholder: "you@email.com",
     company: "Company",
-    companyPlaceholder: "Your company (optional)",
-    message: "Message",
-    messagePlaceholder: "Tell us about your project...",
+    companyPlaceholder: "Your company",
+    whatsapp: "WhatsApp",
+    whatsappPlaceholder: "Your WhatsApp number",
+    need: "What do you need?",
+    needPlaceholder: "Choose a service",
+    additional: "Additional information",
+    additionalPlaceholder: "Briefly tell us about your project...",
+    notifyMe: "Notify me on WhatsApp when you reply",
     submit: "Send message",
     successTitle: "Message sent!",
     successMessage: "We'll get back to you as soon as possible.",
@@ -179,7 +189,7 @@ const en = {
   footer: {
     brand: "Sigma",
     brandSuffix: "Technologies",
-    solutions: "Solutions",
+    solutions: "Services",
     products: "Products",
     projects: "Projects",
     about: "About",
@@ -187,6 +197,15 @@ const en = {
     designedBy: "Developed by",
     designerName: "Ariel Odasso",
     designerUrl: "https://arielodasso.com",
+  },
+  testimonials: {
+    title: "What our clients say",
+    subtitle: "Real experiences from companies that trusted us.",
+  },
+  faqs: {
+    title: "Frequently asked questions",
+    subtitle: "Quick answers to the most common questions about our services and process.",
+    generalCategory: "General",
   },
 };
 

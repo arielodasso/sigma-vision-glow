@@ -13,11 +13,9 @@ import calistheniaLogo from "@/assets/clients/calisthenia-online.png.asset.json"
 import perisLogo from "@/assets/clients/peris-electricidad.png.asset.json";
 import mobihunterLogo from "@/assets/clients/mobihunter.png.asset.json";
 import icebergLogo from "@/assets/platforms/iceberg.svg.asset.json";
-import marruecosLogo from "@/assets/platforms/viaja-seguro-marruecos.png.asset.json";
 import trendEngineLogo from "@/assets/platforms/sigma-trend-engine.png.asset.json";
 
 const webClients: ClientLogo[] = [
-  { name: "Faztred", url: "https://faztred.com.ar/", logo: faztredLogo.url, theme: "dark" },
   { name: "OffMarket", url: "https://www.offmarket.com.ar/", logo: offmarketLogo.url, theme: "dark" },
   { name: "Justa", url: "https://justaagencia.com/", logo: justaLogo.url, theme: "light" },
   { name: "Unidos Para Amar", url: "https://unidosparaamar.org/", logo: unidosLogo.url, theme: "light" },
@@ -31,7 +29,7 @@ const webClients: ClientLogo[] = [
 
 const platformMeta: Record<string, { url?: string; logo: string; theme: "light" | "dark" | "gray" }> = {
   "Iceberg": { url: "https://icebergpol.com/", logo: icebergLogo.url, theme: "dark" },
-  "Viaja Seguro a Marruecos": { logo: marruecosLogo.url, theme: "dark" },
+  "Faztred": { url: "https://faztred.com.ar/", logo: faztredLogo.url, theme: "dark" },
   "Sigma Trend Engine": { logo: trendEngineLogo.url, theme: "dark" },
 };
 

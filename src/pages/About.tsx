@@ -1,43 +1,46 @@
 import { Helmet } from "react-helmet-async";
 import Navbar from "@/components/Navbar";
-
 import FooterSection from "@/components/FooterSection";
 import ContactSection from "@/components/ContactSection";
-import { useTranslation } from "@/i18n/useTranslation";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Code, Palette, Wrench, Users, Headphones } from "lucide-react";
+import { ArrowRight, MessageCircle, Calendar, Mail } from "lucide-react";
 import useSmoothScroll from "@/hooks/use-smooth-scroll";
-import arielPhoto from "@/assets/ariel-odasso.jpg.asset.json";
+import BookingModal from "@/components/BookingModal";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { analytics } from "@/lib/analytics";
 
-const About = () => {
-  const { t } = useTranslation();
+const WHATSAPP_URL = "https://wa.me/5492494556374?text=Hola%2C%20vengo%20del%20sitio%20y%20quiero%20escribirles%20directamente.";
+const EMAIL_URL = "mailto:contacto@sigmatecnologiasarg.com?subject=Consulta%20desde%20el%20sitio";
+
+const Contacto = () => {
   useSmoothScroll();
+  const [bookingOpen, setBookingOpen] = useState(false);
 
-  const values = [
+  const channels = [
     {
-      icon: Code,
-      title: t.about.valuesTitles?.[0] || "Ejecución técnica",
-      desc: t.about.valuesDescs?.[0] || "Más de 5 años desarrollando soluciones reales para empresas y agencias.",
+      icon: MessageCircle,
+      title: "WhatsApp",
+      description: "Respuesta rápida, sin vueltas.",
+      href: WHATSAPP_URL,
+      external: true,
+      label: "+54 9 2494 55-6374",
     },
     {
-      icon: Palette,
-      title: t.about.valuesTitles?.[1] || "Diseño con propósito",
-      desc: t.about.valuesDescs?.[1] || "Interfaces orientadas a negocio, usabilidad y conversión.",
+      icon: Calendar,
+      title: "Reunión",
+      description: "Conversemos de tu proyecto sin compromiso.",
+      href: null,
+      external: false,
+      label: "Agendar 30 minutos",
     },
     {
-      icon: Wrench,
-      title: t.about.valuesTitles?.[2] || "Automatización",
-      desc: t.about.valuesDescs?.[2] || "Procesos optimizados con n8n, Make y herramientas modernas.",
-    },
-    {
-      icon: Users,
-      title: t.about.valuesTitles?.[3] || "Comunicación directa",
-      desc: t.about.valuesDescs?.[3] || "Trabajo codo a codo con el cliente, sin intermediarios.",
-    },
-    {
-      icon: Headphones,
-      title: t.about.valuesTitles?.[4] || "Soporte real",
-      desc: t.about.valuesDescs?.[4] || "Acompañamiento antes, durante y después de la entrega.",
+      icon: Mail,
+      title: "Email",
+      description: "Para propuestas y documentación.",
+      href: EMAIL_URL,
+      external: true,
+      label: "contacto@sigmatecnologiasarg.com",
     },
   ];
 
@@ -45,137 +48,95 @@ const About = () => {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>Contacto | Sigma Tecnologías</title>
-        <meta name="description" content="Hablemos de tu proyecto: software a medida, plataformas digitales y automatización con IA. Contactá directo con Ariel Odasso, fundador de Sigma Tecnologías." />
+        <meta name="description" content="Contanos tu proyecto con una breve propuesta y agendá una reunión sin compromiso. Software a medida, automatización e inteligencia artificial. Respuesta directa de Ariel Odasso." />
         <link rel="canonical" href="https://www.sigmatecnologiasarg.com/contacto" />
         <meta property="og:title" content="Contacto | Sigma Tecnologías" />
-        <meta property="og:description" content="Hablemos de tu proyecto: software a medida, plataformas digitales y automatización con inteligencia artificial." />
+        <meta property="og:description" content="¿Querés construir tecnología para tu empresa? Contanos tu proyecto y agendá una reunión sin compromiso." />
         <meta property="og:url" content="https://www.sigmatecnologiasarg.com/contacto" />
         <meta property="og:type" content="website" />
       </Helmet>
 
       <Navbar />
 
-      {/* Hero */}
-      <section className="pt-36 pb-16 lg:pt-44 lg:pb-24">
-        <div className="container mx-auto px-6 max-w-6xl">
+      {/* HERO */}
+      <section className="relative overflow-hidden pt-36 pb-16 lg:pt-44 lg:pb-24">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-40 -left-40 w-[700px] h-[700px] rounded-full bg-[radial-gradient(circle,rgba(226,252,3,0.02)_0%,transparent_65%)]" />
+          <div className="absolute -bottom-60 -right-40 w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(76,122,255,0.02)_0%,transparent_65%)]" />
+        </div>
+        <div className="container mx-auto px-6 max-w-6xl relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold text-gradient leading-[1.1] mb-6 max-w-4xl">
-              {t.about.title}
-            </h1>
-            <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
-
-              {t.about.description}
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-
-      {/* Founder + Values grid */}
-      <section className="section-padding">
-        <div className="container mx-auto px-6 max-w-6xl">
-          <div className="grid lg:grid-cols-5 gap-12 lg:gap-16">
-            {/* Founder card — 2 cols */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="lg:col-span-2 lg:sticky lg:top-32 lg:self-start"
-            >
-              <div className="glass-card rounded-2xl p-8 lg:p-10">
-                <div className="w-20 h-20 rounded-2xl overflow-hidden border border-foreground/[0.06] mb-6">
-                  <img loading="lazy" decoding="async" src={arielPhoto.url} alt="Ariel Odasso" className="w-full h-full object-cover" />
-                </div>
-                <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-1">{t.about.founder}</h3>
-                <p className="text-sm text-foreground/40 mb-5">{t.about.founderRole}</p>
-                <p className="text-muted-foreground leading-relaxed mb-6 text-sm">{t.about.bio}</p>
-
-                <div className="border-t border-foreground/[0.06] pt-5 mb-6">
-                  <p className="text-xs text-foreground/30 uppercase tracking-wide mb-3 font-medium">
-                    {t.about.techLabel || "Tecnologías"}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {t.about.technologies.split(", ").map((tech, i) => (
-                      <span
-                        key={i}
-                        className="text-xs text-foreground/50 bg-foreground/[0.04] border border-foreground/[0.06] rounded-full px-3 py-1"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <a
-                  href={t.about.portfolioUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors group"
-                >
-                  {t.about.portfolioLabel}
-                  <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </a>
-              </div>
-            </motion.div>
-
-            {/* Values — 3 cols */}
-            <div className="lg:col-span-3 space-y-5">
-              {values.map((v, i) => {
-                const Icon = v.icon;
-                return (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                    className="flex gap-5 p-6 rounded-xl border border-foreground/[0.04] hover:border-foreground/[0.10] hover:bg-foreground/[0.02] transition-all duration-300"
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-foreground/[0.04] border border-foreground/[0.06] flex items-center justify-center shrink-0">
-                      <Icon size={18} className="text-foreground/50" />
-                    </div>
-                    <div>
-                      <h4 className="font-display text-base font-semibold text-foreground mb-1">{v.title}</h4>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{v.desc}</p>
-                    </div>
-                  </motion.div>
-                );
-              })}
-
-              {/* Background items */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                className="glass-card rounded-2xl p-8 mt-8"
-              >
-                <h4 className="font-display text-lg font-semibold text-foreground mb-4">
-                  {t.about.experienceLabel || "Experiencia"}
-                </h4>
-                <div className="space-y-3">
-                  {t.about.background.map((item, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <div className="w-1.5 h-1.5 rounded-full bg-foreground/30 mt-2 shrink-0" />
-                      <span className="text-sm text-muted-foreground leading-relaxed">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
+            <div className="flex items-center gap-3 mb-6">
+              <span className="text-xs font-medium uppercase tracking-widest text-foreground/40">Contacto</span>
             </div>
-          </div>
+            <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold text-gradient leading-[1.1] mb-6 max-w-4xl">
+              ¿Querés construir tecnología para tu empresa?
+            </h1>
+            <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl leading-relaxed mb-10">
+              Contanos tu proyecto con una breve propuesta y agendá una reunión sin compromiso.
+              Te respondemos con diagnósticos concretos, comunicación directa y sin intermediarios.
+            </p>
+            <div className="flex flex-col sm:flex-row items-start gap-4">
+              <Link
+                to="/servicios"
+                className="flex items-center gap-2.5 bg-foreground text-background px-8 py-4 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors"
+              >
+                Ver servicios
+                <ArrowRight size={16} />
+              </Link>
+              <button
+                type="button"
+                onClick={() => { setBookingOpen(true); analytics.agendaReunion("contacto-hero"); }}
+                className="flex items-center gap-2.5 text-foreground/80 border border-foreground/10 px-8 py-4 rounded-full text-sm font-medium hover:bg-foreground/[0.04] hover:border-foreground/20 transition-all"
+              >
+                <Calendar size={16} />
+                Agendar reunión
+              </button>
+            </div>
+          </motion.div>
+
+          {/* Canales de contacto */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className="grid sm:grid-cols-3 gap-5 mt-16"
+          >
+            {channels.map((c, i) => {
+              const Icon = c.icon;
+              const inner = (
+                <div className="h-full glass-card rounded-2xl p-7 flex flex-col group-hover:bg-foreground/[0.02] transition-colors">
+                  <div className="w-10 h-10 rounded-xl bg-foreground/[0.04] border border-foreground/[0.06] flex items-center justify-center mb-5">
+                    <Icon size={18} className="text-foreground/50" />
+                  </div>
+                  <h3 className="font-display text-base font-semibold text-foreground mb-1">{c.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">{c.description}</p>
+                  <p className="text-sm font-medium text-foreground/70 mt-auto">{c.label}</p>
+                </div>
+              );
+              return c.external ? (
+                <a key={i} href={c.href} target="_blank" rel="noopener noreferrer" onClick={c.title === "WhatsApp" ? () => analytics.contacto("whatsapp") : undefined} className="group h-full">
+                  {inner}
+                </a>
+              ) : (
+                <button key={i} type="button" onClick={() => { setBookingOpen(true); analytics.agendaReunion("contacto-channels"); }} className="group text-left h-full">
+                  {inner}
+                </button>
+              );
+            })}
+          </motion.div>
         </div>
       </section>
 
       <ContactSection />
       <FooterSection />
+      <BookingModal open={bookingOpen} onClose={() => setBookingOpen(false)} />
     </div>
   );
 };
 
-export default About;
+export default Contacto;
