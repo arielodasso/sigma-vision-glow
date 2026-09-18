@@ -37,6 +37,8 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 const ThankYou = lazy(() => import("./pages/ThankYou"));
 
+// Admin - Dashboard
+const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
 // Admin - Tareas
 const TasksAdmin = lazy(() => import("./pages/admin/tasks/TasksAdmin"));
 // Admin - Contenidos
@@ -99,7 +101,7 @@ const App = () => (
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/presupuesto/:slug" element={<BudgetView />} />
             <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<BlogAdmin />} />
+              <Route index element={<Dashboard />} />
               <Route path="blog" element={<BlogAdmin />} />
               <Route path="tareas" element={<TasksAdmin />} />
               <Route path="contenidos" element={<ContentBlog />} />

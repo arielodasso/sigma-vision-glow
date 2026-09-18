@@ -58,7 +58,7 @@ const NAV_CONFIG: NavSection[] = [
     label: "Dashboard",
     icon: <LayoutDashboard size={16} />,
     href: "/admin",
-    permission: "seo.read",
+    permission: "tasks.read",
   },
   {
     label: "Tareas",
