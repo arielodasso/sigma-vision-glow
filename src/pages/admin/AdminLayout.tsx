@@ -26,6 +26,7 @@ import {
   Settings,
   ChevronDown,
   ChevronUp,
+  Mail,
 } from "lucide-react";
 import BlogAdminLogin from "@/components/BlogAdminLogin";
 import sigmaIsologo from "@/assets/brand/sigma-isologo-2.png.asset.json";
