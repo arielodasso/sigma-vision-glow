@@ -59,7 +59,7 @@ const TeamDirectory = () => {
         manager:profiles!profiles_manager_id_fkey(full_name, email)
       `)
       .order("full_name");
-    if (data) setMembers(data as TeamMember[]);
+    if (data) setMembers(data as unknown as TeamMember[]);
     setLoading(false);
   };
 

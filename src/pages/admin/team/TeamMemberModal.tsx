@@ -1,6 +1,9 @@
 import { useEffect, useState, FormEvent } from "react";
 import { X, Loader2, User, Mail, Phone, MessageCircle, Building2, Shield, Calendar } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
+
+type AppRole = Database["public"]["Enums"]["app_role"];
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "@/i18n/useTranslation";
@@ -123,7 +126,7 @@ const TeamMemberModal = ({ member, onClose, onSuccess }: TeamMemberModalProps) =
 
         await supabase.from("user_roles").delete().eq("user_id", member.id);
         if (formData.roles.length > 0) {
-          const roleInserts = formData.roles.map((r) => ({ user_id: member.id, role: r }));
+          const roleInserts = formData.roles.map((r) => ({ user_id: member.id, role: r as AppRole }));
           const { error: roleError } = await supabase.from("user_roles").insert(roleInserts);
           if (roleError) throw roleError;
         }
@@ -157,7 +160,7 @@ const TeamMemberModal = ({ member, onClose, onSuccess }: TeamMemberModalProps) =
         if (profileError) throw profileError;
 
         if (formData.roles.length > 0) {
-          const roleInserts = formData.roles.map((r) => ({ user_id: userId, role: r }));
+          const roleInserts = formData.roles.map((r) => ({ user_id: userId, role: r as AppRole }));
           const { error: roleError } = await supabase.from("user_roles").insert(roleInserts);
           if (roleError) throw roleError;
         }

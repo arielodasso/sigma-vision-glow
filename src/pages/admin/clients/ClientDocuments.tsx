@@ -167,7 +167,7 @@ const ClientDocuments = () => {
                     <tr key={doc.id} className="hover:bg-foreground/[0.02] transition-colors">
                       <td className="p-4">
                         <div className="flex items-center gap-3">
-                          {getFileIcon(doc.mime_type)}
+                          {(() => { const FileIcon = getFileIcon(doc.mime_type); return <FileIcon size={18} className="text-foreground/40 shrink-0" />; })()}
                           <div>
                             <p className="font-medium text-foreground">{doc.name}</p>
                             {doc.description && <p className="text-sm text-foreground/50 truncate max-w-xs">{doc.description}</p>}

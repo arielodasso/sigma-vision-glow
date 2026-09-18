@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Plus, Search, Filter, MoreVertical, Edit, Trash2, CheckCircle, Clock, AlertTriangle, User, Mail } from "lucide-react";
+import { Plus, Search, Filter, MoreVertical, Edit, Trash2, CheckCircle, Clock, AlertTriangle, User, Mail, ClipboardCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/i18n/useTranslation";

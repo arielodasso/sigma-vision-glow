@@ -22,7 +22,7 @@ import {
   BookOpen,
   Star,
   Server,
-  Database,
+  Database as DatabaseIcon,
   Settings,
   ChevronDown,
   ChevronUp,
@@ -102,7 +102,7 @@ const NAV_CONFIG: NavSection[] = [
       { label: "Directorio", icon: <Users size={14} />, href: "/admin/equipo", permission: "team.manage" },
       { label: "Roles", icon: <Shield size={14} />, href: "/admin/equipo/roles", permission: "team.manage" },
       { label: "Invitaciones", icon: <Mail size={14} />, href: "/admin/equipo/invitaciones", permission: "team.manage" },
-      { label: "Organigrama", icon: <Database size={14} />, href: "/admin/equipo/organigrama", permission: "team.manage" },
+      { label: "Organigrama", icon: <DatabaseIcon size={14} />, href: "/admin/equipo/organigrama", permission: "team.manage" },
     ],
     roles: ["superadmin", "admin"],
   },
@@ -159,8 +159,9 @@ const AdminLayout = () => {
   const hasAccess = (item: NavItem | NavSection): boolean => {
     if (item.roles && !hasAnyRole(item.roles)) return false;
     if (item.permission && !hasPermission(item.permission)) return false;
-    if (item.children) {
-      return item.children.some((child) => hasAccess(child));
+    const children = (item as NavSection).children;
+    if (children) {
+      return children.some((child) => hasAccess(child));
     }
     return true;
   };
