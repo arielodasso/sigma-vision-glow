@@ -12,6 +12,7 @@ import {
   Building2,
   Shield,
   TrendingUp,
+  AlertCircle,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/i18n/useTranslation";
@@ -33,24 +34,26 @@ const Dashboard = () => {
   const { t } = useTranslation();
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [recentTasks, setRecentTasks] = useState<any[]>([]);
   const [recentClients, setRecentClients] = useState<any[]>([]);
 
   const fetchStats = async () => {
     setLoading(true);
+    setError(null);
     try {
       const [
-        { count: totalTasks },
-        { count: pendingTasks },
-        { count: completedTasks },
-        { count: totalClients },
-        { count: activeClients },
-        { count: totalBudgets },
-        { count: pendingBudgets },
-        { count: totalContent },
-        { count: publishedContent },
-        { data: tasksData },
-        { data: clientsData },
+        { count: totalTasks, error: e1 },
+        { count: pendingTasks, error: e2 },
+        { count: completedTasks, error: e3 },
+        { count: totalClients, error: e4 },
+        { count: activeClients, error: e5 },
+        { count: totalBudgets, error: e6 },
+        { count: pendingBudgets, error: e7 },
+        { count: totalContent, error: e8 },
+        { count: publishedContent, error: e9 },
+        { data: tasksData, error: e10 },
+        { data: clientsData, error: e11 },
       ] = await Promise.all([
         supabase.from("tasks").select("*", { count: "exact", head: true }),
         supabase.from("tasks").select("*", { count: "exact", head: true }).in("status", ["pending", "in_progress"]),
@@ -64,6 +67,12 @@ const Dashboard = () => {
         supabase.from("tasks").select("id, title, status, priority, due_date, assignee:profiles!tasks_assignee_id_fkey(full_name)").order("created_at", { ascending: false }).limit(5),
         supabase.from("clients").select("id, name, company, status").order("created_at", { ascending: false }).limit(5),
       ]);
+
+      const errors = [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11].filter(Boolean);
+      if (errors.length > 0) {
+        console.error("Dashboard query errors:", errors);
+        setError("Error cargando datos: " + errors.map(e => e?.message).join(", "));
+      }
 
       setStats({
         totalTasks: totalTasks || 0,
@@ -80,6 +89,7 @@ const Dashboard = () => {
       setRecentClients(clientsData || []);
     } catch (error) {
       console.error("Error fetching dashboard stats:", error);
+      setError("Error inesperado: " + (error instanceof Error ? error.message : String(error)));
     } finally {
       setLoading(false);
     }
@@ -140,6 +150,24 @@ const Dashboard = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="animate-spin text-sigma-yellow" size={48} />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-6">
+        <div className="glass-card rounded-2xl p-8 max-w-md text-center">
+          <AlertCircle className="mx-auto text-red-400 mb-4" size={48} />
+          <h2 className="font-display text-xl font-semibold text-foreground mb-2">Error cargando el dashboard</h2>
+          <p className="text-sm text-foreground/60 mb-6">{error}</p>
+          <button
+            onClick={() => { setError(null); fetchStats(); }}
+            className="px-5 py-2.5 rounded-full text-sm font-semibold bg-foreground text-background hover:bg-foreground/90 transition-colors"
+          >
+            Reintentar
+          </button>
+        </div>
       </div>
     );
   }
