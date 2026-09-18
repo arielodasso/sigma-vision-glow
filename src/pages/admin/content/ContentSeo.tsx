@@ -53,8 +53,8 @@ const ContentSeo = () => {
   const fetchGSC = async () => {
     setGscLoading(true);
     try {
-      const res = await fetch(`${supabase.supabaseUrl}/functions/v1/gsc-metrics`, {
-        headers: { Authorization: `Bearer ${supabase.supabaseKey}` },
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/gsc-metrics`, {
+        headers: { Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}` },
       });
       if (res.ok) {
         const data = await res.json();
