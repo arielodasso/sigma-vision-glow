@@ -44,7 +44,7 @@ const TeamOrgChart = () => {
       `)
       .order("full_name");
     if (data) {
-      const all = data as TeamMember[];
+      const all = data as unknown as TeamMember[];
       const map = new Map(all.map((m) => [m.id, { ...m, children: [] }]));
       const roots: TeamMember[] = [];
       all.forEach((m) => {

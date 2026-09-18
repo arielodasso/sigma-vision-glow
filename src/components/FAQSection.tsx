@@ -26,8 +26,7 @@ const FAQSection = () => {
       .then(({ data }) => {
         if (data) setFaqs(data as FAQ[]);
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }, () => setLoading(false));
   }, []);
 
   if (loading || faqs.length === 0) return null;

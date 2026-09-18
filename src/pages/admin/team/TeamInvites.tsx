@@ -40,6 +40,14 @@ const roleLabels: Record<string, string> = {
   user: "Usuario",
 };
 
+const roleColors: Record<string, string> = {
+  superadmin: "bg-foreground/[0.12] text-foreground",
+  admin: "bg-foreground/[0.10] text-foreground/80",
+  moderator: "bg-foreground/[0.08] text-foreground/70",
+  empleado: "bg-foreground/[0.06] text-foreground/60",
+  user: "bg-foreground/[0.04] text-foreground/50",
+};
+
 const TeamInvites = () => {
   const { t } = useTranslation();
   const { toast } = useToast();

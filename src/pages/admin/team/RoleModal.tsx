@@ -1,6 +1,9 @@
 import { useEffect, useState, FormEvent } from "react";
 import { X, Loader2, User, Shield, Mail, Key, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
+
+type AppRole = Database["public"]["Enums"]["app_role"];
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "@/i18n/useTranslation";
@@ -66,12 +69,12 @@ const RoleModal = ({ assignment, onClose, onSuccess }: RoleModalProps) => {
 
     try {
       if (assignment) {
-        await supabase.from("user_roles").delete().eq("user_id", assignment.user_id).eq("role", assignment.role);
+        await supabase.from("user_roles").delete().eq("user_id", assignment.user_id).eq("role", assignment.role as AppRole);
       }
 
       const { error } = await supabase.from("user_roles").insert({
         user_id: formData.user_id,
-        role: formData.role,
+        role: formData.role as AppRole,
       });
       if (error) throw error;
 

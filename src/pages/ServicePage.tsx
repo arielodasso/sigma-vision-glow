@@ -34,15 +34,14 @@ const ServicePage = () => {
     if (!service) return;
     let alive = true;
     supabase
-      .from("faqs" as any)
+      .from("faqs")
       .select("question, answer")
       .eq("published", true)
       .eq("category", service.slug)
       .order("sort_order", { ascending: true })
       .then(({ data }) => {
         if (alive && data) setDbFaqs(data as FaqRow[]);
-      })
-      .catch(() => {});
+      }, () => {});
     return () => { alive = false; };
   }, [service]);
 

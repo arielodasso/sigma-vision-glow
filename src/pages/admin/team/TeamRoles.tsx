@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Plus, Search, Edit, Trash2, Shield, Loader2, User, Users, Mail, Key } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
+
+type AppRole = Database["public"]["Enums"]["app_role"];
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/i18n/useTranslation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -45,10 +48,10 @@ const TeamRoles = () => {
       .select(`
         user_id,
         role,
-        user:profiles!user_roles_user_id_fkey(email, full_name)
+        user:profiles!user_roles_user_id_profiles_fkey(email, full_name)
       `)
       .order("role");
-    if (data) setAssignments(data as RoleAssignment[]);
+    if (data) setAssignments(data as unknown as RoleAssignment[]);
     setLoading(false);
   };
 
@@ -64,7 +67,7 @@ const TeamRoles = () => {
 
   const handleDelete = async (userId: string, role: string) => {
     if (!confirm(`¿Quitar rol ${roleLabels[role] || role} a este usuario?`)) return;
-    const { error } = await supabase.from("user_roles").delete().eq("user_id", userId).eq("role", role);
+    const { error } = await supabase.from("user_roles").delete().eq("user_id", userId).eq("role", role as AppRole);
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {

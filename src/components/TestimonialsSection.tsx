@@ -28,8 +28,9 @@ const TestimonialsSection = () => {
       .then(({ data }) => {
         if (data) setTestimonials(data as Testimonial[]);
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }, () => {
+        setLoading(false);
+      });
   }, []);
 
   if (loading || testimonials.length === 0) return null;
