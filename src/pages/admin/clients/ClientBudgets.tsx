@@ -153,12 +153,12 @@ const ClientBudgets = () => {
           className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
         >
           <div>
-            <h1 className="font-display text-3xl font-bold text-gradient">Presupuestos</h1>
-            <p className="text-sm text-muted-foreground mt-1">Gestiona los presupuestos de clientes</p>
+            <h1 className="font-display text-2xl font-bold text-gradient">Presupuestos</h1>
+            <p className="text-xs text-muted-foreground mt-1">Gestiona los presupuestos de clientes</p>
           </div>
           <button
             onClick={openCreate}
-            className="flex items-center gap-2 bg-foreground text-background px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors"
+            className="flex items-center gap-2 bg-foreground text-background px-4 py-2 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors"
           >
             <Plus size={16} />
             Nuevo presupuesto
@@ -178,7 +178,7 @@ const ClientBudgets = () => {
               placeholder="Buscar presupuestos..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full glass-input rounded-xl px-10 py-3 text-sm text-foreground placeholder:text-foreground/25"
+              className="w-full glass-input rounded-xl px-10 py-2.5 text-xs text-foreground placeholder:text-foreground/25"
             />
           </div>
         </motion.div>
@@ -200,7 +200,7 @@ const ClientBudgets = () => {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-foreground/[0.06] text-left text-xs font-semibold text-foreground/40 uppercase tracking-wider">
+                  <tr className="border-b border-foreground/[0.06] text-left text-[11px] font-semibold text-foreground/40 uppercase tracking-wider">
                     <th className="p-4">Presupuesto</th>
                     <th className="p-4 hidden md:table-cell">Cliente</th>
                     <th className="p-4">Desarrollo</th>
@@ -213,23 +213,23 @@ const ClientBudgets = () => {
                   {filtered.map((budget) => (
                     <tr key={budget.id} className="hover:bg-foreground/[0.02] transition-colors">
 <td className="p-4">
-  <p className="font-medium text-foreground">{budgetLabel(budget)}</p>
+  <p className="text-sm font-medium text-foreground">{budgetLabel(budget)}</p>
 </td>
                       <td className="p-4 hidden md:table-cell">
-                        <div className="text-sm">
+                        <div className="text-xs">
                           <p className="text-foreground/70">{budget.client?.name || budget.client_name}</p>
                           {budget.client?.company && <p className="text-foreground/40">{budget.client.company}</p>}
                         </div>
                       </td>
-                      <td className="p-4 font-medium text-foreground">{formatCurrency(budget.development_cost)}</td>
-                      <td className="p-4 hidden lg:table-cell text-sm text-foreground/60">
+                      <td className="p-4 text-sm font-medium text-foreground">{formatCurrency(budget.development_cost)}</td>
+                      <td className="p-4 hidden lg:table-cell text-xs text-foreground/60">
                         {formatCurrency(budget.monthly_maintenance_cost)}
                       </td>
                       <td className="p-4">
                         <select
                           value={budget.status}
                           onChange={(e) => handleStatusChange(budget.id, e.target.value as Budget["status"])}
-                          className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium border ${statusColors[budget.status]}`}
+                          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium border whitespace-nowrap ${statusColors[budget.status]}`}
                         >
                           <option value="draft">Borrador</option>
                           <option value="sent">Enviado</option>
@@ -241,14 +241,14 @@ const ClientBudgets = () => {
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => openEdit(budget)}
-                            className="p-2 rounded-lg text-foreground/50 hover:text-foreground hover:bg-foreground/[0.05] transition-colors"
+                            className="p-1.5 rounded-lg text-foreground/50 hover:text-foreground hover:bg-foreground/[0.05] transition-colors"
                             title="Editar"
                           >
                             <Edit size={14} />
                           </button>
                           <button
                             onClick={() => handleDelete(budget.id)}
-                            className="p-2 rounded-lg text-foreground/50 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                            className="p-1.5 rounded-lg text-foreground/50 hover:text-red-400 hover:bg-red-500/10 transition-colors"
                             title="Eliminar"
                           >
                             <Trash2 size={14} />

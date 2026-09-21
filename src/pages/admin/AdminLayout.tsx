@@ -241,7 +241,7 @@ const AdminLayout = () => {
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
                           transition={{ duration: 0.2 }}
-                          className="overflow-hidden pl-2"
+                          className="overflow-hidden pl-2 pt-1 space-y-0.5"
                         >
                           {section.children?.map((child) => (
                             <NavLink

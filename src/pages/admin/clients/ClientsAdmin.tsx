@@ -139,12 +139,12 @@ const ClientsAdmin = () => {
           className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
         >
           <div>
-            <h1 className="font-display text-3xl font-bold text-gradient">Clientes</h1>
-            <p className="text-sm text-muted-foreground mt-1">Gestiona clientes, presupuestos y documentos</p>
+            <h1 className="font-display text-2xl font-bold text-gradient">Clientes</h1>
+            <p className="text-xs text-muted-foreground mt-1">Gestiona clientes, presupuestos y documentos</p>
           </div>
           <button
             onClick={openCreate}
-            className="flex items-center gap-2 bg-foreground text-background px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors"
+            className="flex items-center gap-2 bg-foreground text-background px-4 py-2 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors"
           >
             <Plus size={16} />
             Nuevo cliente
@@ -164,7 +164,7 @@ const ClientsAdmin = () => {
               placeholder="Buscar clientes..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full glass-input rounded-xl px-10 py-3 text-sm text-foreground placeholder:text-foreground/25"
+              className="w-full glass-input rounded-xl px-10 py-2.5 text-xs text-foreground placeholder:text-foreground/25"
             />
           </div>
         </motion.div>
@@ -187,7 +187,7 @@ const ClientsAdmin = () => {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-foreground/[0.06] text-left text-xs font-semibold text-foreground/40 uppercase tracking-wider">
+                  <tr className="border-b border-foreground/[0.06] text-left text-[11px] font-semibold text-foreground/40 uppercase tracking-wider">
                     <th className="p-4">Cliente</th>
                     <th className="p-4 hidden md:table-cell">Empresa</th>
                     <th className="p-4 hidden lg:table-cell">Contacto</th>
@@ -200,22 +200,22 @@ const ClientsAdmin = () => {
                   {filtered.map((client) => (
                     <tr key={client.id} className="hover:bg-foreground/[0.02] transition-colors">
 <td className="p-4">
-        <p className="font-medium text-foreground">{client.name}</p>
+        <p className="text-sm font-medium text-foreground">{client.name}</p>
         {client.from_budget && (
-          <span className="inline-flex items-center px-2 py-0.5 mt-1 rounded-full text-[10px] font-medium bg-foreground/[0.05] text-foreground/50">
+          <span className="inline-flex items-center px-2 py-0.5 mt-1 rounded-full text-[10px] font-medium whitespace-nowrap bg-foreground/[0.05] text-foreground/50">
             Desde presupuesto
           </span>
         )}
       </td>
                       <td className="p-4 hidden md:table-cell">
                         {client.company ? (
-                          <p className="text-sm text-foreground/70">{client.company}</p>
+                          <p className="text-xs text-foreground/70">{client.company}</p>
                         ) : (
-                          <span className="text-sm text-foreground/30">—</span>
+                          <span className="text-xs text-foreground/30">—</span>
                         )}
                       </td>
                       <td className="p-4 hidden lg:table-cell">
-                        <div className="text-sm text-foreground/60 space-y-1">
+                        <div className="text-xs text-foreground/60 space-y-1">
                           {client.email && <p>{client.email}</p>}
                           {client.whatsapp && <p>WhatsApp: {client.whatsapp}</p>}
                           {client.phone && <p>Tel: {client.phone}</p>}
@@ -223,12 +223,12 @@ const ClientsAdmin = () => {
                         </div>
                       </td>
                       <td className="p-4">
-                        <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${statusColors[client.status]}`}>
+                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium whitespace-nowrap ${statusColors[client.status]}`}>
                           {statusLabels[client.status]}
                         </span>
                       </td>
                       <td className="p-4 hidden lg:table-cell">
-                        <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
+                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium whitespace-nowrap ${
                           client.portal_enabled
                             ? "bg-emerald-500/20 text-emerald-400"
                             : "bg-gray-500/20 text-gray-400"
@@ -243,14 +243,14 @@ const ClientsAdmin = () => {
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => openEdit(client)}
-                            className="p-2 rounded-lg text-foreground/50 hover:text-foreground hover:bg-foreground/[0.05] transition-colors"
+                            className="p-1.5 rounded-lg text-foreground/50 hover:text-foreground hover:bg-foreground/[0.05] transition-colors"
                             title="Editar"
                           >
                             <Edit size={14} />
                           </button>
                           <button
                             onClick={() => handleDelete(client.id)}
-                            className="p-2 rounded-lg text-foreground/50 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                            className="p-1.5 rounded-lg text-foreground/50 hover:text-red-400 hover:bg-red-500/10 transition-colors"
                             title="Eliminar"
                           >
                             <Trash2 size={14} />

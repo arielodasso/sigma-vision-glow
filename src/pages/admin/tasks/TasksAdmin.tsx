@@ -136,12 +136,12 @@ const TasksAdmin = () => {
           className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
         >
           <div>
-            <h1 className="font-display text-3xl font-bold text-gradient">Tareas</h1>
-            <p className="text-sm text-muted-foreground mt-1">Gestiona las tareas del equipo</p>
+            <h1 className="font-display text-2xl font-bold text-gradient">Tareas</h1>
+            <p className="text-xs text-muted-foreground mt-1">Gestiona las tareas del equipo</p>
           </div>
           <button
             onClick={openCreate}
-            className="flex items-center gap-2 bg-foreground text-background px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors"
+            className="flex items-center gap-2 bg-foreground text-background px-4 py-2 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors"
           >
             <Plus size={16} />
             Nueva tarea
@@ -163,13 +163,13 @@ const TasksAdmin = () => {
                 placeholder="Buscar tareas..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full glass-input rounded-xl px-10 py-3 text-sm text-foreground placeholder:text-foreground/25"
+                className="w-full glass-input rounded-xl px-10 py-2.5 text-xs text-foreground placeholder:text-foreground/25"
               />
             </div>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="glass-input rounded-xl px-4 py-3 text-sm bg-card border border-foreground/[0.08]"
+              className="glass-input rounded-xl px-3 py-2.5 text-xs text-foreground bg-card border border-foreground/[0.08]"
             >
               <option value="all">Todos los estados</option>
               <option value="pending">Pendiente</option>
@@ -180,7 +180,7 @@ const TasksAdmin = () => {
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value)}
-              className="glass-input rounded-xl px-4 py-3 text-sm bg-card border border-foreground/[0.08]"
+              className="glass-input rounded-xl px-3 py-2.5 text-xs text-foreground bg-card border border-foreground/[0.08]"
             >
               <option value="all">Todas las prioridades</option>
               <option value="low">Baja</option>
@@ -210,7 +210,7 @@ const TasksAdmin = () => {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-foreground/[0.06] text-left text-xs font-semibold text-foreground/40 uppercase tracking-wider">
+                  <tr className="border-b border-foreground/[0.06] text-left text-[11px] font-semibold text-foreground/40 uppercase tracking-wider">
                     <th className="p-4">Tarea</th>
                     <th className="p-4 hidden md:table-cell">Asignado a</th>
                     <th className="p-4 hidden lg:table-cell">Prioridad</th>
@@ -224,9 +224,9 @@ const TasksAdmin = () => {
                     <tr key={task.id} className="hover:bg-foreground/[0.02] transition-colors">
                       <td className="p-4">
                         <div>
-                          <p className="font-medium text-foreground">{task.title}</p>
+                          <p className="text-sm font-medium text-foreground">{task.title}</p>
                           {task.description && (
-                            <p className="text-sm text-muted-foreground line-clamp-1 mt-1">{task.description}</p>
+                            <p className="text-xs text-muted-foreground line-clamp-1 mt-1">{task.description}</p>
                           )}
                         </div>
                       </td>
@@ -234,14 +234,14 @@ const TasksAdmin = () => {
                         {task.assignee ? (
                           <div className="flex items-center gap-2">
                             <User className="text-foreground/30" size={14} />
-                            <span className="text-sm text-foreground/80">{task.assignee.full_name || task.assignee.email}</span>
+                            <span className="text-xs text-foreground/80">{task.assignee.full_name || task.assignee.email}</span>
                           </div>
                         ) : (
-                          <span className="text-sm text-foreground/30">Sin asignar</span>
+                          <span className="text-xs text-foreground/30">Sin asignar</span>
                         )}
                       </td>
                       <td className="p-4 hidden lg:table-cell">
-                        <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${priorityColors[task.priority]}`}>
+                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium whitespace-nowrap ${priorityColors[task.priority]}`}>
                           {priorityLabels[task.priority]}
                         </span>
                       </td>
@@ -249,7 +249,7 @@ const TasksAdmin = () => {
                         <select
                           value={task.status}
                           onChange={(e) => handleStatusChange(task.id, e.target.value as Task["status"])}
-                          className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border ${statusColors[task.status]}`}
+                          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium border whitespace-nowrap ${statusColors[task.status]}`}
                         >
                           <option value="pending">Pendiente</option>
                           <option value="in_progress">En progreso</option>
@@ -259,28 +259,28 @@ const TasksAdmin = () => {
                       </td>
                       <td className="p-4 hidden lg:table-cell">
                         {task.due_date ? (
-                          <span className={`text-sm ${new Date(task.due_date) < new Date() && task.status !== "done" ? "text-red-400" : "text-foreground/60"}`}>
+                          <span className={`text-xs ${new Date(task.due_date) < new Date() && task.status !== "done" ? "text-red-400" : "text-foreground/60"}`}>
                             {new Date(task.due_date).toLocaleDateString("es-AR")}
                             {new Date(task.due_date) < new Date() && task.status !== "done" && (
                               <AlertTriangle className="inline ml-1" size={10} />
                             )}
                           </span>
                         ) : (
-                          <span className="text-sm text-foreground/30">Sin fecha</span>
+                          <span className="text-xs text-foreground/30">Sin fecha</span>
                         )}
                       </td>
                       <td className="p-4 text-right">
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => openEdit(task)}
-                            className="p-2 rounded-lg text-foreground/50 hover:text-foreground hover:bg-foreground/[0.05] transition-colors"
+                            className="p-1.5 rounded-lg text-foreground/50 hover:text-foreground hover:bg-foreground/[0.05] transition-colors"
                             title="Editar"
                           >
                             <Edit size={14} />
                           </button>
                           <button
                             onClick={() => handleDelete(task.id)}
-                            className="p-2 rounded-lg text-foreground/50 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                            className="p-1.5 rounded-lg text-foreground/50 hover:text-red-400 hover:bg-red-500/10 transition-colors"
                             title="Eliminar"
                           >
                             <Trash2 size={14} />

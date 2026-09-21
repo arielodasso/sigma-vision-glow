@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import {
-  BarChart3,
   ClipboardCheck,
   Users,
   FileText,
   DollarSign,
-  MessageSquare,
   Loader2,
-  Calendar,
   Building2,
-  Shield,
   TrendingUp,
   AlertCircle,
 } from "lucide-react";
@@ -30,13 +26,29 @@ interface Stats {
   publishedContent: number;
 }
 
+interface RecentTask {
+  id: string;
+  title: string;
+  status: string;
+  priority: string;
+  due_date: string | null;
+  assignee: { full_name: string | null } | null;
+}
+
+interface RecentClient {
+  id: string;
+  name: string;
+  company: string | null;
+  status: string;
+}
+
 const Dashboard = () => {
   const { t } = useTranslation();
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [recentTasks, setRecentTasks] = useState<any[]>([]);
-  const [recentClients, setRecentClients] = useState<any[]>([]);
+  const [recentTasks, setRecentTasks] = useState<RecentTask[]>([]);
+  const [recentClients, setRecentClients] = useState<RecentClient[]>([]);
 
   const fetchStats = async () => {
     setLoading(true);
@@ -102,13 +114,9 @@ const Dashboard = () => {
   const statCards = [
     { label: "Tareas totales", value: stats?.totalTasks ?? "—", icon: ClipboardCheck, color: "text-sigma-blue", bg: "bg-sigma-blue/10" },
     { label: "Pendientes", value: stats?.pendingTasks ?? "—", icon: ClipboardCheck, color: "text-amber-400", bg: "bg-amber-400/10" },
-    { label: "Completadas", value: stats?.completedTasks ?? "—", icon: TrendingUp, color: "text-emerald-400", bg: "bg-emerald-400/10" },
     { label: "Clientes", value: stats?.totalClients ?? "—", icon: Building2, color: "text-sigma-blue", bg: "bg-sigma-blue/10" },
     { label: "Activos", value: stats?.activeClients ?? "—", icon: Users, color: "text-emerald-400", bg: "bg-emerald-400/10" },
-    { label: "Presupuestos", value: stats?.totalBudgets ?? "—", icon: DollarSign, color: "text-sigma-yellow", bg: "bg-sigma-yellow/10" },
-    { label: "Pendientes", value: stats?.pendingBudgets ?? "—", icon: DollarSign, color: "text-amber-400", bg: "bg-amber-400/10" },
     { label: "Artículos", value: stats?.totalContent ?? "—", icon: FileText, color: "text-sigma-blue", bg: "bg-sigma-blue/10" },
-    { label: "Publicados", value: stats?.publishedContent ?? "—", icon: TrendingUp, color: "text-emerald-400", bg: "bg-emerald-400/10" },
   ];
 
   const statusColors: Record<string, string> = {
@@ -177,15 +185,15 @@ const Dashboard = () => {
     if (recentTasks.length === 0) {
       return <div className="p-5 text-center text-foreground/40">No hay tareas</div>;
     }
-    return recentTasks.map((task: any) => (
-      <div key={task.id} className="p-5 flex items-center justify-between hover:bg-foreground/[0.02] transition-colors">
+    return recentTasks.map((task: RecentTask) => (
+      <div key={task.id} className="p-4 flex items-center justify-between hover:bg-foreground/[0.02] transition-colors">
         <div className="flex-1 min-w-0">
-          <p className="font-medium text-foreground truncate">{task.title}</p>
-          <div className="flex items-center gap-2 mt-1 text-xs">
-            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium ${statusColors[task.status] || "bg-gray-500/20 text-gray-400"}`}>
+          <p className="text-sm font-medium text-foreground truncate">{task.title}</p>
+          <div className="flex flex-wrap items-center gap-2 mt-1 text-xs">
+            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium whitespace-nowrap ${statusColors[task.status] || "bg-gray-500/20 text-gray-400"}`}>
               {statusLabels[task.status] || task.status}
             </span>
-            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium ${priorityColors[task.priority] || "bg-gray-500/20 text-gray-400"}`}>
+            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium whitespace-nowrap ${priorityColors[task.priority] || "bg-gray-500/20 text-gray-400"}`}>
               {task.priority}
             </span>
             {task.due_date && (
@@ -206,13 +214,13 @@ const Dashboard = () => {
     if (recentClients.length === 0) {
       return <div className="p-5 text-center text-foreground/40">No hay clientes</div>;
     }
-    return recentClients.map((client: any) => (
-      <div key={client.id} className="p-5 flex items-center justify-between hover:bg-foreground/[0.02] transition-colors">
+    return recentClients.map((client: RecentClient) => (
+      <div key={client.id} className="p-4 flex items-center justify-between hover:bg-foreground/[0.02] transition-colors">
         <div className="flex-1 min-w-0">
-          <p className="font-medium text-foreground truncate">{client.name}</p>
-          {client.company && <p className="text-sm text-foreground/50 truncate">{client.company}</p>}
+          <p className="text-sm font-medium text-foreground truncate">{client.name}</p>
+          {client.company && <p className="text-xs text-foreground/50 truncate">{client.company}</p>}
           <div className="flex items-center gap-2 mt-1 text-xs">
-            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium ${clientStatusColors[client.status] || "bg-gray-500/20 text-gray-400"}`}>
+            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium whitespace-nowrap ${clientStatusColors[client.status] || "bg-gray-500/20 text-gray-400"}`}>
               {clientStatusLabels[client.status] || client.status}
             </span>
           </div>
@@ -233,8 +241,8 @@ const Dashboard = () => {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <h1 className="font-display text-3xl font-bold text-gradient">Dashboard</h1>
-          <p className="text-sm text-muted-foreground mt-1">Resumen general del sistema</p>
+          <h1 className="font-display text-2xl font-bold text-gradient">Dashboard</h1>
+          <p className="text-xs text-muted-foreground mt-1">Resumen general del sistema</p>
         </motion.div>
 
         {/* Stats Grid */}
@@ -250,15 +258,15 @@ const Dashboard = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.05 * i }}
-              className="glass-card rounded-2xl p-5"
+              className="glass-card rounded-2xl p-4"
             >
               <div className="flex items-center justify-between mb-3">
-                <div className={`w-10 h-10 rounded-xl ${stat.bg} flex items-center justify-center`}>
-                  <stat.icon size={20} className={stat.color} />
+                <div className={`w-9 h-9 rounded-xl ${stat.bg} flex items-center justify-center`}>
+                  <stat.icon size={18} className={stat.color} />
                 </div>
               </div>
-              <p className="text-2xl font-bold text-foreground">{stat.value}</p>
-              <p className="text-xs text-foreground/50 mt-1">{stat.label}</p>
+              <p className="text-xl font-bold text-foreground">{stat.value}</p>
+              <p className="text-[11px] text-foreground/50 mt-1">{stat.label}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -272,9 +280,9 @@ const Dashboard = () => {
             transition={{ delay: 0.2 }}
             className="glass-card rounded-2xl overflow-hidden"
           >
-            <div className="p-5 border-b border-foreground/[0.06] flex items-center justify-between">
-              <h2 className="font-display text-lg font-semibold text-foreground flex items-center gap-2">
-                <ClipboardCheck size={18} className="text-sigma-blue" />
+            <div className="p-4 border-b border-foreground/[0.06] flex items-center justify-between">
+              <h2 className="font-display text-base font-semibold text-foreground flex items-center gap-2">
+                <ClipboardCheck size={16} className="text-sigma-blue" />
                 Tareas recientes
               </h2>
             </div>
@@ -290,9 +298,9 @@ const Dashboard = () => {
             transition={{ delay: 0.2 }}
             className="glass-card rounded-2xl overflow-hidden"
           >
-            <div className="p-5 border-b border-foreground/[0.06] flex items-center justify-between">
-              <h2 className="font-display text-lg font-semibold text-foreground flex items-center gap-2">
-                <Building2 size={18} className="text-sigma-blue" />
+            <div className="p-4 border-b border-foreground/[0.06] flex items-center justify-between">
+              <h2 className="font-display text-base font-semibold text-foreground flex items-center gap-2">
+                <Building2 size={16} className="text-sigma-blue" />
                 Clientes recientes
               </h2>
             </div>
@@ -309,38 +317,38 @@ const Dashboard = () => {
           transition={{ delay: 0.3 }}
           className="mt-8 glass-card rounded-2xl p-5"
         >
-          <h2 className="font-display text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-            <TrendingUp size={18} className="text-sigma-yellow" />
+          <h2 className="font-display text-base font-semibold text-foreground mb-3 flex items-center gap-2">
+            <TrendingUp size={16} className="text-sigma-yellow" />
             Acciones rápidas
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
             <a href="/admin/tareas" className="glass-card rounded-xl p-4 hover:bg-foreground/[0.03] transition-colors group">
-              <div className="w-10 h-10 rounded-xl bg-sigma-blue/10 flex items-center justify-center mb-3 group-hover:bg-sigma-blue/20 transition-colors">
-                <ClipboardCheck size={20} className="text-sigma-blue" />
+              <div className="w-9 h-9 rounded-xl bg-sigma-blue/10 flex items-center justify-center mb-3 group-hover:bg-sigma-blue/20 transition-colors">
+                <ClipboardCheck size={18} className="text-sigma-blue" />
               </div>
-              <p className="font-medium text-foreground">Nueva tarea</p>
-              <p className="text-xs text-foreground/50 mt-1">Crear y asignar</p>
+              <p className="text-sm font-medium text-foreground">Nueva tarea</p>
+              <p className="text-[11px] text-foreground/50 mt-1">Crear y asignar</p>
             </a>
             <a href="/admin/clientes" className="glass-card rounded-xl p-4 hover:bg-foreground/[0.03] transition-colors group">
-              <div className="w-10 h-10 rounded-xl bg-emerald-400/10 flex items-center justify-center mb-3 group-hover:bg-emerald-400/20 transition-colors">
-                <Building2 size={20} className="text-emerald-400" />
+              <div className="w-9 h-9 rounded-xl bg-emerald-400/10 flex items-center justify-center mb-3 group-hover:bg-emerald-400/20 transition-colors">
+                <Building2 size={18} className="text-emerald-400" />
               </div>
-              <p className="font-medium text-foreground">Nuevo cliente</p>
-              <p className="text-xs text-foreground/50 mt-1">Registrar cliente</p>
+              <p className="text-sm font-medium text-foreground">Nuevo cliente</p>
+              <p className="text-[11px] text-foreground/50 mt-1">Registrar cliente</p>
             </a>
             <a href="/admin/contenidos/blog" className="glass-card rounded-xl p-4 hover:bg-foreground/[0.03] transition-colors group">
-              <div className="w-10 h-10 rounded-xl bg-sigma-yellow/10 flex items-center justify-center mb-3 group-hover:bg-sigma-yellow/20 transition-colors">
-                <FileText size={20} className="text-sigma-yellow" />
+              <div className="w-9 h-9 rounded-xl bg-sigma-yellow/10 flex items-center justify-center mb-3 group-hover:bg-sigma-yellow/20 transition-colors">
+                <FileText size={18} className="text-sigma-yellow" />
               </div>
-              <p className="font-medium text-foreground">Nuevo artículo</p>
-              <p className="text-xs text-foreground/50 mt-1">Escribir en el blog</p>
+              <p className="text-sm font-medium text-foreground">Nuevo artículo</p>
+              <p className="text-[11px] text-foreground/50 mt-1">Escribir en el blog</p>
             </a>
             <a href="/admin/clientes/presupuestos" className="glass-card rounded-xl p-4 hover:bg-foreground/[0.03] transition-colors group">
-              <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center mb-3 group-hover:bg-amber-400/20 transition-colors">
-                <DollarSign size={20} className="text-amber-400" />
+              <div className="w-9 h-9 rounded-xl bg-amber-400/10 flex items-center justify-center mb-3 group-hover:bg-amber-400/20 transition-colors">
+                <DollarSign size={18} className="text-amber-400" />
               </div>
-              <p className="font-medium text-foreground">Nuevo presupuesto</p>
-              <p className="text-xs text-foreground/50 mt-1">Crear propuesta</p>
+              <p className="text-sm font-medium text-foreground">Nuevo presupuesto</p>
+              <p className="text-[11px] text-foreground/50 mt-1">Crear propuesta</p>
             </a>
           </div>
         </motion.div>

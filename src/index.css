@@ -69,6 +69,21 @@
     background: rgba(255, 255, 255, 0.15);
     color: hsl(var(--foreground));
   }
+
+  select {
+    @apply bg-card text-foreground;
+  }
+
+  select:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06);
+  }
+
+  select option {
+    background-color: hsl(var(--card));
+    color: hsl(var(--foreground));
+  }
 }
 
 @layer utilities {
