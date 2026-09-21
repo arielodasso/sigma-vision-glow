@@ -86,10 +86,6 @@ const es = {
             name: "Faztred",
             description: "Plataforma digital con lógica de backend y datos estructurados.",
           },
-          {
-            name: "Sigma Trend Engine",
-            description: "Motor de IA que analiza contenido de redes sociales y detecta tendencias emergentes para agencias de marketing. Procesa datos de múltiples plataformas y genera documentos estratégicos.",
-          },
         ],
       },
       automation: {

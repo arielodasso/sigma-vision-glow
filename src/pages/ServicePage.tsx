@@ -210,7 +210,7 @@ const ServicePage = () => {
             className="mb-14"
           >
             <h2 className="font-display text-3xl sm:text-4xl font-bold text-gradient mb-3">Qué incluye</h2>
-            <p className="text-sm sm:text-base text-muted-foreground max-w-2xl">Todo lo que llevás al trabajar con nosotros.</p>
+            <p className="text-sm sm:text-base text-muted-foreground max-w-2xl">{service.includesNote}</p>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {service.includes.map((inc, i) => (
@@ -272,7 +272,7 @@ const ServicePage = () => {
           >
             <h2 className="font-display text-3xl sm:text-4xl font-bold text-gradient mb-3">Cómo trabajamos</h2>
             <p className="text-sm sm:text-base text-muted-foreground max-w-2xl">
-              Un proceso claro, con comunicación directa y sin intermediarios.
+              {service.processNote}
             </p>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -309,7 +309,7 @@ const ServicePage = () => {
             >
               <h2 className="font-display text-3xl sm:text-4xl font-bold text-gradient mb-3">Casos / proyectos relacionados</h2>
               <p className="text-sm sm:text-base text-muted-foreground max-w-2xl">
-                Trabajo real, operando en producción.
+                {service.casesNote}
               </p>
             </motion.div>
             <div className="grid md:grid-cols-3 gap-5">
