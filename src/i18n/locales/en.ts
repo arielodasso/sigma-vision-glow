@@ -122,14 +122,14 @@ const en = {
       {
         name: "Sigma Trend Engine",
         tagline: "AI-powered trend intelligence engine",
-        description: "Analyzes social media and digital content to detect emerging trends and generate strategic insights for agencies.",
+        description: "Analyzes social media and digital content to detect emerging trends and generate strategic insights.",
         cta: "Learn more",
       },
       {
         name: "Precios Tandil",
         tagline: "Supermarket price comparator",
         description: "Automatically collects and publishes supermarket prices in Tandil, with price history and savings opportunities.",
-        cta: "View product",
+        cta: "Learn more",
       },
     ],
   },

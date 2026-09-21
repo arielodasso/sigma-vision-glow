@@ -26,6 +26,7 @@ import solcitosLogo from "@/assets/clients/solcitos.png";
 import preciosTandilLogo from "@/assets/clients/preciostandil.png";
 import ClientsCarousel from "@/components/ClientsCarousel";
 import { webClients } from "@/components/ProjectsSection";
+import MobileCarousel from "@/components/MobileCarousel";
 
 const ICONS = { globe: Globe, workflow: Workflow, cloud: Cloud, code: Code, brain: Brain, plug: PlugZap } as const;
 
@@ -171,11 +172,11 @@ const ServicePage = () => {
             </h1>
             <p className="font-display text-lg sm:text-xl text-foreground/80 mb-4">{service.tagline}</p>
             <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl leading-relaxed mb-10">{service.hero}</p>
-            <div className="flex flex-col sm:flex-row items-start gap-4">
+            <div className="flex flex-col sm:flex-row items-stretch gap-4">
               <button
                 type="button"
                 onClick={() => { setBookingOpen(true); analytics.agendaReunion(service.slug); }}
-                className="flex items-center gap-2.5 bg-foreground text-background px-8 py-4 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors"
+                className="flex items-center justify-center gap-2.5 bg-foreground text-background px-8 py-4 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors w-full sm:w-auto"
               >
                 Agendar reunión
                 <ArrowRight size={16} />
@@ -186,7 +187,7 @@ const ServicePage = () => {
                   e.preventDefault();
                   document.getElementById("casos-reales")?.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="flex items-center gap-2.5 text-foreground/80 border border-foreground/10 px-8 py-4 rounded-full text-sm font-medium hover:bg-foreground/[0.04] hover:border-foreground/20 transition-all"
+                className="flex items-center justify-center gap-2.5 text-foreground/80 border border-foreground/10 px-8 py-4 rounded-full text-sm font-medium hover:bg-foreground/[0.04] hover:border-foreground/20 transition-all w-full sm:w-auto"
               >
                 Ver casos de éxito
               </a>
@@ -244,21 +245,16 @@ const ServicePage = () => {
             <h2 className="font-display text-3xl sm:text-4xl font-bold text-gradient mb-3">Qué incluye</h2>
             <p className="text-sm sm:text-base text-muted-foreground max-w-2xl">{service.includesNote}</p>
           </motion.div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {service.includes.map((inc, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: i * 0.05 }}
-                className="glass-card rounded-2xl p-6 flex gap-3"
-              >
+          <MobileCarousel
+            items={service.includes}
+            renderItem={(inc) => (
+              <div className="glass-card rounded-2xl p-6 flex gap-3">
                 <Check size={18} className="text-foreground/60 shrink-0 mt-0.5" />
                 <p className="text-sm text-foreground/80 leading-relaxed">{inc}</p>
-              </motion.div>
-            ))}
-          </div>
+              </div>
+            )}
+            itemClassName="min-w-[280px]"
+          />
         </div>
       </section>
 
@@ -274,21 +270,16 @@ const ServicePage = () => {
           >
             <h2 className="font-display text-3xl sm:text-4xl font-bold text-gradient mb-3">Para quién es</h2>
           </motion.div>
-          <div className="grid sm:grid-cols-2 gap-5">
-            {service.audience.map((a, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: i * 0.05 }}
-                className="flex items-start gap-4 p-6 rounded-xl border border-foreground/[0.04] hover:border-foreground/[0.10] hover:bg-foreground/[0.02] transition-all"
-              >
+          <MobileCarousel
+            items={service.audience}
+            renderItem={(a) => (
+              <div className="flex items-start gap-4 p-6 rounded-xl border border-foreground/[0.04] hover:border-foreground/[0.10] hover:bg-foreground/[0.02] transition-all">
                 <div className="w-2 h-2 rounded-full bg-foreground/60 mt-2 shrink-0" />
                 <p className="text-sm sm:text-base text-foreground/80 leading-relaxed">{a}</p>
-              </motion.div>
-            ))}
-          </div>
+              </div>
+            )}
+            itemClassName="min-w-[280px]"
+          />
         </div>
       </section>
 
