@@ -19,7 +19,7 @@ interface Budget {
   billing: string | null;
   delivery_time: string | null;
   scope: string | null;
-  items: any;
+  items: Array<{ description?: string; price?: number | string }> | null;
   observations: string | null;
   work_type: string | null;
   payment_method: string | null;
@@ -41,6 +41,32 @@ const statusColors: Record<string, string> = {
   sent: "bg-blue-500/20 text-blue-400",
   accepted: "bg-emerald-500/20 text-emerald-400",
   rejected: "bg-red-500/20 text-red-400",
+};
+
+const SHORT_NAMES: Record<string, string> = {
+  "Landing Page / Sitio Web": "Sitio web",
+  "Bot / Automatización IA": "Automatización IA",
+  "Panel Admin / Dashboard": "Panel de administración",
+  "MVP SaaS / Web App": "SaaS a medida",
+  "Plataforma / App Compleja": "Plataforma a medida",
+};
+
+const budgetLabel = (b: Budget): string => {
+  const first =
+    Array.isArray(b.items) && b.items.length
+      ? String(b.items[0]?.description || "").replace(/\s*\(\d+(\s*hs?)?\)/i, "").trim()
+      : "";
+  const parts = (b.scope || "")
+    .split("·")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const candidates = [first, parts[0]].filter(Boolean);
+  for (const c of candidates) {
+    if (SHORT_NAMES[c]) return SHORT_NAMES[c];
+    return c;
+  }
+  if (b.work_type) return b.work_type;
+  return "Presupuesto";
 };
 
 const ClientBudgets = () => {
@@ -186,10 +212,9 @@ const ClientBudgets = () => {
                 <tbody className="divide-y divide-foreground/[0.04]">
                   {filtered.map((budget) => (
                     <tr key={budget.id} className="hover:bg-foreground/[0.02] transition-colors">
-                      <td className="p-4">
-                        <p className="font-medium text-foreground">{budget.slug}</p>
-                        <p className="text-sm text-muted-foreground">{budget.work_type || "—"}</p>
-                      </td>
+<td className="p-4">
+  <p className="font-medium text-foreground">{budgetLabel(budget)}</p>
+</td>
                       <td className="p-4 hidden md:table-cell">
                         <div className="text-sm">
                           <p className="text-foreground/70">{budget.client?.name || budget.client_name}</p>

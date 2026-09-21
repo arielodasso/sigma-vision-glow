@@ -20,6 +20,7 @@ interface Client {
   created_by: string | null;
   created_at: string;
   updated_at: string;
+  from_budget?: boolean;
 }
 
 const statusLabels: Record<string, string> = {
@@ -47,11 +48,50 @@ const ClientsAdmin = () => {
 
   const fetchClients = async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("clients")
-      .select("*")
-      .order("created_at", { ascending: false });
-    if (data) setClients(data as Client[]);
+    const [{ data: clients }, { data: budgets }] = await Promise.all([
+      supabase.from("clients").select("*").order("created_at", { ascending: false }),
+      supabase
+        .from("budgets")
+        .select("slug, client_name, client_email, client_id, created_at, updated_at"),
+    ]);
+    type BudgetClient = {
+      slug: string;
+      client_name: string;
+      client_email: string | null;
+      client_id: string | null;
+      created_at: string;
+      updated_at: string;
+    };
+    const real = (clients as Client[]) || [];
+    const seen = new Set(real.map((c) => `${c.name}|${c.email || ""}`.toLowerCase()));
+    const fromBudgets: Client[] = ((budgets as unknown as BudgetClient[]) || [])
+      .filter((b) => !b.client_id && b.client_name)
+      .map((b) => ({
+        id: `v-${b.slug}`,
+        name: b.client_name,
+        company: null,
+        email: b.client_email || null,
+        phone: null,
+        whatsapp: null,
+        notes: null,
+        status: "proposal" as const,
+        portal_enabled: false,
+        created_by: null,
+        created_at: b.created_at,
+        updated_at: b.updated_at,
+        from_budget: true,
+      }))
+      .filter((c) => {
+        const key = `${c.name}|${c.email || ""}`.toLowerCase();
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    setClients(
+      [...real, ...fromBudgets].sort(
+        (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      )
+    );
     setLoading(false);
   };
 
@@ -159,9 +199,14 @@ const ClientsAdmin = () => {
                 <tbody className="divide-y divide-foreground/[0.04]">
                   {filtered.map((client) => (
                     <tr key={client.id} className="hover:bg-foreground/[0.02] transition-colors">
-                      <td className="p-4">
-                        <p className="font-medium text-foreground">{client.name}</p>
-                      </td>
+<td className="p-4">
+        <p className="font-medium text-foreground">{client.name}</p>
+        {client.from_budget && (
+          <span className="inline-flex items-center px-2 py-0.5 mt-1 rounded-full text-[10px] font-medium bg-foreground/[0.05] text-foreground/50">
+            Desde presupuesto
+          </span>
+        )}
+      </td>
                       <td className="p-4 hidden md:table-cell">
                         {client.company ? (
                           <p className="text-sm text-foreground/70">{client.company}</p>
@@ -192,6 +237,9 @@ const ClientsAdmin = () => {
                         </span>
                       </td>
                       <td className="p-4 text-right">
+                        {client.from_budget ? (
+                          <span className="text-[10px] text-foreground/30">Viene de un presupuesto</span>
+                        ) : (
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => openEdit(client)}
@@ -208,6 +256,7 @@ const ClientsAdmin = () => {
                             <Trash2 size={14} />
                           </button>
                         </div>
+                        )}
                       </td>
                     </tr>
                   ))}

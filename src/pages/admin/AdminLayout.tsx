@@ -134,7 +134,7 @@ const AdminLayout = () => {
   const [session, setSession] = useState<ReturnType<typeof supabase.auth.getSession> extends Promise<{ data: { session: infer S } }> ? S : null>(null);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
-  const [openSections, setOpenSections] = useState<Set<string>>(new Set(["Contenidos", "Clientes", "Equipo", "Conocimiento"]));
+  const [openSections, setOpenSections] = useState<Set<string>>(new Set());
   const navigate = useNavigate();
   const { user } = useAuth();
   const { isSuperAdmin, isBackoffice, isStaff, hasPermission, hasAnyRole, loading: permsLoading } = usePermissions();

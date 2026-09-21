@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Plus, Search, Edit, Trash2, Eye, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
+import { Plus, Search, Edit, Trash2, Eye, EyeOff, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/i18n/useTranslation";
@@ -52,8 +52,7 @@ const ContentBlog = () => {
 
   const filteredPosts = posts.filter((p) =>
     p.title.toLowerCase().includes(search.toLowerCase()) ||
-    p.slug.toLowerCase().includes(search.toLowerCase()) ||
-    p.category?.toLowerCase().includes(search.toLowerCase())
+    p.slug.toLowerCase().includes(search.toLowerCase())
   );
 
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
@@ -76,7 +75,10 @@ const ContentBlog = () => {
   const handlePublish = async (id: string, published: boolean) => {
     const { error } = await supabase
       .from("blog_posts")
-      .update({ published, published_at: published ? new Date().toISOString() : null })
+      .update({
+        published,
+        ...(published ? { published_at: new Date().toISOString() } : {}),
+      })
       .eq("id", id);
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
@@ -158,7 +160,6 @@ const ContentBlog = () => {
                 <thead>
                   <tr className="border-b border-foreground/[0.06] text-left text-xs font-semibold text-foreground/40 uppercase tracking-wider">
                     <th className="p-4">Artículo</th>
-                    <th className="p-4 hidden md:table-cell">Categoría</th>
                     <th className="p-4 hidden lg:table-cell">Estado</th>
                     <th className="p-4">Actualizado</th>
                     <th className="p-4 text-right">Acciones</th>
@@ -172,15 +173,6 @@ const ContentBlog = () => {
                           <p className="font-medium text-foreground">{post.title}</p>
                           <p className="text-sm text-muted-foreground truncate max-w-xs">{post.slug}</p>
                         </div>
-                      </td>
-                      <td className="p-4 hidden md:table-cell">
-                        {post.category ? (
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-foreground/[0.05] text-foreground/70">
-                            {post.category}
-                          </span>
-                        ) : (
-                          <span className="text-sm text-foreground/30">—</span>
-                        )}
                       </td>
                       <td className="p-4 hidden lg:table-cell">
                         <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
@@ -220,7 +212,7 @@ const ContentBlog = () => {
                             }`}
                             title={post.published ? "Despublicar" : "Publicar"}
                           >
-                            {post.published ? <Eye size={14} className="opacity-50" /> : <Eye size={14} />}
+                            {post.published ? <EyeOff size={14} /> : <Eye size={14} />}
                           </button>
                           <button
                             onClick={() => handleDelete(post.id)}
