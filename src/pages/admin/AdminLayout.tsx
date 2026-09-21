@@ -85,11 +85,18 @@ const NAV_CONFIG: NavSection[] = [
     permission: "agenda.read",
   },
   {
+    label: "Contactos",
+    icon: <Mail size={16} />,
+    href: "/admin/contactos",
+    permission: "contacts.read",
+  },
+  {
     label: "Clientes",
     icon: <Building2 size={16} />,
     children: [
       { label: "Listado", icon: <Users size={14} />, href: "/admin/clientes", permission: "clients.read" },
       { label: "Presupuestos", icon: <Receipt size={14} />, href: "/admin/clientes/presupuestos", permission: "budgets.manage" },
+      { label: "Cotizador", icon: <Calculator size={14} />, href: "/admin/cotizador", permission: "budgets.manage" },
       { label: "Documentos", icon: <FolderKanban size={14} />, href: "/admin/clientes/documentos", permission: "docs.read" },
       { label: "Invitaciones", icon: <Mail size={14} />, href: "/admin/clientes/invitaciones", permission: "clients.invite" },
       { label: "Portal", icon: <Server size={14} />, href: "/admin/clientes/portal", permission: "clients.invite" },
