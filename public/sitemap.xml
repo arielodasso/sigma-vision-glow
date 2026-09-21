@@ -56,6 +56,46 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.sigmatecnologiasarg.com/knowledge</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.sigmatecnologiasarg.com/portal</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.sigmatecnologiasarg.com/servicios/desarrollo-web</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.sigmatecnologiasarg.com/servicios/desarrollo-software</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.sigmatecnologiasarg.com/servicios/desarrollo-saas</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.sigmatecnologiasarg.com/servicios/automatizacion</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.sigmatecnologiasarg.com/servicios/inteligencia-artificial</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.sigmatecnologiasarg.com/servicios/integraciones</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.sigmatecnologiasarg.com/blog/solcitos-de-los-fichajes-en-papel-a-una-plataforma-digital-para-gestionar-alumnos</loc>
     <lastmod>2026-09-15</lastmod>
     <changefreq>monthly</changefreq>

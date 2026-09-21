@@ -1,10 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import { Helmet } from "react-helmet-async";
-import { MessageSquare, Loader2, Send, Users, Hash, Plus, Search } from "lucide-react";
+import { MessageSquare, Loader2, Send, Users, Hash, Plus, Search, Edit, Trash2, UserPlus, UserMinus, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/i18n/useTranslation";
 import { useAuth } from "@/hooks/useAuth";
+import { usePermissions } from "@/hooks/usePermissions";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Channel {
@@ -14,6 +15,20 @@ interface Channel {
   is_default: boolean;
   created_by: string | null;
   created_at: string;
+}
+
+interface ChannelMember {
+  channel_id: string;
+  user_id: string;
+  joined_at: string;
+  user?: { id: string; full_name: string | null; email: string; avatar_url: string | null };
+}
+
+interface Profile {
+  id: string;
+  full_name: string | null;
+  email: string;
+  avatar_url: string | null;
 }
 
 interface Message {
@@ -29,6 +44,7 @@ const TeamChat = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
   const { user } = useAuth();
+  const { isBackoffice } = usePermissions();
   const [channels, setChannels] = useState<Channel[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,6 +54,13 @@ const TeamChat = () => {
   const [showCreateChannel, setShowCreateChannel] = useState(false);
   const [newChannelName, setNewChannelName] = useState("");
   const [newChannelDesc, setNewChannelDesc] = useState("");
+  const [showEditChannel, setShowEditChannel] = useState<Channel | null>(null);
+  const [editChannelName, setEditChannelName] = useState("");
+  const [editChannelDesc, setEditChannelDesc] = useState("");
+  const [showManageMembers, setShowManageMembers] = useState<string | null>(null);
+  const [channelMembers, setChannelMembers] = useState<ChannelMember[]>([]);
+  const [availableUsers, setAvailableUsers] = useState<Profile[]>([]);
+  const [addUserSearch, setAddUserSearch] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const channelSubRef = useRef<any>(null);
 
@@ -56,6 +79,64 @@ const TeamChat = () => {
     }
   };
 
+  const fetchChannelMembers = async (channelId: string) => {
+    const { data } = await supabase
+      .from("chat_channel_members")
+      .select(`
+        *,
+        user:profiles!chat_channel_members_user_id_fkey(id, full_name, email, avatar_url)
+      `)
+      .eq("channel_id", channelId);
+    if (data) setChannelMembers(data as ChannelMember[]);
+  };
+
+  const fetchAvailableUsers = async (channelId: string) => {
+    const memberIds = channelMembers.map((m) => m.user_id);
+    let query = supabase
+      .from("profiles")
+      .select("id, full_name, email, avatar_url")
+      .eq("active", true);
+    if (memberIds.length > 0) {
+      query = query.not("id", "in", `(${memberIds.join(",")})`);
+    }
+    const { data } = await query.order("full_name");
+    if (data) setAvailableUsers(data as Profile[]);
+  };
+
+  const openManageMembers = async (channelId: string) => {
+    setShowManageMembers(channelId);
+    await fetchChannelMembers(channelId);
+    await fetchAvailableUsers(channelId);
+  };
+
+  const addUserToChannel = async (channelId: string, userId: string) => {
+    const { error } = await supabase
+      .from("chat_channel_members")
+      .insert({ channel_id: channelId, user_id: userId });
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Usuario agregado" });
+      await fetchChannelMembers(channelId);
+      await fetchAvailableUsers(channelId);
+    }
+  };
+
+  const removeUserFromChannel = async (channelId: string, userId: string) => {
+    const { error } = await supabase
+      .from("chat_channel_members")
+      .delete()
+      .eq("channel_id", channelId)
+      .eq("user_id", userId);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Usuario removido" });
+      await fetchChannelMembers(channelId);
+      await fetchAvailableUsers(channelId);
+    }
+  };
+
   const fetchMessages = async (channelId: string) => {
     const { data } = await supabase
       .from("chat_messages")
@@ -67,6 +148,41 @@ const TeamChat = () => {
       .order("created_at", { ascending: true })
       .limit(100);
     if (data) setMessages(data as Message[]);
+  };
+
+  const handleEditChannel = async (channel: Channel) => {
+    setShowEditChannel(channel);
+    setEditChannelName(channel.name);
+    setEditChannelDesc(channel.description || "");
+  };
+
+  const saveEditChannel = async (channelId: string) => {
+    const { error } = await supabase
+      .from("chat_channels")
+      .update({
+        name: editChannelName.trim(),
+        description: editChannelDesc.trim() || null,
+      })
+      .eq("id", channelId);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Canal actualizado" });
+      setShowEditChannel(null);
+      fetchChannels();
+    }
+  };
+
+  const deleteChannel = async (channelId: string) => {
+    if (!confirm("¿Eliminar este canal? Se borrarán todos sus mensajes.")) return;
+    const { error } = await supabase.from("chat_channels").delete().eq("id", channelId);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Canal eliminado" });
+      if (activeChannel === channelId) setActiveChannel(null);
+      fetchChannels();
+    }
   };
 
   useEffect(() => {
@@ -309,6 +425,179 @@ const TeamChat = () => {
                     >
                       Crear
                     </button>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {showEditChannel && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+              onClick={() => setShowEditChannel(null)}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                className="bg-card border border-foreground/[0.08] rounded-2xl max-w-md w-full"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="p-5 border-b border-foreground/[0.06]">
+                  <h3 className="font-display text-lg font-semibold text-foreground">Editar canal</h3>
+                </div>
+                <div className="p-5 space-y-4">
+                  <input
+                    type="text"
+                    value={editChannelName}
+                    onChange={(e) => setEditChannelName(e.target.value)}
+                    placeholder="Nombre del canal"
+                    className="w-full glass-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-foreground/25"
+                  />
+                  <textarea
+                    value={editChannelDesc}
+                    onChange={(e) => setEditChannelDesc(e.target.value)}
+                    placeholder="Descripción (opcional)"
+                    rows={3}
+                    className="w-full glass-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-foreground/25 resize-none"
+                  />
+                  <div className="flex justify-end gap-2">
+                    <button
+                      onClick={() => setShowEditChannel(null)}
+                      className="px-4 py-2 rounded-lg text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-foreground/[0.05]"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      onClick={() => saveEditChannel(showEditChannel.id)}
+                      className="px-4 py-2 rounded-lg text-sm font-semibold bg-foreground text-background hover:bg-foreground/90"
+                    >
+                      Guardar
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {showManageMembers && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+              onClick={() => setShowManageMembers(null)}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                className="bg-card border border-foreground/[0.08] rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="p-5 border-b border-foreground/[0.06] flex items-center justify-between">
+                  <h3 className="font-display text-lg font-semibold text-foreground">Gestionar miembros</h3>
+                  <button
+                    onClick={() => setShowManageMembers(null)}
+                    className="p-2 rounded-lg text-foreground/50 hover:text-foreground hover:bg-foreground/[0.05] transition-colors"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+                <div className="p-5 space-y-6">
+                  <div>
+                    <h4 className="font-medium text-foreground mb-3 flex items-center gap-2">
+                      <Users size={16} />
+                      Miembros actuales ({channelMembers.length})
+                    </h4>
+                    {channelMembers.length === 0 ? (
+                      <p className="text-sm text-foreground/40">No hay miembros en este canal</p>
+                    ) : (
+                      <div className="space-y-2 max-h-60 overflow-y-auto">
+                        {channelMembers.map((member) => (
+                          <div key={member.user_id} className="flex items-center justify-between p-3 bg-foreground/[0.02] rounded-xl border border-foreground/[0.04]">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 rounded-full bg-foreground/[0.04] border border-foreground/[0.06] flex items-center justify-center overflow-hidden">
+                                {member.user?.avatar_url ? (
+                                  <img src={member.user.avatar_url} alt="" className="w-full h-full object-cover" />
+                                ) : (
+                                  <Users className="text-foreground/40" size={16} />
+                                )}
+                              </div>
+                              <div>
+                                <p className="font-medium text-foreground">{member.user?.full_name || member.user?.email}</p>
+                                <p className="text-xs text-foreground/50">{member.user?.email}</p>
+                              </div>
+                            </div>
+                            <button
+                              onClick={() => removeUserFromChannel(showManageMembers!, member.user_id)}
+                              className="p-2 rounded-lg text-foreground/50 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                              title="Eliminar del canal"
+                            >
+                              <UserMinus size={16} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="border-t border-foreground/[0.06] pt-6">
+                    <h4 className="font-medium text-foreground mb-3 flex items-center gap-2">
+                      <UserPlus size={16} />
+                      Agregar miembros
+                    </h4>
+                    <div className="relative mb-3">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/30" size={16} />
+                      <input
+                        type="text"
+                        placeholder="Buscar usuarios..."
+                        value={addUserSearch}
+                        onChange={(e) => setAddUserSearch(e.target.value)}
+                        className="w-full glass-input rounded-xl px-10 py-3 text-sm text-foreground placeholder:text-foreground/25"
+                      />
+                    </div>
+                    {availableUsers.length === 0 ? (
+                      <p className="text-sm text-foreground/40 text-center py-4">No hay usuarios disponibles para agregar</p>
+                    ) : (
+                      <div className="space-y-2 max-h-60 overflow-y-auto">
+                        {availableUsers
+                          .filter((u) =>
+                            u.full_name?.toLowerCase().includes(addUserSearch.toLowerCase()) ||
+                            u.email.toLowerCase().includes(addUserSearch.toLowerCase())
+                          )
+                          .map((u) => (
+                            <div key={u.id} className="flex items-center justify-between p-3 bg-foreground/[0.02] rounded-xl border border-foreground/[0.04]">
+                              <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-full bg-foreground/[0.04] border border-foreground/[0.06] flex items-center justify-center overflow-hidden">
+                                  {u.avatar_url ? (
+                                    <img src={u.avatar_url} alt="" className="w-full h-full object-cover" />
+                                  ) : (
+                                    <Users className="text-foreground/40" size={16} />
+                                  )}
+                                </div>
+                                <div>
+                                  <p className="font-medium text-foreground">{u.full_name || u.email}</p>
+                                  <p className="text-xs text-foreground/50">{u.email}</p>
+                                </div>
+                              </div>
+                              <button
+                                onClick={() => addUserToChannel(showManageMembers!, u.id)}
+                                className="px-3 py-1.5 rounded-lg text-sm font-medium bg-sigma-yellow/20 text-sigma-yellow hover:bg-sigma-yellow/30 transition-colors"
+                              >
+                                Agregar
+                              </button>
+                            </div>
+                          ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </motion.div>

@@ -6,6 +6,15 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
+const SERVICES = [
+  { slug: "desarrollo-web", name: "Desarrollo web" },
+  { slug: "desarrollo-software", name: "Desarrollo de software" },
+  { slug: "desarrollo-saas", name: "SaaS y plataformas" },
+  { slug: "automatizacion", name: "Automatización" },
+  { slug: "inteligencia-artificial", name: "Inteligencia artificial" },
+  { slug: "integraciones", name: "Integraciones" },
+];
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -27,7 +36,15 @@ Deno.serve(async (req) => {
   const staticPages = [
     { loc: "/", priority: "1.0", changefreq: "weekly" },
     { loc: "/contacto", priority: "0.8", changefreq: "monthly" },
+    { loc: "/nosotros", priority: "0.8", changefreq: "monthly" },
+    { loc: "/servicios", priority: "0.9", changefreq: "weekly" },
     { loc: "/blog", priority: "0.9", changefreq: "daily" },
+    { loc: "/academy", priority: "0.7", changefreq: "monthly" },
+    { loc: "/academy/guias", priority: "0.6", changefreq: "monthly" },
+    { loc: "/academy/videos", priority: "0.6", changefreq: "monthly" },
+    { loc: "/academy/plantillas", priority: "0.6", changefreq: "monthly" },
+    { loc: "/academy/casos-de-uso", priority: "0.6", changefreq: "monthly" },
+    { loc: "/academy/avanzado", priority: "0.6", changefreq: "monthly" },
   ];
 
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -39,6 +56,15 @@ Deno.serve(async (req) => {
     <loc>${baseUrl}${page.loc}</loc>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
+  </url>`;
+  }
+
+  for (const service of SERVICES) {
+    xml += `
+  <url>
+    <loc>${baseUrl}/servicios/${service.slug}</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>`;
   }
 

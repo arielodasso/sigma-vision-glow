@@ -38,6 +38,8 @@ const AcademyAdvanced = lazy(() => import("./pages/academy/AcademyAdvanced"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 const ThankYou = lazy(() => import("./pages/ThankYou"));
+const PublicClientPortal = lazy(() => import("./pages/ClientPortal"));
+const PublicKnowledgePortal = lazy(() => import("./pages/KnowledgePortal"));
 
 // Admin - Dashboard
 const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
@@ -103,6 +105,10 @@ const App = () => (
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/presupuesto/:slug" element={<BudgetView />} />
+            <Route path="/knowledge" element={<PublicKnowledgePortal />} />
+            <Route path="/knowledge/:slug" element={<PublicKnowledgePortal />} />
+            <Route path="/portal" element={<PublicClientPortal />} />
+            <Route path="/portal/:token" element={<PublicClientPortal />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<Dashboard />} />
               <Route path="blog" element={<BlogAdmin />} />

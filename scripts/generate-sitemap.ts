@@ -30,6 +30,18 @@ const staticEntries: SitemapEntry[] = [
   { path: "/academy/plantillas", changefreq: "monthly", priority: "0.6" },
   { path: "/academy/casos-de-uso", changefreq: "monthly", priority: "0.6" },
   { path: "/academy/avanzado", changefreq: "monthly", priority: "0.6" },
+  { path: "/knowledge", changefreq: "weekly", priority: "0.7" },
+  { path: "/portal", changefreq: "monthly", priority: "0.6" },
+];
+
+// Service slugs from the static data
+const serviceSlugs = [
+  "desarrollo-web",
+  "desarrollo-software",
+  "desarrollo-saas",
+  "automatizacion",
+  "inteligencia-artificial",
+  "integraciones",
 ];
 
 async function fetchPosts(): Promise<SitemapEntry[]> {
@@ -62,25 +74,6 @@ async function fetchPosts(): Promise<SitemapEntry[]> {
   }
 }
 
-async function fetchServices(): Promise<SitemapEntry[]> {
-  try {
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/blog_posts?select=slug,updated_at&published=eq.true&related_service=not.is.null&order=updated_at.desc`,
-      { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } },
-    );
-    if (!res.ok) return [];
-    const posts = (await res.json()) as { slug: string; updated_at: string | null }[];
-    const serviceSlugs = new Set(posts.map((p) => p.slug));
-    return Array.from(serviceSlugs).map((s) => ({
-      path: `/servicios/${s}`,
-      changefreq: "monthly" as const,
-      priority: "0.8",
-    }));
-  } catch {
-    return [];
-  }
-}
-
 function generateSitemap(entries: SitemapEntry[]) {
   const urls = entries.map((e) =>
     [
@@ -104,6 +97,12 @@ function generateSitemap(entries: SitemapEntry[]) {
   ].join("\n");
 }
 
-const entries = [...staticEntries, ...(await fetchPosts()), ...(await fetchServices())];
+const serviceEntries: SitemapEntry[] = serviceSlugs.map((slug) => ({
+  path: `/servicios/${slug}`,
+  changefreq: "monthly" as const,
+  priority: "0.8",
+}));
+
+const entries = [...staticEntries, ...serviceEntries, ...(await fetchPosts())];
 writeFileSync(resolve("public/sitemap.xml"), generateSitemap(entries));
 console.log(`sitemap.xml written (${entries.length} entries)`);
