@@ -72,11 +72,10 @@ const budgetLabel = (b: Budget): string => {
 const ClientBudgets = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [budgets, setBudgets] = useState<Budget[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editingBudget, setEditingBudget] = useState<Budget | null>(null);
 
   const fetchBudgets = async () => {
     setLoading(true);
@@ -126,13 +125,11 @@ const ClientBudgets = () => {
   };
 
   const openCreate = () => {
-    setEditingBudget(null);
-    setModalOpen(true);
+    navigate("/admin/presupuestos/nuevo");
   };
 
   const openEdit = (budget: Budget) => {
-    setEditingBudget(budget);
-    setModalOpen(true);
+    navigate(`/admin/presupuestos/${budget.id}`);
   };
 
   const formatCurrency = (value: number | null) => {
@@ -262,16 +259,6 @@ const ClientBudgets = () => {
             </div>
           )}
         </motion.div>
-
-        <AnimatePresence>
-          {modalOpen && (
-            <BudgetModal
-              budget={editingBudget}
-              onClose={() => { setModalOpen(false); setEditingBudget(null); }}
-              onSuccess={fetchBudgets}
-            />
-          )}
-        </AnimatePresence>
       </div>
     </div>
   );
