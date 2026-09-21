@@ -5,10 +5,11 @@ import { useRef, useState } from "react";
 import VideoModal from "@/components/VideoModal";
 import analyticsIsologo from "@/assets/brand/sigma-analytics.png.asset.json";
 import trendIsologo from "@/assets/brand/sigma-trend-engine.png.asset.json";
+import preciosTandilLogo from "@/assets/clients/preciostandil.png";
 
 const ProductsSection = () => {
   const { t } = useTranslation();
-  const variants = ["analytics", "trend"] as const;
+  const variants = ["analytics", "trend", "precios"] as const;
   const sectionRef = useRef<HTMLElement>(null);
   const [steOpen, setSteOpen] = useState(false);
 
@@ -22,6 +23,7 @@ const ProductsSection = () => {
   const productLinks = [
     "https://sigmaanalyticsarg.com/",
     "https://wa.me/5492494556374?text=Hola%2C%20estoy%20interesado%20en%20saber%20m%C3%A1s%20sobre%20Sigma%20Trend%20Engine.",
+    "https://preciostandil.vercel.app/",
   ];
 
   return (
@@ -65,7 +67,9 @@ const ProductsSection = () => {
           {t.products.items.map((p, i) => {
             const variant = variants[i];
             const isAnalytics = variant === "analytics";
-            const accentColor = isAnalytics ? "#E2FC03" : "#4C7AFF";
+            const isTrend = variant === "trend";
+            const accentColor = isAnalytics ? "#E2FC03" : isTrend ? "#4C7AFF" : "#E6E6E6";
+            const glowClass = isAnalytics ? "glow-yellow" : isTrend ? "glow-blue" : "glow-neutral";
 
             return (
               <motion.div
@@ -74,13 +78,13 @@ const ProductsSection = () => {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.6, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-                className={`glass-card rounded-2xl p-6 sm:p-10 flex flex-col justify-between ${isAnalytics ? "glow-yellow" : "glow-blue"}`}
+                className={`glass-card rounded-2xl p-6 sm:p-10 flex flex-col justify-between ${glowClass}`}
               >
                 <div>
                   <img
                           loading="lazy"
                           decoding="async"
-                    src={isAnalytics ? analyticsIsologo.url : trendIsologo.url}
+                    src={isAnalytics ? analyticsIsologo.url : isTrend ? trendIsologo.url : preciosTandilLogo}
                     alt={`Isologo ${p.name}`}
                     className="h-8 w-8 object-contain mb-4"
                   />
@@ -108,7 +112,16 @@ const ProductsSection = () => {
                   </p>
                 </div>
 
-                {isAnalytics ? (
+                {isTrend ? (
+                  <button
+                    type="button"
+                    onClick={() => setSteOpen(true)}
+                    className="flex items-center gap-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors self-start group"
+                  >
+                    {p.cta}
+                    <Play size={14} className="opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                  </button>
+                ) : (
                   <a
                     href={productLinks[i]}
                     target="_blank"
@@ -118,15 +131,6 @@ const ProductsSection = () => {
                     {p.cta}
                     <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                   </a>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => setSteOpen(true)}
-                    className="flex items-center gap-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors self-start group"
-                  >
-                    {p.cta}
-                    <Play size={14} className="opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                  </button>
                 )}
               </motion.div>
             );

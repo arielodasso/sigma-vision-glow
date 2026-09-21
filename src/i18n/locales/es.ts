@@ -125,6 +125,12 @@ const es = {
         description: "Analiza redes sociales y contenido digital para detectar tendencias emergentes y generar insights estratégicos para agencias.",
         cta: "Conocer producto",
       },
+      {
+        name: "Precios Tandil",
+        tagline: "Comparador de precios de supermercados",
+        description: "Releva y publica precios de supermercados de Tandil automáticamente, con historial y oportunidades detectadas para ahorrar.",
+        cta: "Ver producto",
+      },
     ],
   },
   about: {

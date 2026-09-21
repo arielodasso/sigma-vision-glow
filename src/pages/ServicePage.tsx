@@ -28,9 +28,9 @@ import preciosTandilLogo from "@/assets/clients/preciostandil.png";
 const ICONS = { globe: Globe, workflow: Workflow, cloud: Cloud, code: Code, brain: Brain, plug: PlugZap } as const;
 
 const CASE_LOGOS: Record<string, { logo: string; theme: "light" | "dark" }> = {
-  "Capitán Deportes": { logo: capitanLogo, theme: "light" },
+  "Capitán Deportes": { logo: capitanLogo, theme: "dark" },
   "Solcitos": { logo: solcitosLogo, theme: "dark" },
-  "Precios Tandil": { logo: preciosTandilLogo, theme: "light" },
+  "Precios Tandil": { logo: preciosTandilLogo, theme: "dark" },
   "OffMarket": { logo: offmarketLogo.url, theme: "dark" },
   "Justa": { logo: justaLogo.url, theme: "light" },
   "Faztred": { logo: faztredLogo.url, theme: "dark" },
@@ -334,7 +334,7 @@ const ServicePage = () => {
               transition={{ duration: 0.6 }}
               className="mb-12"
             >
-              <h2 className="font-display text-3xl sm:text-4xl font-bold text-gradient mb-3">Casos / proyectos relacionados</h2>
+              <h2 className="font-display text-3xl sm:text-4xl font-bold text-gradient mb-3">Casos reales</h2>
               <p className="text-sm sm:text-base text-muted-foreground max-w-2xl">
                 {service.casesNote}
               </p>

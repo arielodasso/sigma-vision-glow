@@ -16,8 +16,10 @@ import icebergLogo from "@/assets/platforms/iceberg.svg.asset.json";
 import trendEngineLogo from "@/assets/platforms/sigma-trend-engine.png.asset.json";
 import solcitosLogo from "@/assets/clients/solcitos.png";
 import preciosTandilLogo from "@/assets/clients/preciostandil.png";
+import capitanLogo from "@/assets/clients/capitan.png";
 
 const webClients: ClientLogo[] = [
+  { name: "Capitán Deportes", url: "https://capitandeportes.com/", logo: capitanLogo, theme: "dark" },
   { name: "OffMarket", url: "https://www.offmarket.com.ar/", logo: offmarketLogo.url, theme: "dark" },
   { name: "Justa", url: "https://justaagencia.com/", logo: justaLogo.url, theme: "light" },
   { name: "Unidos Para Amar", url: "https://unidosparaamar.org/", logo: unidosLogo.url, theme: "light" },
@@ -29,12 +31,12 @@ const webClients: ClientLogo[] = [
   { name: "Mobihunter", url: "http://mobihunter.io/", logo: mobihunterLogo.url, theme: "dark" },
 ];
 
-const platformMeta: Record<string, { url?: string; logo: string; theme: "light" | "dark" | "gray" }> = {
+const platformMeta: Record<string, { url?: string; logo: string; theme: "light" | "dark" | "gray"; isologo?: boolean }> = {
   "Iceberg": { url: "https://icebergpol.com/", logo: icebergLogo.url, theme: "dark" },
   "Faztred": { url: "https://faztred.com.ar/", logo: faztredLogo.url, theme: "dark" },
   "Sigma Trend Engine": { logo: trendEngineLogo.url, theme: "dark" },
   "Solcitos": { logo: solcitosLogo, theme: "dark" },
-  "Precios Tandil": { url: "https://preciostandil.vercel.app/", logo: preciosTandilLogo, theme: "light" },
+  "Precios Tandil": { url: "https://preciostandil.vercel.app/", logo: preciosTandilLogo, theme: "dark", isologo: true },
 };
 
 const ProjectsSection = () => {
@@ -244,7 +246,7 @@ const ProjectsSection = () => {
                           decoding="async"
                             src={meta.logo}
                             alt={project.name}
-                            className="h-[150%] w-[150%] object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                            className={meta?.isologo ? "h-8 w-8 object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300" : "h-[150%] w-[150%] object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"}
                           />
                         </div>
                       )}

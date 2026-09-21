@@ -96,7 +96,6 @@ export const services: ServiceData[] = [
       "Usuarios, roles y permisos.",
       "Gestión y visualización de datos.",
       "Integraciones con sistemas existentes.",
-      "Evolución y mantenimiento.",
     ],
     audience: [
       "Equipos que todavía operan con planillas, mails y archivos dispersos.",
@@ -146,8 +145,6 @@ export const services: ServiceData[] = [
       "Usuarios, roles y permisos.",
       "Panel de administración.",
       "Integraciones y pagos cuando corresponda.",
-      "Analytics y métricas de producto.",
-      "Evolución y nuevas funcionalidades.",
     ],
     audience: [
       "Emprendedores con una idea de producto digital sin equipo técnico.",
@@ -197,7 +194,6 @@ export const services: ServiceData[] = [
       "Notificaciones y reportes automáticos.",
       "Manejo de errores.",
       "Monitoreo y mantenimiento.",
-      "Documentación del flujo.",
     ],
     audience: [
       "PyMEs que pierden horas en tareas repetitivas.",
@@ -248,7 +244,6 @@ export const services: ServiceData[] = [
       "Generación automática de contenido y documentos.",
       "Asistentes y flujos con lenguaje natural.",
       "Integración con sistemas y fuentes de datos.",
-      "Evaluación y mejora de resultados.",
     ],
     audience: [
       "Empresas con grandes volúmenes de información para analizar.",
@@ -298,7 +293,6 @@ export const services: ServiceData[] = [
       "Importación y exportación automática.",
       "Manejo de errores.",
       "Monitoreo.",
-      "Documentación técnica.",
     ],
     audience: [
       "Empresas que usan varias herramientas que no se hablan entre sí.",
