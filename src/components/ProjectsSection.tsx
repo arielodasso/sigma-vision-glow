@@ -14,6 +14,8 @@ import perisLogo from "@/assets/clients/peris-electricidad.png.asset.json";
 import mobihunterLogo from "@/assets/clients/mobihunter.png.asset.json";
 import icebergLogo from "@/assets/platforms/iceberg.svg.asset.json";
 import trendEngineLogo from "@/assets/platforms/sigma-trend-engine.png.asset.json";
+import solcitosLogo from "@/assets/clients/solcitos.png";
+import preciosTandilLogo from "@/assets/clients/preciostandil.png";
 
 const webClients: ClientLogo[] = [
   { name: "OffMarket", url: "https://www.offmarket.com.ar/", logo: offmarketLogo.url, theme: "dark" },
@@ -31,6 +33,8 @@ const platformMeta: Record<string, { url?: string; logo: string; theme: "light" 
   "Iceberg": { url: "https://icebergpol.com/", logo: icebergLogo.url, theme: "dark" },
   "Faztred": { url: "https://faztred.com.ar/", logo: faztredLogo.url, theme: "dark" },
   "Sigma Trend Engine": { logo: trendEngineLogo.url, theme: "dark" },
+  "Solcitos": { logo: solcitosLogo, theme: "dark" },
+  "Precios Tandil": { url: "https://preciostandil.vercel.app/", logo: preciosTandilLogo, theme: "light" },
 };
 
 const ProjectsSection = () => {
@@ -218,21 +222,17 @@ const ProjectsSection = () => {
             <div className="lg:col-span-3 space-y-6">
               {categories.automation.items.map((project, i) => {
                 const meta = platformMeta[project.name];
+                const url = meta?.url;
+                const isLink = Boolean(url);
                 const logoCardClass =
                   meta?.theme === "dark"
                     ? "bg-foreground/[0.04] border-foreground/[0.08] group-hover:border-foreground/[0.18] group-hover:bg-foreground/[0.06]"
                     : meta?.theme === "gray"
                     ? "bg-neutral-400 border-neutral-300 group-hover:border-neutral-200"
                     : "bg-white border-white/80 group-hover:border-white";
-                return (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                    className="glass-card rounded-2xl p-6 sm:p-7 relative group"
-                  >
+                const sharedClass = "block glass-card rounded-2xl p-6 sm:p-7 group relative";
+                const content = (
+                  <>
                     <div className="absolute left-0 top-[20%] bottom-[20%] w-[2px] bg-foreground/[0.06] rounded-full" />
                     <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-7">
                       {meta?.logo && (
@@ -249,10 +249,41 @@ const ProjectsSection = () => {
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-display text-base sm:text-lg font-semibold text-foreground mb-2">{project.name}</h4>
+                        <div className="flex items-center justify-between mb-2 gap-3">
+                          <h4 className="font-display text-base sm:text-lg font-semibold text-foreground">{project.name}</h4>
+                          {isLink && (
+                            <ExternalLink size={14} className="text-foreground/15 group-hover:text-foreground/50 transition-colors shrink-0" />
+                          )}
+                        </div>
                         <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{project.description}</p>
                       </div>
                     </div>
+                  </>
+                );
+                return isLink ? (
+                  <motion.a
+                    key={i}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                    className={sharedClass}
+                  >
+                    {content}
+                  </motion.a>
+                ) : (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                    className={sharedClass}
+                  >
+                    {content}
                   </motion.div>
                 );
               })}

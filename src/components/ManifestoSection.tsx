@@ -51,22 +51,22 @@ const ManifestoSection = () => {
         {/* Parallax accent glow */}
         <motion.div
           style={{ y: bgY }}
-          className="absolute -top-20 -right-20 w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(226,252,3,0.04)_0%,transparent_70%)]"
+          className="absolute -top-20 -right-20 w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.03)_0%,transparent_70%)]"
         />
         <motion.div
           style={{ x: accentX }}
-          className="absolute bottom-[10%] -left-20 w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(76,122,255,0.03)_0%,transparent_70%)]"
+          className="absolute bottom-[10%] -left-20 w-[400px] h-[400px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.02)_0%,transparent_70%)]"
         />
 
         <motion.div
           animate={{ y: [0, -10, 0] }}
           transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[15%] right-[10%] w-16 h-16 border border-sigma-yellow/10 rounded-full"
+          className="absolute top-[15%] right-[10%] w-16 h-16 border border-foreground/[0.06] rounded-full"
         />
         <motion.div
           animate={{ y: [0, 8, 0], rotate: [0, 5, 0] }}
           transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-[20%] right-[20%] w-10 h-10 border border-sigma-blue/10 rounded-lg rotate-45"
+          className="absolute bottom-[20%] right-[20%] w-10 h-10 border border-foreground/[0.06] rounded-lg rotate-45"
         />
       </div>
 
@@ -123,10 +123,10 @@ const ManifestoSection = () => {
                 transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
                 className="flex items-center gap-4 p-5 rounded-xl border border-foreground/[0.04] hover:border-foreground/[0.08] hover:bg-foreground/[0.02] transition-all duration-300 relative group"
               >
-                {/* Accent side line with color on hover */}
-                <div className="absolute left-0 top-[25%] bottom-[25%] w-px bg-foreground/[0.08] group-hover:bg-sigma-yellow/30 transition-colors duration-300" />
-                <div className="w-8 h-8 rounded-lg bg-foreground/[0.06] flex items-center justify-center shrink-0 group-hover:bg-sigma-yellow/10 transition-colors duration-300">
-                  <Check size={16} className="text-foreground/50 group-hover:text-sigma-yellow transition-colors duration-300" />
+                {/* Accent side line */}
+                <div className="absolute left-0 top-[25%] bottom-[25%] w-px bg-foreground/[0.08] group-hover:bg-foreground/[0.2] transition-colors duration-300" />
+                <div className="w-8 h-8 rounded-lg bg-foreground/[0.06] flex items-center justify-center shrink-0 group-hover:bg-foreground/[0.09] transition-colors duration-300">
+                  <Check size={16} className="text-foreground/50 group-hover:text-foreground/80 transition-colors duration-300" />
                 </div>
                 <span className="text-foreground/90 font-medium">{item}</span>
               </motion.div>

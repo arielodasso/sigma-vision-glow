@@ -15,8 +15,35 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/
 import BookingModal from "@/components/BookingModal";
 import useSmoothScroll from "@/hooks/use-smooth-scroll";
 import { analytics } from "@/lib/analytics";
+import faztredLogo from "@/assets/clients/faztred.png.asset.json";
+import offmarketLogo from "@/assets/clients/offmarket.png.asset.json";
+import justaLogo from "@/assets/clients/justa.png.asset.json";
+import icebergLogo from "@/assets/platforms/iceberg.svg.asset.json";
+import analyticsLogo from "@/assets/brand/sigma-analytics.png.asset.json";
+import trendLogo from "@/assets/brand/sigma-trend-engine.png.asset.json";
+import capitanLogo from "@/assets/clients/capitan.png";
+import solcitosLogo from "@/assets/clients/solcitos.png";
+import preciosTandilLogo from "@/assets/clients/preciostandil.png";
 
 const ICONS = { globe: Globe, workflow: Workflow, cloud: Cloud, code: Code, brain: Brain, plug: PlugZap } as const;
+
+const CASE_LOGOS: Record<string, { logo: string; theme: "light" | "dark" }> = {
+  "Capitán Deportes": { logo: capitanLogo, theme: "light" },
+  "Solcitos": { logo: solcitosLogo, theme: "dark" },
+  "Precios Tandil": { logo: preciosTandilLogo, theme: "light" },
+  "OffMarket": { logo: offmarketLogo.url, theme: "dark" },
+  "Justa": { logo: justaLogo.url, theme: "light" },
+  "Faztred": { logo: faztredLogo.url, theme: "dark" },
+  "Sigma Analytics": { logo: analyticsLogo.url, theme: "dark" },
+  "Sigma Trend Engine": { logo: trendLogo.url, theme: "dark" },
+  "Iceberg": { logo: icebergLogo.url, theme: "dark" },
+  "Integraciones de Sigma Analytics": { logo: analyticsLogo.url, theme: "dark" },
+};
+
+const caseLogoTileClass = (theme: "light" | "dark") =>
+  theme === "light"
+    ? "bg-white border-white/80 group-hover:border-white"
+    : "bg-foreground/[0.04] border-foreground/[0.08] group-hover:border-foreground/[0.18] group-hover:bg-foreground/[0.06]";
 
 interface FaqRow {
   question: string;
@@ -119,8 +146,8 @@ const ServicePage = () => {
       {/* HERO */}
       <section className="relative overflow-hidden pt-8 pb-20 lg:pb-28">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full bg-[radial-gradient(circle,rgba(226,252,3,0.02)_0%,transparent_65%)]" />
-          <div className="absolute -bottom-60 -left-40 w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(76,122,255,0.02)_0%,transparent_65%)]" />
+          <div className="absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.02)_0%,transparent_65%)]" />
+          <div className="absolute -bottom-60 -left-40 w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.02)_0%,transparent_65%)]" />
           <div className="absolute top-[20%] right-[15%] w-px h-[200px] bg-gradient-to-b from-transparent via-foreground/[0.05] to-transparent" />
           <div className="absolute bottom-[20%] left-[5%] w-px h-[150px] bg-gradient-to-t from-transparent via-foreground/[0.04] to-transparent" />
         </div>
@@ -222,7 +249,7 @@ const ServicePage = () => {
                 transition={{ duration: 0.5, delay: i * 0.05 }}
                 className="glass-card rounded-2xl p-6 flex gap-3"
               >
-                <Check size={18} className="text-sigma-yellow shrink-0 mt-0.5" />
+                <Check size={18} className="text-foreground/60 shrink-0 mt-0.5" />
                 <p className="text-sm text-foreground/80 leading-relaxed">{inc}</p>
               </motion.div>
             ))}
@@ -252,7 +279,7 @@ const ServicePage = () => {
                 transition={{ duration: 0.5, delay: i * 0.05 }}
                 className="flex items-start gap-4 p-6 rounded-xl border border-foreground/[0.04] hover:border-foreground/[0.10] hover:bg-foreground/[0.02] transition-all"
               >
-                <div className="w-2 h-2 rounded-full bg-sigma-blue mt-2 shrink-0" />
+                <div className="w-2 h-2 rounded-full bg-foreground/60 mt-2 shrink-0" />
                 <p className="text-sm sm:text-base text-foreground/80 leading-relaxed">{a}</p>
               </motion.div>
             ))}
@@ -313,36 +340,54 @@ const ServicePage = () => {
               </p>
             </motion.div>
             <div className="grid md:grid-cols-3 gap-5">
-              {cases.map((c, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  onClick={() => analytics.caso(c.name)}
-                >
-                  {c.url ? (
-                    <a
-                      href={c.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block h-full glass-card rounded-2xl p-7 group"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <h3 className="font-display text-base font-semibold text-foreground">{c.name}</h3>
-                        <ExternalLink size={14} className="text-foreground/25 group-hover:text-foreground/60 transition-colors shrink-0 mt-1" />
+              {cases.map((c, i) => {
+                const meta = CASE_LOGOS[c.name];
+                const body = (
+                  <>
+                    {meta && (
+                      <div className={`h-20 w-full rounded-xl border flex items-center justify-center px-6 mb-5 ${caseLogoTileClass(meta.theme)}`}>
+                        <img
+                          loading="lazy"
+                          decoding="async"
+                          src={meta.logo}
+                          alt={c.name}
+                          className="max-h-12 max-w-full object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                        />
                       </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{c.description}</p>
-                    </a>
-                  ) : (
-                    <div className="h-full glass-card rounded-2xl p-7">
-                      <h3 className="font-display text-base font-semibold text-foreground mb-3">{c.name}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{c.description}</p>
+                    )}
+                    <div className="flex items-start justify-between mb-3">
+                      <h3 className="font-display text-base font-semibold text-foreground">{c.name}</h3>
+                      {c.url && <ExternalLink size={14} className="text-foreground/25 group-hover:text-foreground/60 transition-colors shrink-0 mt-1" />}
                     </div>
-                  )}
-                </motion.div>
-              ))}
+                    <p className="text-sm text-muted-foreground leading-relaxed">{c.description}</p>
+                  </>
+                );
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
+                    onClick={() => analytics.caso(c.name)}
+                  >
+                    {c.url ? (
+                      <a
+                        href={c.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block h-full glass-card rounded-2xl p-7 group"
+                      >
+                        {body}
+                      </a>
+                    ) : (
+                      <div className="h-full glass-card rounded-2xl p-7 group">
+                        {body}
+                      </div>
+                    )}
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </section>

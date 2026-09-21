@@ -79,6 +79,10 @@ const en = {
         description: "Complex digital systems with backend logic and structured data.",
         items: [
           {
+            name: "Solcitos",
+            description: "Custom system to centralize information and digitalize daily management.",
+          },
+          {
             name: "Iceberg",
             description: "Digital platform that processes uploaded files and reads data from Google Sheets to generate structured charts and visualizations.",
           },
@@ -95,6 +99,10 @@ const en = {
           {
             name: "Sigma Trend Engine",
             description: "AI-powered engine that analyzes social media content and detects emerging trends for marketing agencies. Processes data from multiple platforms and generates structured strategic documents.",
+          },
+          {
+            name: "Precios Tandil",
+            description: "Automation of price collection and publishing for the Tandil market.",
           },
         ],
       },

@@ -51,11 +51,11 @@ const TestimonialsSection = () => {
           className="text-center mb-16"
         >
           <div className="flex items-center justify-center gap-2 mb-4">
-            <Quote size={20} className="text-sigma-yellow" />
+            <Quote size={20} className="text-foreground/40" />
             <h2 className="font-display text-3xl sm:text-5xl font-bold text-gradient mb-3">
               {t.testimonials?.title || 'Lo que dicen nuestros clientes'}
             </h2>
-            <Quote size={20} className="text-sigma-yellow" />
+            <Quote size={20} className="text-foreground/40" />
           </div>
           <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto">
             {t.testimonials?.subtitle || 'Experiencias reales de empresas que confiaron en nosotros.'}
@@ -79,7 +79,7 @@ const TestimonialsSection = () => {
                     size={16}
                     className={
                       testimonial.rating && star < testimonial.rating
-                        ? 'fill-sigma-yellow text-sigma-yellow'
+                        ? 'fill-foreground/60 text-foreground/60'
                         : 'text-foreground/15'
                     }
                   />

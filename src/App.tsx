@@ -9,6 +9,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { HelmetProvider } from "react-helmet-async";
 import FloatingLanguageSelector from "@/components/FloatingLanguageSelector";
 import CursorHalo from "@/components/CursorHalo";
+import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 
 // Rutas no críticas: se cargan bajo demanda para acelerar la primera carga.
@@ -85,6 +86,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTop />
           <FloatingLanguageSelector />
           <CursorHalo />
           <Suspense fallback={<RouteFallback />}>

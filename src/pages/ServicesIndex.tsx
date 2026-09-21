@@ -45,8 +45,8 @@ const ServicesIndex = () => {
       {/* HERO */}
       <section className="relative overflow-hidden pt-36 pb-20">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full bg-[radial-gradient(circle,rgba(226,252,3,0.02)_0%,transparent_65%)]" />
-          <div className="absolute -bottom-60 -left-40 w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(76,122,255,0.02)_0%,transparent_65%)]" />
+          <div className="absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.02)_0%,transparent_65%)]" />
+          <div className="absolute -bottom-60 -left-40 w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.02)_0%,transparent_65%)]" />
         </div>
         <div className="container mx-auto px-6 max-w-6xl relative z-10">
           <motion.div
@@ -77,7 +77,6 @@ const ServicesIndex = () => {
         <div className="container mx-auto px-6 max-w-6xl">
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((s, i) => {
-              const accent = i % 2 === 0 ? "sigma-yellow" : "sigma-blue";
               return (
                 <motion.div
                   key={s.slug}
@@ -92,7 +91,7 @@ const ServicesIndex = () => {
                     className="group block h-full glass-card rounded-2xl p-8 relative overflow-hidden"
                   >
                     <div className="flex items-center justify-between mb-8">
-                      <span className={`text-xs font-medium uppercase tracking-widest text-foreground/40 ${accent === "sigma-yellow" ? "group-hover:text-sigma-yellow" : "group-hover:text-sigma-blue"} transition-colors`}>
+                      <span className="text-xs font-medium uppercase tracking-widest text-foreground/40 group-hover:text-foreground/70 transition-colors">
                         {s.category}
                       </span>
                       <span className="font-display text-4xl font-bold text-foreground/[0.08] group-hover:text-foreground/[0.15] transition-colors">
@@ -105,7 +104,7 @@ const ServicesIndex = () => {
                       Conocé más
                       <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-1" />
                     </div>
-                    <div className={`absolute left-0 top-[15%] bottom-[15%] w-[2px] rounded-full bg-foreground/[0.00] ${accent === "sigma-yellow" ? "group-hover:bg-sigma-yellow/40" : "group-hover:bg-sigma-blue/40"} transition-all duration-500`} />
+                    <div className="absolute left-0 top-[15%] bottom-[15%] w-[2px] rounded-full bg-foreground/[0.00] group-hover:bg-foreground/[0.15] transition-all duration-500" />
                   </Link>
                 </motion.div>
               );

@@ -23,19 +23,19 @@ const CTASection = () => {
         <div className="absolute top-[50%] left-0 w-full h-px bg-gradient-to-r from-transparent via-foreground/[0.04] to-transparent" />
         <div className="absolute top-0 left-[50%] w-px h-full bg-gradient-to-b from-transparent via-foreground/[0.03] to-transparent" />
         
-        {/* Color accent glows */}
-        <div className="absolute top-[30%] left-[20%] w-[300px] h-[300px] rounded-full bg-[radial-gradient(circle,rgba(226,252,3,0.03)_0%,transparent_70%)]" />
-        <div className="absolute bottom-[20%] right-[20%] w-[300px] h-[300px] rounded-full bg-[radial-gradient(circle,rgba(76,122,255,0.03)_0%,transparent_70%)]" />
+        {/* Neutral accent glows */}
+        <div className="absolute top-[30%] left-[20%] w-[300px] h-[300px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
+        <div className="absolute bottom-[20%] right-[20%] w-[300px] h-[300px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.02)_0%,transparent_70%)]" />
 
         <motion.div
           animate={{ scale: [1, 1.05, 1], opacity: [0.03, 0.06, 0.03] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-sigma-yellow/[0.04]"
+          className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-foreground/[0.05]"
         />
         <motion.div
           animate={{ scale: [1.05, 1, 1.05], opacity: [0.02, 0.05, 0.02] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full border border-sigma-blue/[0.04]"
+          className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] rounded-full border border-foreground/[0.04]"
         />
       </motion.div>
 
