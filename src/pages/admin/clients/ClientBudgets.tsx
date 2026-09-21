@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { DollarSign, Plus, Search, Edit, Trash2, Eye, Loader2, FileText } from "lucide-react";
+import { DollarSign, Plus, Search, Edit, Trash2, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/i18n/useTranslation";
-import { motion, AnimatePresence } from "framer-motion";
-import BudgetModal from "./BudgetModal";
+import { motion } from "framer-motion";
 
 interface Budget {
   id: string;
