@@ -88,7 +88,7 @@ const NAV_CONFIG: NavSection[] = [
     label: "Contactos",
     icon: <Mail size={16} />,
     href: "/admin/contactos",
-    permission: "contacts.read",
+    permission: "clients.read",
   },
   {
     label: "Clientes",

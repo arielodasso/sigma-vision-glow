@@ -343,7 +343,7 @@ const Dashboard = () => {
               <p className="text-sm font-medium text-foreground">Nuevo artículo</p>
               <p className="text-[11px] text-foreground/50 mt-1">Escribir en el blog</p>
             </a>
-            <a href="/admin/presupuestos/nuevo" className="glass-card rounded-xl p-4 hover:bg-foreground/[0.03] transition-colors group">
+            <a href="/admin/clientes/presupuestos" className="glass-card rounded-xl p-4 hover:bg-foreground/[0.03] transition-colors group">
               <div className="w-9 h-9 rounded-xl bg-amber-400/10 flex items-center justify-center mb-3 group-hover:bg-amber-400/20 transition-colors">
                 <DollarSign size={18} className="text-amber-400" />
               </div>

@@ -85,7 +85,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          <h1 className="font-display text-[1.6rem] sm:text-6xl lg:text-[4.25rem] xl:text-[5rem] font-bold leading-[1.1] tracking-tight mb-6">
+          <h1 className="font-display text-[2rem] sm:text-7xl lg:text-[5.5rem] xl:text-[6.5rem] font-bold leading-[1.05] tracking-tight mb-8">
             <span className="text-gradient">{t.hero.headline}</span>
             <br />
             <span className="text-foreground">{t.hero.headlineAccent}</span>

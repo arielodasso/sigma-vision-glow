@@ -1,217 +1,73 @@
-# Sigma AI Hub
+# Welcome to your Lovable project
 
-Crea una landing page moderna para una empresa tecnológica llamada "Sigma Tecnologías".
+## Project info
 
-Sigma Tecnologías desarrolla productos de software basados en inteligencia artificial, análisis de datos y automatización de procesos para empresas, agencias y organizaciones deportivas.
+**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
 
-La landing debe tomar como referencia estructural el sitio:
+## How can I edit this code?
 
-http://sigmaanalyticsarg.com/
+There are several ways of editing your application.
 
-Pero con una estética visual más moderna tipo SaaS, inspirada en:
+**Use Lovable**
 
-https://lovable.dev/
+Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
 
-El diseño debe usar glassmorphism (efecto vidrio) con paneles translúcidos, blur de fondo, bordes sutiles y sombras suaves.
+Changes made via Lovable will be committed automatically to this repo.
 
-El resultado debe verse como el sitio de una startup tecnológica moderna de IA y data.
+**Use your preferred IDE**
 
-Identidad visual
+If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
 
-Paleta principal:
+The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-fondos gris oscuro / charcoal
-
-superficies gris claro
-
-texto blanco
-
-acento lima suave (#E2FC03) para destacar elementos importantes
-
-Tipografía:
-
-Montserrat, system-ui, sans-serif.
-
-Estilo visual:
-
-diseño minimalista
-
-estética tecnológica
-
-componentes con efecto vidrio (glass)
-
-bordes redondeados
-
-sombras suaves
-
-jerarquía visual clara
-
-mucho espacio en blanco
-
-El sitio debe sentirse similar a plataformas modernas como Vercel, Linear o Lovable.
-
-Estructura de la página
-
-1) Hero
-
-Sección principal que presenta Sigma Tecnologías.
-
-Título sugerido:
-
-"Productos de IA y sistemas de automatización para empresas modernas"
-
-Subtítulo:
-
-"Desarrollamos plataformas inteligentes que ayudan a empresas y agencias a analizar datos, descubrir tendencias y tomar mejores decisiones."
-
-Incluir:
-
-botón CTA principal: Ver productos
-
-botón secundario: Contactar
-
-fondo tecnológico o gradiente suave
-
-elementos visuales con efecto glass
-
-2) Qué hacemos
-
-Sección explicando el enfoque de Sigma Tecnologías.
-
-Mostrar 4 cards o paneles glass:
-
-• Plataformas de analítica con inteligencia artificial
-• Sistemas de detección de tendencias
-• Automatización de procesos y flujos de trabajo
-• Plataformas SaaS basadas en datos
-
-Cada card debe tener:
-
-icono
-
-título
-
-breve descripción
-
-3) Productos
-
-Sección destacando los productos propios de la empresa.
-
-Mostrar dos cards principales.
-
-Sigma Analytics
-
-Plataforma de análisis de rendimiento para fútbol.
-
-Permite a clubes, analistas y jugadores analizar estadísticas, comparar rendimiento y generar reportes con inteligencia artificial.
-
-Botón: Conocer producto
-
-Trend Intelligence Engine
-
-Motor de detección de tendencias impulsado por inteligencia artificial.
-
-Diseñado para agencias de marketing que necesitan identificar tendencias emergentes y generar ideas de contenido estratégicas automáticamente.
-
-Botón: Conocer producto
-
-Las cards deben tener estilo glassmorphism.
-
-4) Cómo trabajamos
-
-Sección explicando el enfoque tecnológico.
-
-Mostrar un grid o lista con:
-
-• Inteligencia artificial aplicada al análisis de datos
-• Automatización de procesos
-• Arquitectura SaaS escalable
-• Plataformas orientadas a decisiones basadas en datos
-
-Mantener textos breves y claros.
-
-5) Contacto
-
-Sección con formulario de contacto.
-
-Campos:
-
-Nombre
-
-Email
-
-Empresa
-
-Mensaje
-
-CTA:
-
-Iniciar conversación
-
-El formulario debe estar dentro de un panel glass.
-
-6) Footer
-
-Footer minimalista moderno.
-
-Contenido:
-
-Sigma Tecnologías
-Productos de IA y automatización
-
-Links:
-
-Productos
-
-Contacto
-
-Agregar una línea pequeña:
-
-Desarrollado por Ariel Odasso
-
-con enlace a:
-
-https://arielodasso.com/
-
-Notas de diseño
-
-Usar gradientes suaves o fondos tecnológicos abstractos.
-
-Paneles glass con:
-
-backdrop blur
-
-fondo translúcido
-
-borde sutil
-
-diseño responsive
-
-optimizado para mobile
-
-estilo moderno de startup SaaS
-
-La landing debe transmitir tecnología, inteligencia artificial y productos digitales propios.
-
-This project was built with [Lovable](https://lovable.dev).
-
-**Live app**: https://sigma-vision-glow.lovable.app
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/870434cc-039c-4ddc-9199-265e54b1fe39).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+Follow these steps:
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
+# Step 1: Clone the repository using the project's Git URL.
+git clone <YOUR_GIT_URL>
+
+# Step 2: Navigate to the project directory.
+cd <YOUR_PROJECT_NAME>
+
+# Step 3: Install the necessary dependencies.
 npm i
+
+# Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
+
+**Edit a file directly in GitHub**
+
+- Navigate to the desired file(s).
+- Click the "Edit" button (pencil icon) at the top right of the file view.
+- Make your changes and commit the changes.
+
+**Use GitHub Codespaces**
+
+- Navigate to the main page of your repository.
+- Click on the "Code" button (green button) near the top right.
+- Select the "Codespaces" tab.
+- Click on "New codespace" to launch a new Codespace environment.
+- Edit files directly within the Codespace and commit and push your changes once you're done.
+
+## What technologies are used for this project?
+
+This project is built with:
+
+- Vite
+- TypeScript
+- React
+- shadcn-ui
+- Tailwind CSS
+
+## How can I deploy this project?
+
+Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+
+## Can I connect a custom domain to my Lovable project?
+
+Yes, you can!
+
+To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+
+Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
