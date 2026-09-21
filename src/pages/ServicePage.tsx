@@ -53,10 +53,24 @@ interface FaqRow {
   answer: string;
 }
 
+interface RealCase {
+  id: string;
+  name: string;
+  description: string;
+  logo_url: string | null;
+  logo_theme: string;
+  url: string | null;
+  client_id: string | null;
+  services: string[];
+  published: boolean;
+  sort_order: number;
+}
+
 const ServicePage = () => {
   const { slug } = useParams();
   const service = getService(slug);
   const [dbFaqs, setDbFaqs] = useState<FaqRow[]>([]);
+  const [dbCases, setDbCases] = useState<RealCase[]>([]);
   const [bookingOpen, setBookingOpen] = useState(false);
   useSmoothScroll();
 
@@ -72,6 +86,18 @@ const ServicePage = () => {
       .then(({ data }) => {
         if (alive && data) setDbFaqs(data as FaqRow[]);
       }, () => {});
+
+    // Fetch real cases for this service
+    supabase
+      .from("real_cases")
+      .select("*")
+      .eq("published", true)
+      .contains("services", [service.slug])
+      .order("sort_order", { ascending: true })
+      .then(({ data }) => {
+        if (alive && data) setDbCases(data as RealCase[]);
+      }, () => {});
+
     return () => { alive = false; };
   }, [service]);
 
@@ -79,7 +105,7 @@ const ServicePage = () => {
 
   const Icon = ICONS[service.icon];
   const faqs = dbFaqs.length > 0 ? dbFaqs : service.faqs;
-  const cases = service.cases;
+  const cases = dbCases.length > 0 ? dbCases : service.cases;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -254,6 +280,8 @@ const ServicePage = () => {
               </div>
             )}
             itemClassName="min-w-[280px]"
+            autoScroll
+            autoScrollSpeed={40}
           />
         </div>
       </section>
@@ -279,6 +307,8 @@ const ServicePage = () => {
               </div>
             )}
             itemClassName="min-w-[280px]"
+            autoScroll
+            autoScrollSpeed={40}
           />
         </div>
       </section>
@@ -335,44 +365,54 @@ const ServicePage = () => {
                 {service.casesNote}
               </p>
             </motion.div>
-            {slug === "desarrollo-web" ? (
+            {slug === "desarrollo-web" && dbCases.length === 0 ? (
               <ClientsCarousel clients={webClients} />
             ) : (
             <div className="grid md:grid-cols-3 gap-5">
               {cases.map((c, i) => {
-                const meta = CASE_LOGOS[c.name];
+                // Check if it's a RealCase from DB or static case from service
+                const isRealCase = 'id' in c && 'logo_url' in c;
+                const realCase = c as RealCase;
+                const staticCase = c as { name: string; description: string; url?: string };
+                
+                const logoUrl = isRealCase ? realCase.logo_url : CASE_LOGOS[staticCase.name]?.logo;
+                const logoTheme = isRealCase ? realCase.logo_theme : CASE_LOGOS[staticCase.name]?.theme;
+                const caseUrl = isRealCase ? realCase.url : staticCase.url;
+                const caseName = isRealCase ? realCase.name : staticCase.name;
+                const caseDescription = isRealCase ? realCase.description : staticCase.description;
+
                 const body = (
                   <>
-                    {meta && (
-                      <div className={`h-20 w-full rounded-xl border flex items-center justify-center px-6 mb-5 ${caseLogoTileClass(meta.theme)}`}>
+                    {logoUrl && logoTheme && (
+                      <div className={`h-20 w-full rounded-xl border flex items-center justify-center px-6 mb-5 ${caseLogoTileClass(logoTheme as "light" | "dark")}`}>
                         <img
                           loading="lazy"
                           decoding="async"
-                          src={meta.logo}
-                          alt={c.name}
+                          src={logoUrl}
+                          alt={caseName}
                           className="max-h-12 max-w-full object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
                         />
                       </div>
                     )}
                     <div className="flex items-start justify-between mb-3">
-                      <h3 className="font-display text-base font-semibold text-foreground">{c.name}</h3>
-                      {c.url && <ExternalLink size={14} className="text-foreground/25 group-hover:text-foreground/60 transition-colors shrink-0 mt-1" />}
+                      <h3 className="font-display text-base font-semibold text-foreground">{caseName}</h3>
+                      {caseUrl && <ExternalLink size={14} className="text-foreground/25 group-hover:text-foreground/60 transition-colors shrink-0 mt-1" />}
                     </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{c.description}</p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{caseDescription}</p>
                   </>
                 );
                 return (
                   <motion.div
-                    key={i}
+                    key={isRealCase ? realCase.id : i}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.2 }}
                     transition={{ duration: 0.5, delay: i * 0.1 }}
-                    onClick={() => analytics.caso(c.name)}
+                    onClick={() => analytics.caso(caseName)}
                   >
-                    {c.url ? (
+                    {caseUrl ? (
                       <a
-                        href={c.url}
+                        href={caseUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="block h-full glass-card rounded-2xl p-7 group"

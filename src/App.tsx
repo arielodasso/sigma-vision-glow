@@ -48,6 +48,7 @@ const ContentBlog = lazy(() => import("./pages/admin/content/ContentBlog"));
 const ContentTestimonials = lazy(() => import("./pages/admin/content/ContentTestimonials"));
 const ContentFaqs = lazy(() => import("./pages/admin/content/ContentFaqs"));
 const ContentMedia = lazy(() => import("./pages/admin/content/ContentMedia"));
+const ContentCases = lazy(() => import("./pages/admin/content/ContentCases"));
 // Admin - Agenda
 const AgendaAdmin = lazy(() => import("./pages/admin/agenda/AgendaAdmin"));
 // Admin - Clientes
@@ -109,6 +110,7 @@ const App = () => (
               <Route path="contenidos" element={<ContentBlog />} />
               <Route path="contenidos/blog" element={<ContentBlog />} />
               <Route path="contenidos/testimonios" element={<ContentTestimonials />} />
+              <Route path="contenidos/casos" element={<ContentCases />} />
               <Route path="contenidos/faqs" element={<ContentFaqs />} />
               <Route path="contenidos/multimedia" element={<ContentMedia />} />
               <Route path="contenidos/seo" element={<SeoDashboard />} />

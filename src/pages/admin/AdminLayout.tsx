@@ -27,6 +27,7 @@ import {
   ChevronDown,
   ChevronUp,
   Mail,
+  Link as LinkIcon,
 } from "lucide-react";
 import BlogAdminLogin from "@/components/BlogAdminLogin";
 import sigmaIsologo from "@/assets/brand/sigma-isologo-2.png.asset.json";
@@ -73,6 +74,7 @@ const NAV_CONFIG: NavSection[] = [
     children: [
       { label: "Blog", icon: <BookOpen size={14} />, href: "/admin/contenidos/blog", permission: "contents.manage" },
       { label: "Testimonios", icon: <Star size={14} />, href: "/admin/contenidos/testimonios", permission: "contents.manage" },
+      { label: "Casos reales", icon: <LinkIcon size={14} />, href: "/admin/contenidos/casos", permission: "contents.manage" },
       { label: "FAQs", icon: <HelpCircle size={14} />, href: "/admin/contenidos/faqs", permission: "contents.manage" },
       { label: "Multimedia", icon: <ImageIcon size={14} />, href: "/admin/contenidos/multimedia", permission: "media.manage" },
       { label: "SEO", icon: <BarChart3 size={14} />, href: "/admin/contenidos/seo", permission: "seo.read" },

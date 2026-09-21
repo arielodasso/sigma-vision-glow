@@ -1,7 +1,9 @@
 import { useTranslation } from "@/i18n/useTranslation";
-import { motion } from "framer-motion";
-import { Server, Cpu, ExternalLink, Globe } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { Server, Cpu, ExternalLink, Globe, Link as LinkIcon } from "lucide-react";
 import ClientsCarousel, { type ClientLogo } from "@/components/ClientsCarousel";
+import { supabase } from "@/integrations/supabase/client";
 import faztredLogo from "@/assets/clients/faztred.png.asset.json";
 import offmarketLogo from "@/assets/clients/offmarket.png.asset.json";
 import justaLogo from "@/assets/clients/justa.png.asset.json";
@@ -39,9 +41,46 @@ const platformMeta: Record<string, { url?: string; logo: string; theme: "light" 
   "Precios Tandil": { url: "https://preciostandil.vercel.app/", logo: preciosTandilLogo, theme: "dark", isologo: true },
 };
 
+interface RealCase {
+  id: string;
+  name: string;
+  description: string;
+  logo_url: string | null;
+  logo_theme: string;
+  url: string | null;
+  client_id: string | null;
+  services: string[];
+  published: boolean;
+  sort_order: number;
+}
+
 const ProjectsSection = () => {
   const { t } = useTranslation();
   const { categories } = t.projects;
+  const [realCases, setRealCases] = useState<RealCase[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("real_cases")
+      .select("*")
+      .eq("published", true)
+      .contains("services", ["desarrollo-web"])
+      .order("sort_order", { ascending: true })
+      .then(({ data }) => {
+        if (data) setRealCases(data as RealCase[]);
+      });
+  }, []);
+
+  // Convert real cases to ClientLogo format for the carousel
+  const dynamicWebClients: ClientLogo[] = realCases.map((c) => ({
+    name: c.name,
+    url: c.url || undefined,
+    logo: c.logo_url || undefined,
+    theme: (c.logo_theme as "light" | "dark" | "gray") || "dark",
+  }));
+
+  // Combine static and dynamic clients
+  const allWebClients = [...webClients, ...dynamicWebClients];
 
   return (
     <section id="proyectos" className="section-padding relative">
@@ -107,7 +146,7 @@ const ProjectsSection = () => {
               transition={{ duration: 0.6 }}
               className="lg:col-span-3 self-center min-w-0"
             >
-              <ClientsCarousel clients={webClients} />
+              <ClientsCarousel clients={allWebClients} />
             </motion.div>
           </div>
 
