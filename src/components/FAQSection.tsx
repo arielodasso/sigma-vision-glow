@@ -22,6 +22,7 @@ const FAQSection = () => {
       .from('faqs')
       .select('id, category, question, answer, sort_order')
       .eq('published', true)
+      .eq('category', 'general')
       .order('sort_order', { ascending: true })
       .then(({ data }) => {
         if (data) setFaqs(data as FAQ[]);

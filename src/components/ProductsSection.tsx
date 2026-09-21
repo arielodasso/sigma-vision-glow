@@ -63,13 +63,13 @@ const ProductsSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {t.products.items.map((p, i) => {
             const variant = variants[i];
             const isAnalytics = variant === "analytics";
             const isTrend = variant === "trend";
-            const accentColor = isAnalytics ? "#E2FC03" : isTrend ? "#4C7AFF" : "#E6E6E6";
-            const glowClass = isAnalytics ? "glow-yellow" : isTrend ? "glow-blue" : "glow-neutral";
+            const accentColor = isAnalytics ? "#E2FC03" : isTrend ? "#4C7AFF" : "#FFB909";
+            const glowClass = isAnalytics ? "glow-yellow" : isTrend ? "glow-blue" : "glow-precios";
 
             return (
               <motion.div

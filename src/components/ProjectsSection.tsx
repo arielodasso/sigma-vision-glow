@@ -16,9 +16,9 @@ import icebergLogo from "@/assets/platforms/iceberg.svg.asset.json";
 import trendEngineLogo from "@/assets/platforms/sigma-trend-engine.png.asset.json";
 import solcitosLogo from "@/assets/clients/solcitos.png";
 import preciosTandilLogo from "@/assets/clients/preciostandil.png";
-import capitanLogo from "@/assets/clients/capitan.png";
+import capitanLogo from "@/assets/clients/capitan-2.png";
 
-const webClients: ClientLogo[] = [
+export const webClients: ClientLogo[] = [
   { name: "Capitán Deportes", url: "https://capitandeportes.com/", logo: capitanLogo, theme: "dark" },
   { name: "OffMarket", url: "https://www.offmarket.com.ar/", logo: offmarketLogo.url, theme: "dark" },
   { name: "Justa", url: "https://justaagencia.com/", logo: justaLogo.url, theme: "light" },

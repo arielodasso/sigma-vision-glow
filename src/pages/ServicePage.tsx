@@ -21,9 +21,11 @@ import justaLogo from "@/assets/clients/justa.png.asset.json";
 import icebergLogo from "@/assets/platforms/iceberg.svg.asset.json";
 import analyticsLogo from "@/assets/brand/sigma-analytics.png.asset.json";
 import trendLogo from "@/assets/brand/sigma-trend-engine.png.asset.json";
-import capitanLogo from "@/assets/clients/capitan.png";
+import capitanLogo from "@/assets/clients/capitan-2.png";
 import solcitosLogo from "@/assets/clients/solcitos.png";
 import preciosTandilLogo from "@/assets/clients/preciostandil.png";
+import ClientsCarousel from "@/components/ClientsCarousel";
+import { webClients } from "@/components/ProjectsSection";
 
 const ICONS = { globe: Globe, workflow: Workflow, cloud: Cloud, code: Code, brain: Brain, plug: PlugZap } as const;
 
@@ -179,8 +181,11 @@ const ServicePage = () => {
                 <ArrowRight size={16} />
               </button>
               <a
-                href="/#proyectos"
-                onClick={(e) => { e.preventDefault(); window.location.href = "/#proyectos"; }}
+                href="#casos-reales"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById("casos-reales")?.scrollIntoView({ behavior: "smooth" });
+                }}
                 className="flex items-center gap-2.5 text-foreground/80 border border-foreground/10 px-8 py-4 rounded-full text-sm font-medium hover:bg-foreground/[0.04] hover:border-foreground/20 transition-all"
               >
                 Ver casos de éxito
@@ -325,7 +330,7 @@ const ServicePage = () => {
 
       {/* CASOS */}
       {cases.length > 0 && (
-        <section className="section-padding bg-surface-elevated border-y border-foreground/[0.04]">
+        <section id="casos-reales" className="section-padding bg-surface-elevated border-y border-foreground/[0.04] scroll-mt-24">
           <div className="container mx-auto px-6 max-w-6xl">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -339,6 +344,9 @@ const ServicePage = () => {
                 {service.casesNote}
               </p>
             </motion.div>
+            {slug === "desarrollo-web" ? (
+              <ClientsCarousel clients={webClients} />
+            ) : (
             <div className="grid md:grid-cols-3 gap-5">
               {cases.map((c, i) => {
                 const meta = CASE_LOGOS[c.name];
@@ -389,6 +397,7 @@ const ServicePage = () => {
                 );
               })}
             </div>
+            )}
           </div>
         </section>
       )}
