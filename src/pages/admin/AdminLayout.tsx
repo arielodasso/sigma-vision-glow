@@ -95,7 +95,7 @@ const NAV_CONFIG: NavSection[] = [
     icon: <Building2 size={16} />,
     children: [
       { label: "Listado", icon: <Users size={14} />, href: "/admin/clientes", permission: "clients.read" },
-      { label: "Presupuestos", icon: <Receipt size={14} />, href: "/admin/clientes/presupuestos", permission: "budgets.manage" },
+      { label: "Presupuestos", icon: <Receipt size={14} />, href: "/admin/presupuestos", permission: "budgets.manage" },
       { label: "Cotizador", icon: <Calculator size={14} />, href: "/admin/cotizador", permission: "budgets.manage" },
       { label: "Documentos", icon: <FolderKanban size={14} />, href: "/admin/clientes/documentos", permission: "docs.read" },
       { label: "Invitaciones", icon: <Mail size={14} />, href: "/admin/clientes/invitaciones", permission: "clients.invite" },

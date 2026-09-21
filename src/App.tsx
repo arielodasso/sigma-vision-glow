@@ -51,7 +51,6 @@ const ContentMedia = lazy(() => import("./pages/admin/content/ContentMedia"));
 const AgendaAdmin = lazy(() => import("./pages/admin/agenda/AgendaAdmin"));
 // Admin - Clientes
 const ClientsAdmin = lazy(() => import("./pages/admin/clients/ClientsAdmin"));
-const ClientBudgets = lazy(() => import("./pages/admin/clients/ClientBudgets"));
 const ClientDocuments = lazy(() => import("./pages/admin/clients/ClientDocuments"));
 const ClientInvites = lazy(() => import("./pages/admin/clients/ClientInvites"));
 const ClientPortal = lazy(() => import("./pages/admin/clients/ClientPortal"));
@@ -113,7 +112,6 @@ const App = () => (
               <Route path="contenidos/seo" element={<SeoDashboard />} />
               <Route path="agenda" element={<AgendaAdmin />} />
               <Route path="clientes" element={<ClientsAdmin />} />
-              <Route path="clientes/presupuestos" element={<ClientBudgets />} />
               <Route path="clientes/documentos" element={<ClientDocuments />} />
               <Route path="clientes/invitaciones" element={<ClientInvites />} />
               <Route path="clientes/portal" element={<ClientPortal />} />
