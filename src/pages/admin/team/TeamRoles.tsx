@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Plus, Search, Edit, Trash2, Shield, Loader2, User, Users, Mail, Key } from "lucide-react";
+import { Plus, Search, Edit, Trash2, Shield, Loader2, User, Users, Mail, Key, UserCheck, UserX } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -72,6 +72,22 @@ const TeamRoles = () => {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "Rol removido" });
+      fetchAssignments();
+    }
+  };
+
+  const handleEditRole = async (userId: string, oldRole: string, newRole: string) => {
+    if (oldRole === newRole) return;
+    const { error } = await supabase.from("user_roles").delete().eq("user_id", userId).eq("role", oldRole as AppRole);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+      return;
+    }
+    const { error: insertError } = await supabase.from("user_roles").insert({ user_id: userId, role: newRole as AppRole });
+    if (insertError) {
+      toast({ title: "Error", description: insertError.message, variant: "destructive" });
+    } else {
+      toast({ title: "Rol actualizado" });
       fetchAssignments();
     }
   };
@@ -167,13 +183,22 @@ const TeamRoles = () => {
                         </span>
                       </td>
                       <td className="p-4 text-right">
-                        <button
-                          onClick={() => handleDelete(a.user_id, a.role)}
-                          className="p-2 rounded-lg text-foreground/50 hover:text-red-400 hover:bg-red-500/10 transition-colors"
-                          title="Quitar rol"
-                        >
-                          <Trash2 size={14} />
-                        </button>
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            onClick={() => openEdit(a)}
+                            className="p-2 rounded-lg text-foreground/50 hover:text-sigma-blue hover:bg-sigma-blue/10 transition-colors"
+                            title="Editar rol"
+                          >
+                            <Edit size={14} />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(a.user_id, a.role)}
+                            className="p-2 rounded-lg text-foreground/50 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                            title="Quitar rol"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}

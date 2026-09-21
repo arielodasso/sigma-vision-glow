@@ -123,13 +123,17 @@ const RoleModal = ({ assignment, onClose, onSuccess }: RoleModalProps) => {
                 required
                 value={formData.user_id}
                 onChange={(e) => setFormData({ ...formData, user_id: e.target.value })}
-                className="w-full glass-input rounded-xl px-4 py-3 text-sm bg-card border border-foreground/[0.08]"
+                disabled={!!assignment}
+                className="w-full glass-input rounded-xl px-4 py-3 text-sm bg-card border border-foreground/[0.08] disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <option value="">Seleccionar usuario</option>
                 {users.map((u) => (
                   <option key={u.id} value={u.id}>{u.full_name || u.email}</option>
                 ))}
               </select>
+              {assignment && (
+                <p className="text-xs text-foreground/40 mt-1">El usuario no se puede cambiar al editar</p>
+              )}
             </div>
 
             <div>
