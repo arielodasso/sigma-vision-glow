@@ -7,7 +7,7 @@ const FooterSection = () => {
   const location = useLocation();
 
   const links: { label: string; href: string; isRoute?: boolean }[] = [
-    { label: t.footer.solutions, href: "/#soluciones" },
+    { label: t.footer.solutions, href: "/servicios", isRoute: true },
     { label: t.footer.products, href: "/#productos" },
     
     { label: "Blog", href: "/blog", isRoute: true },

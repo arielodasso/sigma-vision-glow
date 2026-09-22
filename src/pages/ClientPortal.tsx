@@ -6,6 +6,7 @@ import { useTranslation } from "@/i18n/useTranslation";
 import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
 import sigmaIsologo from "@/assets/brand/sigma-isologo-4.png.asset.json";
+import { useClientAccess } from "@/hooks/useClientAccess";
 
 interface Client {
   id: string;
@@ -39,6 +40,7 @@ const ClientPortal = () => {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
+  const { hasClientAccess, loading: clientAccessLoading, clientId } = useClientAccess();
   const [loading, setLoading] = useState(true);
   const [client, setClient] = useState<Client | null>(null);
   const [budgets, setBudgets] = useState<Budget[]>([]);
@@ -52,10 +54,13 @@ const ClientPortal = () => {
     checkAuth();
     if (token) {
       fetchClientByToken(token);
+    } else if (hasClientAccess && clientId) {
+      // Usuario logueado con acceso de cliente
+      fetchClientData(clientId);
     } else {
       fetchClientSettings();
     }
-  }, [token]);
+  }, [token, hasClientAccess, clientId]);
 
   const checkAuth = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -122,6 +127,39 @@ const ClientPortal = () => {
     if (budgetsData) setBudgets(budgetsData as Budget[]);
     if (docsData) setDocuments(docsData as Document[]);
   };
+
+  if (clientAccessLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="animate-spin text-sigma-yellow" size={32} />
+      </div>
+    );
+  }
+
+  // No token, user logged in but no client access
+  if (!token && user && !hasClientAccess) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="glass-card rounded-2xl p-8 max-w-md w-full mx-4 text-center">
+          <Lock className="mx-auto text-foreground/40 mb-4" size={48} />
+          <h1 className="font-display text-2xl font-bold text-foreground mb-4">Acceso restringido</h1>
+          <p className="text-foreground/60 mb-6">
+            El Portal de Clientes es solo para clientes registrados de Sigma Tecnologías.
+          </p>
+          <p className="text-sm text-foreground/50 mb-6">
+            Tu cuenta no tiene un perfil de cliente asociado. Contacta a tu gestor de cuenta.
+          </p>
+          <Link
+            to="/contacto"
+            className="inline-flex items-center gap-2 bg-foreground text-background px-6 py-3 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors"
+          >
+            <LogIn size={16} />
+            Contactar soporte
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   if (requireAuth && !user && !token) {
     return (

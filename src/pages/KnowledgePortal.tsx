@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Search, FileText, ExternalLink, Loader2, Lock, UserCheck } from "lucide-react";
+import { Search, FileText, ExternalLink, Loader2, Lock, UserCheck, Building2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/i18n/useTranslation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { usePermissions } from "@/hooks/usePermissions";
+import { useClientAccess } from "@/hooks/useClientAccess";
 import sigmaIsologo from "@/assets/brand/sigma-isologo-4.png.asset.json";
 
 interface KnowledgeDoc {
@@ -21,10 +22,14 @@ interface KnowledgeDoc {
 const KnowledgePortal = () => {
   const { t } = useTranslation();
   const { isBackoffice, loading: permsLoading } = usePermissions();
+  const { hasClientAccess, loading: clientLoading } = useClientAccess();
   const [docs, setDocs] = useState<KnowledgeDoc[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+
+  const hasAccess = isBackoffice || hasClientAccess;
+  const isLoading = permsLoading || clientLoading;
 
   useEffect(() => {
     fetchDocs();
@@ -42,7 +47,7 @@ const KnowledgePortal = () => {
     setLoading(false);
   };
 
-  if (permsLoading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="animate-spin text-sigma-yellow" size={32} />
@@ -50,16 +55,18 @@ const KnowledgePortal = () => {
     );
   }
 
-  if (!isBackoffice) {
+  if (!hasAccess) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="glass-card rounded-2xl p-8 max-w-md w-full mx-4 text-center">
           <Lock className="mx-auto text-foreground/40 mb-4" size={48} />
           <h1 className="font-display text-2xl font-bold text-foreground mb-4">Acceso restringido</h1>
-          <p className="text-foreground/60 mb-6">El Portal Editorial es solo para personal de Sigma Tecnologías (admin/superadmin).</p>
+          <p className="text-foreground/60 mb-6">
+            El Portal Editorial es para personal de Sigma Tecnologías (admin/superadmin) y clientes registrados.
+          </p>
           <div className="flex items-center justify-center gap-3 text-sm text-foreground/50">
-            <UserCheck size={16} className="text-emerald-400" />
-            <span>Requiere rol: admin o superadmin</span>
+            <Building2 size={16} className="text-sigma-blue" />
+            <span>Inicia sesión con tu cuenta de cliente o staff</span>
           </div>
         </div>
       </div>

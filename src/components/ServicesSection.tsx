@@ -57,7 +57,7 @@ const ServicesSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-6 items-stretch">
           {t.services.items.map((s, i) => {
             const Icon = icons[i];
             return (
@@ -67,7 +67,7 @@ const ServicesSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="glass-card rounded-2xl p-8 lg:p-10 group relative"
+                className="glass-card rounded-2xl p-8 lg:p-10 group relative flex flex-col h-full"
               >
                 {/* Left accent line on hover */}
                 <div className="absolute left-0 top-[20%] bottom-[20%] w-[2px] bg-foreground/[0.00] group-hover:bg-foreground/[0.15] transition-all duration-500 rounded-full" />
@@ -75,9 +75,9 @@ const ServicesSection = () => {
                   <Icon size={24} className="text-foreground/50 group-hover:text-foreground/75 transition-colors" />
                 </div>
                 <h3 className="font-display text-lg sm:text-xl text-foreground font-semibold mb-3">{s.title}</h3>
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4">{s.description}</p>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4 flex-1">{s.description}</p>
 
-                <p className="text-sm text-foreground/40 border-t border-foreground/[0.04] pt-4">{s.outcomes}</p>
+                <p className="text-sm text-foreground/40 border-t border-foreground/[0.04] pt-4 mt-auto">{s.outcomes}</p>
               </motion.div>
             );
           })}
