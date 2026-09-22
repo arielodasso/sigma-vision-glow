@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Loader2, Building2, FileText, DollarSign, Calendar, Shield, LogIn, ArrowRight, Users, Briefcase, Lock, Key } from "lucide-react";
+import { Loader2, Building2, FileText, DollarSign, Calendar, Shield, LogIn, ArrowRight, Users, Briefcase, Lock, Key, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/i18n/useTranslation";
 import { motion } from "framer-motion";
