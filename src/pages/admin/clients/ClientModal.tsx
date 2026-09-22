@@ -1,9 +1,10 @@
 import { useEffect, useState, FormEvent } from "react";
-import { X, Loader2, Building2, Mail, Phone, MessageCircle, FileText, DollarSign } from "lucide-react";
+import { X, Loader2, Building2, Mail, Phone, MessageCircle, FileText, DollarSign, Image as ImageIcon, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "@/i18n/useTranslation";
+import MediaLibrary from "@/components/admin/MediaLibrary";
 
 interface Client {
   id: string;
@@ -18,6 +19,7 @@ interface Client {
   created_by: string | null;
   created_at: string;
   updated_at: string;
+  image_url: string | null;
 }
 
 interface ClientModalProps {
@@ -39,7 +41,9 @@ const ClientModal = ({ client, onClose, onSuccess }: ClientModalProps) => {
     notes: "",
     status: "proposal" as "active" | "pending_payment" | "proposal" | "lost",
     portal_enabled: false,
+    image_url: "",
   });
+  const [showMedia, setShowMedia] = useState(false);
 
   const statusOptions = [
     { value: "proposal", label: "En propuesta" },
@@ -59,6 +63,7 @@ const ClientModal = ({ client, onClose, onSuccess }: ClientModalProps) => {
         notes: client.notes || "",
         status: client.status,
         portal_enabled: client.portal_enabled,
+        image_url: client.image_url || "",
       });
     } else {
       setFormData({
@@ -70,6 +75,7 @@ const ClientModal = ({ client, onClose, onSuccess }: ClientModalProps) => {
         notes: "",
         status: "proposal",
         portal_enabled: false,
+        image_url: "",
       });
     }
   }, [client]);
@@ -87,6 +93,7 @@ const ClientModal = ({ client, onClose, onSuccess }: ClientModalProps) => {
       notes: formData.notes.trim() || null,
       status: formData.status,
       portal_enabled: formData.portal_enabled,
+      image_url: formData.image_url || null,
     };
 
     try {
@@ -252,6 +259,31 @@ const ClientModal = ({ client, onClose, onSuccess }: ClientModalProps) => {
               </label>
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-foreground/60 mb-2">Foto / Logo</label>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <input
+                  value={formData.image_url}
+                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
+                  className="w-full glass-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-foreground/25"
+                  placeholder="https://... o elegí de la biblioteca"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowMedia(true)}
+                  className="shrink-0 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-foreground/10 text-sm text-foreground/70 hover:text-foreground hover:bg-foreground/[0.04] transition-colors"
+                >
+                  <ImageIcon size={14} />
+                  Biblioteca
+                </button>
+              </div>
+              {formData.image_url && (
+                <div className="mt-3 rounded-xl overflow-hidden border border-foreground/[0.08] max-w-xs">
+                  <img src={formData.image_url} alt="Vista previa" loading="lazy" className="w-full aspect-square object-cover" />
+                </div>
+              )}
+            </div>
+
             <div className="flex justify-end gap-3 pt-4 border-t border-foreground/[0.06]">
               <button
                 type="button"
@@ -276,8 +308,29 @@ const ClientModal = ({ client, onClose, onSuccess }: ClientModalProps) => {
               </button>
             </div>
           </form>
-        </motion.div>
+
+        {showMedia && (
+          <div className="fixed inset-0 z-50 bg-background/90 backdrop-blur-sm p-4 sm:p-8 overflow-y-auto">
+            <div className="max-w-4xl mx-auto bg-card border border-foreground/[0.08] rounded-2xl p-6">
+              <div className="flex items-start justify-between mb-5">
+                <div>
+                  <h3 className="font-display text-lg font-semibold text-foreground">Biblioteca multimedia</h3>
+                  <p className="text-xs text-foreground/40 mt-1">Elegí una imagen para el cliente.</p>
+                </div>
+                <button onClick={() => setShowMedia(false)} className="text-foreground/40 hover:text-foreground">
+                  <X size={18} />
+                </button>
+              </div>
+              <MediaLibrary
+                compact
+                onSelect={(asset) => { setFormData({ ...formData, image_url: asset.url }); setShowMedia(false); }}
+              />
+            </div>
+          </div>
+        )}
+
       </motion.div>
+    </motion.div>
     </AnimatePresence>
   );
 };

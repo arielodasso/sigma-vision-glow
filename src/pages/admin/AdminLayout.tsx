@@ -28,6 +28,7 @@ import {
   ChevronUp,
   Mail,
   Link as LinkIcon,
+  Globe,
 } from "lucide-react";
 import BlogAdminLogin from "@/components/BlogAdminLogin";
 import sigmaIsologo from "@/assets/brand/sigma-isologo-2.png.asset.json";
@@ -290,6 +291,15 @@ const AdminLayout = () => {
                 <p className="text-[11px] text-foreground/30 truncate">{isSuperAdmin ? "Superadmin" : isBackoffice ? "Admin" : "Empleado"}</p>
               </div>
             </div>
+            <a
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full mt-2 flex items-center justify-center gap-3 px-4 py-2.5 rounded-lg text-sm text-sigma-blue hover:text-sigma-yellow hover:bg-sigma-blue/10 transition-colors"
+            >
+              <Globe size={16} />
+              Ver Sitio
+            </a>
             <button
               onClick={handleLogout}
               className="w-full mt-3 flex items-center justify-center gap-3 px-4 py-2.5 rounded-lg text-sm text-foreground/50 hover:text-foreground hover:bg-foreground/[0.03] transition-colors"

@@ -1,5 +1,5 @@
 import { useEffect, useState, FormEvent } from "react";
-import { X, Loader2, User, Mail, Phone, MessageCircle, Building2, Shield, Calendar } from "lucide-react";
+import { X, Loader2, User, Mail, Phone, MessageCircle, Building2, Shield, Calendar, Image as ImageIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -7,6 +7,7 @@ type AppRole = Database["public"]["Enums"]["app_role"];
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "@/i18n/useTranslation";
+import MediaLibrary from "@/components/admin/MediaLibrary";
 
 interface TeamMember {
   id: string;
@@ -43,6 +44,7 @@ const TeamMemberModal = ({ member, onClose, onSuccess }: TeamMemberModalProps) =
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [managers, setManagers] = useState<TeamMember[]>([]);
+  const [showMedia, setShowMedia] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     full_name: "",
@@ -53,6 +55,7 @@ const TeamMemberModal = ({ member, onClose, onSuccess }: TeamMemberModalProps) =
     active: true,
     roles: ["empleado"] as string[],
     password: "",
+    avatar_url: "",
   });
 
   useEffect(() => {
@@ -119,6 +122,7 @@ const TeamMemberModal = ({ member, onClose, onSuccess }: TeamMemberModalProps) =
             whatsapp: formData.whatsapp.trim() || null,
             manager_id: formData.manager_id || null,
             active: formData.active,
+            avatar_url: formData.avatar_url || null,
             updated_at: new Date().toISOString(),
           })
           .eq("id", member.id);
@@ -156,6 +160,7 @@ const TeamMemberModal = ({ member, onClose, onSuccess }: TeamMemberModalProps) =
           whatsapp: formData.whatsapp.trim() || null,
           manager_id: formData.manager_id || null,
           active: formData.active,
+          avatar_url: formData.avatar_url || null,
         });
         if (profileError) throw profileError;
 
@@ -228,6 +233,31 @@ const TeamMemberModal = ({ member, onClose, onSuccess }: TeamMemberModalProps) =
                 className="w-full glass-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-foreground/25"
                 placeholder="Nombre completo"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-foreground/60 mb-2">Avatar</label>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <input
+                  value={formData.avatar_url}
+                  onChange={(e) => setFormData({ ...formData, avatar_url: e.target.value })}
+                  className="w-full glass-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-foreground/25"
+                  placeholder="https://... o elegí de la biblioteca"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowMedia(true)}
+                  className="shrink-0 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-foreground/10 text-sm text-foreground/70 hover:text-foreground hover:bg-foreground/[0.04] transition-colors"
+                >
+                  <ImageIcon size={14} />
+                  Biblioteca
+                </button>
+              </div>
+              {formData.avatar_url && (
+                <div className="mt-3 rounded-xl overflow-hidden border border-foreground/[0.08] max-w-xs">
+                  <img src={formData.avatar_url} alt="Vista previa avatar" loading="lazy" className="w-full aspect-square object-cover" />
+                </div>
+              )}
             </div>
 
             {!member && (
@@ -351,8 +381,29 @@ const TeamMemberModal = ({ member, onClose, onSuccess }: TeamMemberModalProps) =
               </button>
             </div>
           </form>
-        </motion.div>
+
+        {showMedia && (
+          <div className="fixed inset-0 z-50 bg-background/90 backdrop-blur-sm p-4 sm:p-8 overflow-y-auto">
+            <div className="max-w-4xl mx-auto bg-card border border-foreground/[0.08] rounded-2xl p-6">
+              <div className="flex items-start justify-between mb-5">
+                <div>
+                  <h3 className="font-display text-lg font-semibold text-foreground">Biblioteca multimedia</h3>
+                  <p className="text-xs text-foreground/40 mt-1">Elegí una imagen para el avatar.</p>
+                </div>
+                <button onClick={() => setShowMedia(false)} className="text-foreground/40 hover:text-foreground">
+                  <X size={18} />
+                </button>
+              </div>
+              <MediaLibrary
+                compact
+                onSelect={(asset) => { setFormData({ ...formData, avatar_url: asset.url }); setShowMedia(false); }}
+              />
+            </div>
+          </div>
+        )}
+
       </motion.div>
+    </motion.div>
     </AnimatePresence>
   );
 };

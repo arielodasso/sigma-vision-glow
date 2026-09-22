@@ -1,8 +1,10 @@
-import { useState, useEffect, FormEvent } from "react";
+import { useState, useEffect, FormEvent, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Trash2, Pencil, Eye, EyeOff, ExternalLink, Map, ChevronLeft, ChevronRight, Search, Plus, Image as ImageIcon, X } from "lucide-react";
+import { Trash2, Pencil, Eye, EyeOff, ExternalLink, Map, ChevronLeft, ChevronRight, Search, Plus, Image as ImageIcon, X, Upload } from "lucide-react";
 import MediaLibrary from "@/components/admin/MediaLibrary";
+
+const TEN_YEARS = 60 * 60 * 24 * 365 * 10;
 
 interface BlogPost {
   id: string;
@@ -239,7 +241,29 @@ const BlogAdmin = () => {
           <div>
             <label className="block text-xs font-medium text-foreground/40 mb-2 uppercase tracking-wide">Imagen de portada</label>
             <div className="flex flex-col sm:flex-row gap-2">
-              <input value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} className={inputClass} placeholder="https://... o elegí de la biblioteca" />
+              <input
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                className={inputClass}
+                placeholder="https://... o elegí de la biblioteca"
+              />
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*,video/*"
+                className="hidden"
+                onChange={handleFileSelect}
+                disabled={uploadingImage}
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploadingImage}
+                className="shrink-0 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-foreground/10 text-sm text-foreground/70 hover:text-foreground hover:bg-foreground/[0.04] transition-colors disabled:opacity-50"
+              >
+                <Upload size={14} />
+                {uploadingImage ? "Subiendo..." : "Subir"}
+              </button>
               <button
                 type="button"
                 onClick={() => setShowMedia(true)}

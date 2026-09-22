@@ -1,9 +1,10 @@
 import { useEffect, useState, FormEvent } from "react";
-import { X, Loader2, Star, Image } from "lucide-react";
+import { X, Loader2, Star, Image as ImageIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "@/i18n/useTranslation";
+import MediaLibrary from "@/components/admin/MediaLibrary";
 
 interface Testimonial {
   id: string;
@@ -16,6 +17,7 @@ interface Testimonial {
   sort_order: number;
   created_at: string;
   updated_at: string;
+  image_url: string | null;
 }
 
 interface TestimonialModalProps {
@@ -28,6 +30,7 @@ const TestimonialModal = ({ testimonial, onClose, onSuccess }: TestimonialModalP
   const { t } = useTranslation();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [showMedia, setShowMedia] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     role: "",
@@ -49,7 +52,7 @@ const TestimonialModal = ({ testimonial, onClose, onSuccess }: TestimonialModalP
         rating: testimonial.rating || 5,
         published: testimonial.published,
         sort_order: testimonial.sort_order,
-        image_url: "",
+        image_url: testimonial.image_url || "",
       });
     } else {
       setFormData({
@@ -77,6 +80,7 @@ const TestimonialModal = ({ testimonial, onClose, onSuccess }: TestimonialModalP
       rating: formData.rating,
       published: formData.published,
       sort_order: formData.sort_order,
+      image_url: formData.image_url || null,
     };
 
     try {
@@ -206,30 +210,43 @@ const TestimonialModal = ({ testimonial, onClose, onSuccess }: TestimonialModalP
                   className="w-full glass-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-foreground/25"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-foreground/60 mb-2">Imagen (URL)</label>
-                <div className="relative">
-                  <Image className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/30" size={16} />
+              <div className="sm:col-span-2">
+                <label className="block text-sm font-medium text-foreground/60 mb-2">Imagen</label>
+                <div className="flex flex-col sm:flex-row gap-2">
                   <input
-                    type="url"
                     value={formData.image_url}
                     onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                    className="w-full glass-input rounded-xl px-10 py-3 text-sm text-foreground placeholder:text-foreground/25"
-                    placeholder="https://..."
+                    className="w-full glass-input rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-foreground/25"
+                    placeholder="https://... o elegí de la biblioteca"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowMedia(true)}
+                    className="shrink-0 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-foreground/10 text-sm text-foreground/70 hover:text-foreground hover:bg-foreground/[0.04] transition-colors"
+                  >
+                    <ImageIcon size={14} />
+                    Biblioteca
+                  </button>
                 </div>
+                {formData.image_url && (
+                  <div className="mt-3 rounded-xl overflow-hidden border border-foreground/[0.08] max-w-xs">
+                    <img src={formData.image_url} alt="Vista previa" loading="lazy" className="w-full aspect-square object-cover" />
+                  </div>
+                )}
               </div>
-              <div className="flex items-end">
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formData.published}
-                    onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
-                    className="w-4 h-4 rounded border-foreground/[0.2] text-sigma-yellow focus:ring-sigma-yellow"
-                  />
-                  <span className="text-sm font-medium text-foreground">Publicado</span>
-                </label>
-              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="published"
+                checked={formData.published}
+                onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
+                className="w-4 h-4 rounded border-foreground/[0.2] text-sigma-yellow focus:ring-sigma-yellow"
+              />
+              <label htmlFor="published" className="text-sm font-medium text-foreground">
+                Publicado
+              </label>
             </div>
 
             <div className="flex justify-end gap-3 pt-4 border-t border-foreground/[0.06]">
@@ -256,8 +273,29 @@ const TestimonialModal = ({ testimonial, onClose, onSuccess }: TestimonialModalP
               </button>
             </div>
           </form>
-        </motion.div>
+
+        {showMedia && (
+          <div className="fixed inset-0 z-50 bg-background/90 backdrop-blur-sm p-4 sm:p-8 overflow-y-auto">
+            <div className="max-w-4xl mx-auto bg-card border border-foreground/[0.08] rounded-2xl p-6">
+              <div className="flex items-start justify-between mb-5">
+                <div>
+                  <h3 className="font-display text-lg font-semibold text-foreground">Biblioteca multimedia</h3>
+                  <p className="text-xs text-foreground/40 mt-1">Elegí una imagen para el testimonio.</p>
+                </div>
+                <button onClick={() => setShowMedia(false)} className="text-foreground/40 hover:text-foreground">
+                  <X size={18} />
+                </button>
+              </div>
+              <MediaLibrary
+                compact
+                onSelect={(asset) => { setFormData({ ...formData, image_url: asset.url }); setShowMedia(false); }}
+              />
+            </div>
+          </div>
+        )}
+
       </motion.div>
+    </motion.div>
     </AnimatePresence>
   );
 };
