@@ -96,7 +96,7 @@ const KnowledgePortal = () => {
         <meta name="description" content="Documentación técnica, guías y recursos de Sigma Tecnologías" />
       </Helmet>
 
-      <header className="border-b border-foreground/[0.06] bg-background/80 backdrop-blur-sm sticky top-0 z-40">
+<header className="border-b border-foreground/[0.06] bg-background/80 backdrop-blur-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3 group" onClick={(e) => { e.preventDefault(); window.location.href = "/"; }}>
@@ -122,7 +122,7 @@ const KnowledgePortal = () => {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-12">
+      <main className="max-w-7xl mx-auto px-6 pt-36 pb-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

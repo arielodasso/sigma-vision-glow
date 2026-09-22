@@ -60,11 +60,6 @@ export const MobileCarousel = <T,>({
           msOverflowStyle: "none",
         }}
       >
-        <style jsx>{`
-          .carousel-track::-webkit-scrollbar {
-            display: none;
-          }
-        `}</style>
         {items.map((item, i) => (
           <motion.div
             key={i}
