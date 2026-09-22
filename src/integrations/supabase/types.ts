@@ -678,10 +678,17 @@ export type Database = {
           description: string | null
           due_date: string | null
           id: string
-          priority: string
-          status: string
+          priority: "low" | "medium" | "high" | "urgent"
+          status: "backlog" | "pending" | "in_progress" | "in_review" | "done" | "cancelled"
           title: string
           updated_at: string
+          key: string | null
+          issue_type: "epic" | "story" | "task" | "bug" | "subtask"
+          story_points: number | null
+          epic_id: string | null
+          parent_id: string | null
+          sprint_id: string | null
+          reporter_id: string | null
         }
         Insert: {
           assignee_id?: string | null
@@ -691,10 +698,17 @@ export type Database = {
           description?: string | null
           due_date?: string | null
           id?: string
-          priority?: string
-          status?: string
+          priority?: "low" | "medium" | "high" | "urgent"
+          status?: "backlog" | "pending" | "in_progress" | "in_review" | "done" | "cancelled"
           title: string
           updated_at?: string
+          key?: string | null
+          issue_type?: "epic" | "story" | "task" | "bug" | "subtask"
+          story_points?: number | null
+          epic_id?: string | null
+          parent_id?: string | null
+          sprint_id?: string | null
+          reporter_id?: string | null
         }
         Update: {
           assignee_id?: string | null
@@ -704,10 +718,17 @@ export type Database = {
           description?: string | null
           due_date?: string | null
           id?: string
-          priority?: string
-          status?: string
+          priority?: "low" | "medium" | "high" | "urgent"
+          status?: "backlog" | "pending" | "in_progress" | "in_review" | "done" | "cancelled"
           title?: string
           updated_at?: string
+          key?: string | null
+          issue_type?: "epic" | "story" | "task" | "bug" | "subtask"
+          story_points?: number | null
+          epic_id?: string | null
+          parent_id?: string | null
+          sprint_id?: string | null
+          reporter_id?: string | null
         }
         Relationships: [
           {
@@ -719,6 +740,78 @@ export type Database = {
           },
           {
             foreignKeyName: "tasks_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_epic_id_fkey"
+            columns: ["epic_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_sprint_id_fkey"
+            columns: ["sprint_id"]
+            isOneToOne: false
+            referencedRelation: "sprints"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_reporter_id_fkey"
+            columns: ["reporter_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sprints: {
+        Row: {
+          id: string
+          name: string
+          goal: string | null
+          start_date: string | null
+          end_date: string | null
+          status: "planning" | "active" | "completed"
+          created_by: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          goal?: string | null
+          start_date?: string | null
+          end_date?: string | null
+          status?: "planning" | "active" | "completed"
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          goal?: string | null
+          start_date?: string | null
+          end_date?: string | null
+          status?: "planning" | "active" | "completed"
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sprints_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -895,6 +988,10 @@ export type Database = {
       app_role: "admin" | "moderator" | "user" | "superadmin" | "empleado"
       budget_status: "draft" | "sent" | "accepted" | "rejected"
       contact_status: "pending" | "sent" | "failed"
+      sprint_status: "planning" | "active" | "completed"
+      task_status: "backlog" | "pending" | "in_progress" | "in_review" | "done" | "cancelled"
+      task_priority: "low" | "medium" | "high" | "urgent"
+      task_issue_type: "epic" | "story" | "task" | "bug" | "subtask"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1025,6 +1122,10 @@ export const Constants = {
       app_role: ["admin", "moderator", "user", "superadmin", "empleado"],
       budget_status: ["draft", "sent", "accepted", "rejected"],
       contact_status: ["pending", "sent", "failed"],
+      sprint_status: ["planning", "active", "completed"],
+      task_status: ["backlog", "pending", "in_progress", "in_review", "done", "cancelled"],
+      task_priority: ["low", "medium", "high", "urgent"],
+      task_issue_type: ["epic", "story", "task", "bug", "subtask"],
     },
   },
 } as const

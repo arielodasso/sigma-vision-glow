@@ -189,6 +189,10 @@ const AdminLayout = () => {
   const linkBase = "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors";
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `${linkBase} ${isActive ? "bg-foreground/[0.06] text-foreground" : "text-foreground/50 hover:text-foreground hover:bg-foreground/[0.03]"}`;
+  const subLinkClass = ({ isActive }: { isActive: boolean }) =>
+    `flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-colors ${
+      isActive ? "bg-foreground/[0.06] text-foreground" : "text-foreground/40 hover:text-foreground hover:bg-foreground/[0.03]"
+    }`;
 
   const toggleSection = (label: string) => {
     setOpenSections((prev) => {
@@ -257,7 +261,7 @@ const AdminLayout = () => {
                             <NavLink
                               key={child.href}
                               to={child.href}
-                              className={linkClass}
+                              className={(props) => subLinkClass({ isActive: props.isActive })}
                               end
                             >
                               {child.icon}
@@ -295,7 +299,7 @@ const AdminLayout = () => {
               href="/"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full mt-2 flex items-center justify-center gap-3 px-4 py-2.5 rounded-lg text-sm text-sigma-blue hover:text-sigma-yellow hover:bg-sigma-blue/10 transition-colors"
+              className="w-full mt-2 flex items-center justify-center gap-3 px-4 py-2.5 rounded-lg text-sm text-foreground/50 hover:text-foreground hover:bg-foreground/[0.06] transition-colors"
             >
               <Globe size={16} />
               Ver Sitio

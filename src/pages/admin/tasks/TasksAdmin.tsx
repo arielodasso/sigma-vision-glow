@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Plus, Search, Filter, MoreVertical, Edit, Trash2, CheckCircle, Clock, AlertTriangle, User, Mail, ClipboardCheck } from "lucide-react";
+import { Plus, Search, Filter, MoreVertical, Edit, Trash2, CheckCircle, Clock, AlertTriangle, User, Mail, ClipboardCheck, GitBranch, ArrowUpRight, AlertCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/i18n/useTranslation";
@@ -9,18 +9,29 @@ import TaskModal from "./TaskModal";
 
 interface Task {
   id: string;
+  key: string | null;
   title: string;
   description: string | null;
   assignee_id: string | null;
   created_by: string | null;
-  status: "pending" | "in_progress" | "done" | "cancelled";
+  reporter_id: string | null;
+  status: "backlog" | "pending" | "in_progress" | "in_review" | "done" | "cancelled";
   priority: "low" | "medium" | "high" | "urgent";
+  issue_type: "epic" | "story" | "task" | "bug" | "subtask";
+  story_points: number | null;
+  epic_id: string | null;
+  parent_id: string | null;
+  sprint_id: string | null;
   due_date: string | null;
   completed_at: string | null;
   created_at: string;
   updated_at: string;
   assignee?: { full_name: string | null; email: string };
   creator?: { full_name: string | null; email: string };
+  reporter?: { full_name: string | null; email: string };
+  epic?: { title: string; key: string | null; color: string };
+  parent?: { title: string; key: string | null };
+  sprint?: { name: string; status: string };
 }
 
 const TasksAdmin = () => {
@@ -31,6 +42,7 @@ const TasksAdmin = () => {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [priorityFilter, setPriorityFilter] = useState<string>("all");
+  const [issueTypeFilter, setIssueTypeFilter] = useState<string>("all");
   const [modalOpen, setModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
 
@@ -41,7 +53,11 @@ const TasksAdmin = () => {
       .select(`
         *,
         assignee:profiles!tasks_assignee_id_fkey(full_name, email),
-        creator:profiles!tasks_created_by_fkey(full_name, email)
+        creator:profiles!tasks_created_by_fkey(full_name, email),
+        reporter:profiles!tasks_reporter_id_fkey(full_name, email),
+        epic:tasks!tasks_epic_id_fkey(title, key, color),
+        parent:tasks!tasks_parent_id_fkey(title, key),
+        sprint:sprints!tasks_sprint_id_fkey(name, status)
       `)
       .order("created_at", { ascending: false });
     if (data) setTasks(data as Task[]);
@@ -54,22 +70,28 @@ const TasksAdmin = () => {
 
   const filteredTasks = tasks.filter((t) => {
     const matchesSearch = t.title.toLowerCase().includes(search.toLowerCase()) ||
-      t.description?.toLowerCase().includes(search.toLowerCase());
+      t.description?.toLowerCase().includes(search.toLowerCase()) ||
+      t.key?.toLowerCase().includes(search.toLowerCase());
     const matchesStatus = statusFilter === "all" || t.status === statusFilter;
     const matchesPriority = priorityFilter === "all" || t.priority === priorityFilter;
-    return matchesSearch && matchesStatus && matchesPriority;
+    const matchesIssueType = issueTypeFilter === "all" || t.issue_type === issueTypeFilter;
+    return matchesSearch && matchesStatus && matchesPriority && matchesIssueType;
   });
 
   const statusLabels: Record<string, string> = {
+    backlog: "Backlog",
     pending: "Pendiente",
     in_progress: "En progreso",
+    in_review: "En revisión",
     done: "Completada",
     cancelled: "Cancelada",
   };
 
   const statusColors: Record<string, string> = {
+    backlog: "bg-gray-500/20 text-gray-400 border-gray-500/30",
     pending: "bg-amber-500/20 text-amber-400 border-amber-500/30",
     in_progress: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+    in_review: "bg-purple-500/20 text-purple-400 border-purple-500/30",
     done: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
     cancelled: "bg-red-500/20 text-red-400 border-red-500/30",
   };
@@ -86,6 +108,35 @@ const TasksAdmin = () => {
     medium: "bg-blue-500/20 text-blue-400",
     high: "bg-amber-500/20 text-amber-400",
     urgent: "bg-red-500/20 text-red-400",
+  };
+
+  const issueTypeLabels: Record<string, string> = {
+    epic: "Épica",
+    story: "Historia",
+    task: "Tarea",
+    bug: "Bug",
+    subtask: "Subtarea",
+  };
+
+  const issueTypeIcons: Record<string, React.ElementType> = {
+    epic: GitBranch,
+    story: ArrowUpRight,
+    task: GitBranch,
+    bug: AlertCircle,
+    subtask: GitBranch,
+  };
+
+  const issueTypeColors: Record<string, string> = {
+    epic: "text-purple-400",
+    story: "text-emerald-400",
+    task: "text-blue-400",
+    bug: "text-red-400",
+    subtask: "text-gray-400",
+  };
+
+  const getIssueTypeIcon = (type: Task["issue_type"]) => {
+    const Icon = issueTypeIcons[type] || GitBranch;
+    return <Icon className={issueTypeColors[type]} size={10} />;
   };
 
   const handleDelete = async (id: string) => {
@@ -108,6 +159,16 @@ const TasksAdmin = () => {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "Estado actualizado" });
+      fetchTasks();
+    }
+  };
+
+  const handleIssueTypeChange = async (id: string, issue_type: Task["issue_type"]) => {
+    const { error } = await supabase.from("tasks").update({ issue_type }).eq("id", id);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Tipo actualizado" });
       fetchTasks();
     }
   };
@@ -172,8 +233,10 @@ const TasksAdmin = () => {
               className="glass-input rounded-xl px-3 py-2.5 text-xs text-foreground bg-card border border-foreground/[0.08]"
             >
               <option value="all">Todos los estados</option>
+              <option value="backlog">Backlog</option>
               <option value="pending">Pendiente</option>
               <option value="in_progress">En progreso</option>
+              <option value="in_review">En revisión</option>
               <option value="done">Completada</option>
               <option value="cancelled">Cancelada</option>
             </select>
@@ -187,6 +250,18 @@ const TasksAdmin = () => {
               <option value="medium">Media</option>
               <option value="high">Alta</option>
               <option value="urgent">Urgente</option>
+            </select>
+            <select
+              value={issueTypeFilter}
+              onChange={(e) => setIssueTypeFilter(e.target.value)}
+              className="glass-input rounded-xl px-3 py-2.5 text-xs text-foreground bg-card border border-foreground/[0.08]"
+            >
+              <option value="all">Todos los tipos</option>
+              <option value="epic">Épica</option>
+              <option value="story">Historia</option>
+              <option value="task">Tarea</option>
+              <option value="bug">Bug</option>
+              <option value="subtask">Subtarea</option>
             </select>
           </div>
         </motion.div>
@@ -212,9 +287,13 @@ const TasksAdmin = () => {
                 <thead>
                   <tr className="border-b border-foreground/[0.06] text-left text-[11px] font-semibold text-foreground/40 uppercase tracking-wider">
                     <th className="p-4">Tarea</th>
+                    <th className="p-4 hidden md:table-cell">Tipo</th>
+                    <th className="p-4 hidden lg:table-cell">Puntos</th>
+                    <th className="p-4 hidden xl:table-cell">Épica</th>
                     <th className="p-4 hidden md:table-cell">Asignado a</th>
                     <th className="p-4 hidden lg:table-cell">Prioridad</th>
                     <th className="p-4">Estado</th>
+                    <th className="p-4 hidden lg:table-cell">Sprint</th>
                     <th className="p-4 hidden lg:table-cell">Vencimiento</th>
                     <th className="p-4 text-right">Acciones</th>
                   </tr>
@@ -224,11 +303,48 @@ const TasksAdmin = () => {
                     <tr key={task.id} className="hover:bg-foreground/[0.02] transition-colors">
                       <td className="p-4">
                         <div>
-                          <p className="text-sm font-medium text-foreground">{task.title}</p>
+                          <p className="text-sm font-medium text-foreground flex items-center gap-2">
+                            {task.key && <span className="font-mono text-xs text-foreground/50">{task.key}</span>}
+                            {task.title}
+                          </p>
                           {task.description && (
                             <p className="text-xs text-muted-foreground line-clamp-1 mt-1">{task.description}</p>
                           )}
+                          {task.issue_type !== "task" && (
+                            <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-foreground/[0.05]">
+                              {getIssueTypeIcon(task.issue_type)}
+                              {issueTypeLabels[task.issue_type]}
+                            </span>
+                          )}
                         </div>
+                      </td>
+                      <td className="p-4 hidden md:table-cell">
+                        {task.issue_type && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium whitespace-nowrap bg-foreground/[0.05]">
+                            {getIssueTypeIcon(task.issue_type)}
+                            {issueTypeLabels[task.issue_type]}
+                          </span>
+                        )}
+                      </td>
+                      <td className="p-4 hidden lg:table-cell">
+                        {task.story_points !== null ? (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium whitespace-nowrap bg-sigma-yellow/20 text-sigma-yellow">
+                            {task.story_points} SP
+                          </span>
+                        ) : (
+                          <span className="text-xs text-foreground/30">—</span>
+                        )}
+                      </td>
+                      <td className="p-4 hidden xl:table-cell">
+                        {task.epic ? (
+                          <span className="flex items-center gap-1 text-xs text-foreground/70">
+                            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: task.epic.color || "#8b5cf6" }} />
+                            <span className="font-mono text-foreground/50">{task.epic.key}-</span>
+                            {task.epic.title}
+                          </span>
+                        ) : (
+                          <span className="text-xs text-foreground/30">—</span>
+                        )}
                       </td>
                       <td className="p-4 hidden md:table-cell">
                         {task.assignee ? (
@@ -251,11 +367,28 @@ const TasksAdmin = () => {
                           onChange={(e) => handleStatusChange(task.id, e.target.value as Task["status"])}
                           className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium border whitespace-nowrap ${statusColors[task.status]}`}
                         >
+                          <option value="backlog">Backlog</option>
                           <option value="pending">Pendiente</option>
                           <option value="in_progress">En progreso</option>
+                          <option value="in_review">En revisión</option>
                           <option value="done">Completada</option>
                           <option value="cancelled">Cancelada</option>
                         </select>
+                      </td>
+                      <td className="p-4 hidden lg:table-cell">
+                        {task.sprint ? (
+                          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium whitespace-nowrap ${
+                            task.sprint.status === "active" ? "bg-emerald-500/20 text-emerald-400" :
+                            task.sprint.status === "completed" ? "bg-emerald-500/20 text-emerald-400" :
+                            "bg-amber-500/20 text-amber-400"
+                          }`}>
+                            {task.sprint.name}
+                            {task.sprint.status === "active" && "🟢"}
+                            {task.sprint.status === "completed" && "✅"}
+                          </span>
+                        ) : (
+                          <span className="text-xs text-foreground/30">Backlog</span>
+                        )}
                       </td>
                       <td className="p-4 hidden lg:table-cell">
                         {task.due_date ? (
