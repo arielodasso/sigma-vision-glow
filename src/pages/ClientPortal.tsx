@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/i18n/useTranslation";
 import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
+import sigmaIsologo from "@/assets/brand/sigma-isologo-4.png.asset.json";
 
 interface Client {
   id: string;
@@ -200,7 +201,18 @@ const ClientPortal = () => {
       <header className="border-b border-foreground/[0.06] bg-background/80 backdrop-blur-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <Link to="/" className="font-display text-xl font-bold text-gradient">Sigma</Link>
+            <Link to="/" className="flex items-center gap-3 group" onClick={(e) => { e.preventDefault(); window.location.href = "/"; }}>
+              <img
+                src={sigmaIsologo.url}
+                alt="Isologo Sigma Tecnologías"
+                width={32}
+                height={32}
+                className="h-8 w-8 object-contain"
+              />
+              <span className="font-display text-xl font-bold text-foreground tracking-tight">
+                Sigma<span className="font-bold text-foreground/50">Tecnologías</span>
+              </span>
+            </Link>
             <div className="flex items-center gap-4">
               <span className="text-sm text-foreground/60">{client.name}{client.company && ` · ${client.company}`}</span>
               {token && (

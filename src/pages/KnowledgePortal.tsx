@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Search, ChevronRight, FileText, ExternalLink, Loader2 } from "lucide-react";
+import { Search, FileText, ExternalLink, Loader2, Lock, UserCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/i18n/useTranslation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import { usePermissions } from "@/hooks/usePermissions";
+import sigmaIsologo from "@/assets/brand/sigma-isologo-4.png.asset.json";
 
 interface KnowledgeDoc {
   id: string;
@@ -18,35 +20,15 @@ interface KnowledgeDoc {
 
 const KnowledgePortal = () => {
   const { t } = useTranslation();
+  const { isBackoffice, loading: permsLoading } = usePermissions();
   const [docs, setDocs] = useState<KnowledgeDoc[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [requireAuth, setRequireAuth] = useState(false);
-  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    fetchSettings();
     fetchDocs();
-    checkAuth();
   }, []);
-
-  const fetchSettings = async () => {
-    const { data } = await supabase
-      .from("crm_settings")
-      .select("key, value")
-      .in("key", ["knowledge_portal_require_auth", "knowledge_portal_allow_search"]);
-    if (data) {
-      data.forEach((s) => {
-        if (s.key === "knowledge_portal_require_auth") setRequireAuth(s.value === "true");
-      });
-    }
-  };
-
-  const checkAuth = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    setUser(session?.user || null);
-  };
 
   const fetchDocs = async () => {
     setLoading(true);
@@ -59,6 +41,30 @@ const KnowledgePortal = () => {
     if (data) setDocs(data as KnowledgeDoc[]);
     setLoading(false);
   };
+
+  if (permsLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="animate-spin text-sigma-yellow" size={32} />
+      </div>
+    );
+  }
+
+  if (!isBackoffice) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="glass-card rounded-2xl p-8 max-w-md w-full mx-4 text-center">
+          <Lock className="mx-auto text-foreground/40 mb-4" size={48} />
+          <h1 className="font-display text-2xl font-bold text-foreground mb-4">Acceso restringido</h1>
+          <p className="text-foreground/60 mb-6">El Portal Editorial es solo para personal de Sigma Tecnologías (admin/superadmin).</p>
+          <div className="flex items-center justify-center gap-3 text-sm text-foreground/50">
+            <UserCheck size={16} className="text-emerald-400" />
+            <span>Requiere rol: admin o superadmin</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const categories = [...new Set(docs.map((d) => d.category))].sort();
 
@@ -83,23 +89,6 @@ const KnowledgePortal = () => {
     );
   };
 
-  if (requireAuth && !user) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="glass-card rounded-2xl p-8 max-w-md w-full mx-4 text-center">
-          <h1 className="font-display text-2xl font-bold text-foreground mb-4">Portal Editorial</h1>
-          <p className="text-foreground/60 mb-6">Este contenido requiere autenticación.</p>
-          <a
-            href={`/auth/login?redirectTo=${encodeURIComponent(window.location.pathname)}`}
-            className="inline-flex items-center gap-2 bg-foreground text-background px-6 py-3 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors"
-          >
-            Iniciar sesión
-          </a>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
@@ -110,7 +99,18 @@ const KnowledgePortal = () => {
       <header className="border-b border-foreground/[0.06] bg-background/80 backdrop-blur-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <Link to="/" className="font-display text-xl font-bold text-gradient">Sigma</Link>
+            <Link to="/" className="flex items-center gap-3 group" onClick={(e) => { e.preventDefault(); window.location.href = "/"; }}>
+              <img
+                src={sigmaIsologo.url}
+                alt="Isologo Sigma Tecnologías"
+                width={32}
+                height={32}
+                className="h-8 w-8 object-contain"
+              />
+              <span className="font-display text-xl font-bold text-foreground tracking-tight">
+                Sigma<span className="font-bold text-foreground/50">Tecnologías</span>
+              </span>
+            </Link>
             <nav className="hidden md:flex items-center gap-6">
               <Link to="/" className="text-sm text-foreground/60 hover:text-foreground">Inicio</Link>
               <Link to="/servicios" className="text-sm text-foreground/60 hover:text-foreground">Servicios</Link>
