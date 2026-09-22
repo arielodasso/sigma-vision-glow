@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Plus, Search, Filter, MoreVertical, Edit, Trash2, CheckCircle, Clock, AlertTriangle, User, Mail, ClipboardCheck, GitBranch, ArrowUpRight, AlertCircle } from "lucide-react";
+import { Plus, Search, Filter, MoreVertical, Edit, Trash2, CheckCircle, Clock, AlertTriangle, User, Mail, ClipboardCheck, GitBranch, ArrowUpRight, AlertCircle, Target, Play, RotateCcw, Columns, List, Kanban, BarChart2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/i18n/useTranslation";
 import { motion, AnimatePresence } from "framer-motion";
 import TaskModal from "./TaskModal";
+import SprintModal from "./SprintModal";
 
 interface Task {
   id: string;
@@ -34,17 +35,33 @@ interface Task {
   sprint?: { name: string; status: string };
 }
 
+interface Sprint {
+  id: string;
+  name: string;
+  goal: string | null;
+  start_date: string | null;
+  end_date: string | null;
+  status: "planning" | "active" | "completed";
+  created_at: string;
+  updated_at: string;
+}
+
 const TasksAdmin = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [sprints, setSprints] = useState<Sprint[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [priorityFilter, setPriorityFilter] = useState<string>("all");
   const [issueTypeFilter, setIssueTypeFilter] = useState<string>("all");
+  const [sprintFilter, setSprintFilter] = useState<string>("all");
+  const [viewMode, setViewMode] = useState<"list" | "board" | "charts">("list");
   const [modalOpen, setModalOpen] = useState(false);
+  const [sprintModalOpen, setSprintModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [editingSprint, setEditingSprint] = useState<Sprint | null>(null);
 
   const fetchTasks = async () => {
     setLoading(true);
@@ -66,7 +83,16 @@ const TasksAdmin = () => {
 
   useEffect(() => {
     fetchTasks();
+    fetchSprints();
   }, []);
+
+  const fetchSprints = async () => {
+    const { data } = await supabase
+      .from("sprints")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (data) setSprints(data as Sprint[]);
+  };
 
   const filteredTasks = tasks.filter((t) => {
     const matchesSearch = t.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -75,7 +101,8 @@ const TasksAdmin = () => {
     const matchesStatus = statusFilter === "all" || t.status === statusFilter;
     const matchesPriority = priorityFilter === "all" || t.priority === priorityFilter;
     const matchesIssueType = issueTypeFilter === "all" || t.issue_type === issueTypeFilter;
-    return matchesSearch && matchesStatus && matchesPriority && matchesIssueType;
+    const matchesSprint = sprintFilter === "all" || t.sprint_id === sprintFilter;
+    return matchesSearch && matchesStatus && matchesPriority && matchesIssueType && matchesSprint;
   });
 
   const statusLabels: Record<string, string> = {
@@ -134,6 +161,18 @@ const TasksAdmin = () => {
     subtask: "text-gray-400",
   };
 
+  const sprintStatusLabels: Record<string, string> = {
+    planning: "Planificación",
+    active: "Activo",
+    completed: "Completado",
+  };
+
+  const sprintStatusColors: Record<string, string> = {
+    planning: "bg-amber-500/20 text-amber-400 border-amber-500/30",
+    active: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+    completed: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+  };
+
   const getIssueTypeIcon = (type: Task["issue_type"]) => {
     const Icon = issueTypeIcons[type] || GitBranch;
     return <Icon className={issueTypeColors[type]} size={10} />;
@@ -183,6 +222,27 @@ const TasksAdmin = () => {
     setModalOpen(true);
   };
 
+  const openCreateSprint = () => {
+    setEditingSprint(null);
+    setSprintModalOpen(true);
+  };
+
+  const openEditSprint = (sprint: Sprint) => {
+    setEditingSprint(sprint);
+    setSprintModalOpen(true);
+  };
+
+  const handleSprintStatusChange = async (id: string, status: Sprint["status"]) => {
+    const { error } = await supabase.from("sprints").update({ status }).eq("id", id);
+    if (error) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Estado del sprint actualizado" });
+      fetchSprints();
+      fetchTasks();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
@@ -200,13 +260,39 @@ const TasksAdmin = () => {
             <h1 className="font-display text-2xl font-bold text-gradient">Tareas</h1>
             <p className="text-xs text-muted-foreground mt-1">Gestiona las tareas del equipo</p>
           </div>
-          <button
-            onClick={openCreate}
-            className="flex items-center gap-2 bg-foreground text-background px-4 py-2 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors"
-          >
-            <Plus size={16} />
-            Nueva tarea
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-1 bg-card border border-foreground/[0.08] rounded-lg p-1">
+              {(["list", "board", "charts"] as const).map((mode) => (
+                <button
+                  key={mode}
+                  onClick={() => setViewMode(mode)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
+                    viewMode === mode
+                      ? "bg-foreground text-background"
+                      : "text-foreground/50 hover:text-foreground hover:bg-foreground/[0.05]"
+                  }`}
+                >
+                  {mode === "list" && <List size={14} />}
+                  {mode === "board" && <Kanban size={14} />}
+                  {mode === "charts" && <BarChart2 size={14} />}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={openCreateSprint}
+              className="flex items-center gap-2 bg-sigma-blue text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-sigma-blue/90 transition-colors"
+            >
+              <Target size={16} />
+              Nuevo Sprint
+            </button>
+            <button
+              onClick={openCreate}
+              className="flex items-center gap-2 bg-foreground text-background px-4 py-2 rounded-full text-sm font-semibold hover:bg-foreground/90 transition-colors"
+            >
+              <Plus size={16} />
+              Nueva tarea
+            </button>
+          </div>
         </motion.div>
 
         {/* Filters */}
@@ -262,6 +348,19 @@ const TasksAdmin = () => {
               <option value="task">Tarea</option>
               <option value="bug">Bug</option>
               <option value="subtask">Subtarea</option>
+            </select>
+            <select
+              value={sprintFilter}
+              onChange={(e) => setSprintFilter(e.target.value)}
+              className="glass-input rounded-xl px-3 py-2.5 text-xs text-foreground bg-card border border-foreground/[0.08]"
+            >
+              <option value="all">Todos los sprints</option>
+              <option value="no_sprint">Sin sprint (Backlog)</option>
+              {sprints.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name} {s.status === "active" && "🟢"} {s.status === "completed" && "✅"}
+                </option>
+              ))}
             </select>
           </div>
         </motion.div>
