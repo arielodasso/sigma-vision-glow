@@ -20,7 +20,7 @@ interface Channel {
 interface ChannelMember {
   channel_id: string;
   user_id: string;
-  joined_at: string;
+  created_at: string;
   user?: { id: string; full_name: string | null; email: string; avatar_url: string | null };
 }
 

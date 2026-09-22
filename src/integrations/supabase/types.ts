@@ -136,6 +136,42 @@ export type Database = {
           },
         ]
       }
+      chat_channel_members: {
+        Row: {
+          channel_id: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          channel_id: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          channel_id?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_channel_members_channel_id_fkey"
+            columns: ["channel_id"]
+            isOneToOne: false
+            referencedRelation: "chat_channels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chat_channel_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       chat_channels: {
         Row: {
           created_at: string
@@ -558,6 +594,59 @@ export type Database = {
             columns: ["manager_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      real_cases: {
+        Row: {
+          client_id: string | null
+          created_at: string
+          description: string
+          id: string
+          logo_theme: string
+          logo_url: string | null
+          name: string
+          published: boolean
+          services: string[]
+          sort_order: number
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          client_id?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          logo_theme?: string
+          logo_url?: string | null
+          name: string
+          published?: boolean
+          services?: string[]
+          sort_order?: number
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          client_id?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          logo_theme?: string
+          logo_url?: string | null
+          name?: string
+          published?: boolean
+          services?: string[]
+          sort_order?: number
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "real_cases_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
             referencedColumns: ["id"]
           },
         ]
