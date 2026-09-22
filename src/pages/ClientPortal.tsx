@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/i18n/useTranslation";
 import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
+import Navbar from "@/components/Navbar";
 
 interface Client {
   id: string;
@@ -124,8 +125,10 @@ const ClientPortal = () => {
 
   if (requireAuth && !user && !token) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="glass-card rounded-2xl p-8 max-w-md w-full mx-4 text-center">
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="min-h-screen flex items-center justify-center pt-24">
+          <div className="glass-card rounded-2xl p-8 max-w-md w-full mx-4 text-center">
           <h1 className="font-display text-2xl font-bold text-foreground mb-4">Portal de Clientes</h1>
           <p className="text-foreground/60 mb-6">Acceso restringido. Inicia sesión para continuar.</p>
           <a
@@ -135,6 +138,7 @@ const ClientPortal = () => {
             <LogIn size={16} />
             Iniciar sesión
           </a>
+          </div>
         </div>
       </div>
     );
@@ -142,16 +146,21 @@ const ClientPortal = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="animate-spin text-sigma-yellow" size={32} />
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="min-h-screen flex items-center justify-center pt-24">
+          <Loader2 className="animate-spin text-sigma-yellow" size={32} />
+        </div>
       </div>
     );
   }
 
   if (error || !client) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="glass-card rounded-2xl p-8 max-w-md w-full mx-4 text-center">
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="min-h-screen flex items-center justify-center pt-24">
+          <div className="glass-card rounded-2xl p-8 max-w-md w-full mx-4 text-center">
           <Shield className="mx-auto text-red-400 mb-4" size={48} />
           <h1 className="font-display text-2xl font-bold text-foreground mb-2">Acceso denegado</h1>
           <p className="text-foreground/60">{error || "No se encontró información del cliente"}</p>
@@ -162,6 +171,7 @@ const ClientPortal = () => {
             Contactar soporte
             <ArrowRight size={16} />
           </Link>
+          </div>
         </div>
       </div>
     );
@@ -197,26 +207,9 @@ const ClientPortal = () => {
         <meta name="description" content="Portal de clientes de Sigma Tecnologías" />
       </Helmet>
 
-      <header className="border-b border-foreground/[0.06] bg-background/80 backdrop-blur-sm sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <Link to="/" className="font-display text-xl font-bold text-gradient">Sigma</Link>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-foreground/60">{client.name}{client.company && ` · ${client.company}`}</span>
-              {token && (
-                <a
-                  href={`/auth/login?redirectTo=${encodeURIComponent(window.location.pathname + window.location.search)}`}
-                  className="text-sm text-sigma-blue hover:text-sigma-yellow"
-                >
-                  Iniciar sesión
-                </a>
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
+      <Navbar />
 
-      <main className="max-w-7xl mx-auto px-6 py-12">
+      <main className="max-w-7xl mx-auto px-6 pt-36 pb-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
