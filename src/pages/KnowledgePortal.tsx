@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/i18n/useTranslation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
+import Navbar from "@/components/Navbar";
 
 interface KnowledgeDoc {
   id: string;
@@ -85,8 +86,10 @@ const KnowledgePortal = () => {
 
   if (requireAuth && !user) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="glass-card rounded-2xl p-8 max-w-md w-full mx-4 text-center">
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="min-h-screen flex items-center justify-center pt-24">
+          <div className="glass-card rounded-2xl p-8 max-w-md w-full mx-4 text-center">
           <h1 className="font-display text-2xl font-bold text-foreground mb-4">Portal Editorial</h1>
           <p className="text-foreground/60 mb-6">Este contenido requiere autenticación.</p>
           <a
@@ -95,6 +98,7 @@ const KnowledgePortal = () => {
           >
             Iniciar sesión
           </a>
+          </div>
         </div>
       </div>
     );
@@ -107,22 +111,9 @@ const KnowledgePortal = () => {
         <meta name="description" content="Documentación técnica, guías y recursos de Sigma Tecnologías" />
       </Helmet>
 
-      <header className="border-b border-foreground/[0.06] bg-background/80 backdrop-blur-sm sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <Link to="/" className="font-display text-xl font-bold text-gradient">Sigma</Link>
-            <nav className="hidden md:flex items-center gap-6">
-              <Link to="/" className="text-sm text-foreground/60 hover:text-foreground">Inicio</Link>
-              <Link to="/servicios" className="text-sm text-foreground/60 hover:text-foreground">Servicios</Link>
-              <Link to="/blog" className="text-sm text-foreground/60 hover:text-foreground">Blog</Link>
-              <Link to="/nosotros" className="text-sm text-foreground/60 hover:text-foreground">Nosotros</Link>
-              <Link to="/contacto" className="text-sm text-foreground/60 hover:text-foreground">Contacto</Link>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <Navbar />
 
-      <main className="max-w-7xl mx-auto px-6 py-12">
+      <main className="max-w-7xl mx-auto px-6 pt-36 pb-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
