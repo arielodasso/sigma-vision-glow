@@ -1,8 +1,9 @@
 import { useTranslation } from "@/i18n/useTranslation";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import { Server, Cpu, ExternalLink, Globe, Link as LinkIcon } from "lucide-react";
+import { Server, Cpu, Globe } from "lucide-react";
 import ClientsCarousel, { type ClientLogo } from "@/components/ClientsCarousel";
+import ProjectCardsCarousel from "@/components/ProjectCardsCarousel";
 import { supabase } from "@/integrations/supabase/client";
 import faztredLogo from "@/assets/clients/faztred.png.asset.json";
 import offmarketLogo from "@/assets/clients/offmarket.png.asset.json";
@@ -169,74 +170,8 @@ const ProjectsSection = () => {
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{categories.platforms.description}</p>
             </motion.div>
 
-            <div className="lg:col-span-3 space-y-6">
-              {categories.platforms.items.map((project, i) => {
-                const meta = platformMeta[project.name];
-                const url = meta?.url;
-                const isLink = Boolean(url);
-                const logoCardClass =
-                  meta?.theme === "dark"
-                    ? "bg-foreground/[0.04] border-foreground/[0.08] group-hover:border-foreground/[0.18] group-hover:bg-foreground/[0.06]"
-                    : meta?.theme === "gray"
-                    ? "bg-neutral-400 border-neutral-300 group-hover:border-neutral-200"
-                    : "bg-white border-white/80 group-hover:border-white";
-                const sharedClass = "block glass-card rounded-2xl p-6 sm:p-7 group relative";
-                const content = (
-                  <>
-                    <div className="absolute left-0 top-[20%] bottom-[20%] w-[2px] bg-foreground/[0.00] group-hover:bg-foreground/[0.08] transition-all duration-500 rounded-full" />
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-7">
-                      {meta?.logo && (
-                        <div
-                          className={`h-24 w-full sm:w-40 shrink-0 rounded-2xl border transition-all duration-300 flex items-center justify-center px-4 ${logoCardClass}`}
-                        >
-                          <img
-                          loading="lazy"
-                          decoding="async"
-                            src={meta.logo}
-                            alt={project.name}
-                            className="max-h-14 max-w-full object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"
-                          />
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between mb-2 gap-3">
-                          <h4 className="font-display text-base sm:text-lg font-semibold text-foreground">{project.name}</h4>
-                          {isLink && (
-                            <ExternalLink size={14} className="text-foreground/15 group-hover:text-foreground/50 transition-colors shrink-0" />
-                          )}
-                        </div>
-                        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{project.description}</p>
-                      </div>
-                    </div>
-                  </>
-                );
-                return isLink ? (
-                  <motion.a
-                    key={i}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                    className={sharedClass}
-                  >
-                    {content}
-                  </motion.a>
-                ) : (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                    className={sharedClass}
-                  >
-                    {content}
-                  </motion.div>
-                );
-              })}
+            <div className="lg:col-span-3 min-w-0">
+              <ProjectCardsCarousel items={categories.platforms.items} meta={platformMeta} label={categories.platforms.title} />
             </div>
 
           </div>
@@ -260,74 +195,8 @@ const ProjectsSection = () => {
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{categories.automation.description}</p>
             </motion.div>
 
-            <div className="lg:col-span-3 space-y-6">
-              {categories.automation.items.map((project, i) => {
-                const meta = platformMeta[project.name];
-                const url = meta?.url;
-                const isLink = Boolean(url);
-                const logoCardClass =
-                  meta?.theme === "dark"
-                    ? "bg-foreground/[0.04] border-foreground/[0.08] group-hover:border-foreground/[0.18] group-hover:bg-foreground/[0.06]"
-                    : meta?.theme === "gray"
-                    ? "bg-neutral-400 border-neutral-300 group-hover:border-neutral-200"
-                    : "bg-white border-white/80 group-hover:border-white";
-                const sharedClass = "block glass-card rounded-2xl p-6 sm:p-7 group relative";
-                const content = (
-                  <>
-                    <div className="absolute left-0 top-[20%] bottom-[20%] w-[2px] bg-foreground/[0.06] rounded-full" />
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-7">
-                      {meta?.logo && (
-                        <div
-                          className={`h-24 w-full sm:w-40 shrink-0 rounded-2xl border transition-all duration-300 flex items-center justify-center overflow-hidden ${logoCardClass}`}
-                        >
-                          <img
-                          loading="lazy"
-                          decoding="async"
-                            src={meta.logo}
-                            alt={project.name}
-                            className={meta?.isologo ? "h-8 w-8 object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300" : "h-[150%] w-[150%] object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-300"}
-                          />
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between mb-2 gap-3">
-                          <h4 className="font-display text-base sm:text-lg font-semibold text-foreground">{project.name}</h4>
-                          {isLink && (
-                            <ExternalLink size={14} className="text-foreground/15 group-hover:text-foreground/50 transition-colors shrink-0" />
-                          )}
-                        </div>
-                        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{project.description}</p>
-                      </div>
-                    </div>
-                  </>
-                );
-                return isLink ? (
-                  <motion.a
-                    key={i}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                    className={sharedClass}
-                  >
-                    {content}
-                  </motion.a>
-                ) : (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: i * 0.1 }}
-                    className={sharedClass}
-                  >
-                    {content}
-                  </motion.div>
-                );
-              })}
+            <div className="lg:col-span-3 min-w-0">
+              <ProjectCardsCarousel items={categories.automation.items} meta={platformMeta} label={categories.automation.title} automation />
             </div>
 
           </div>
