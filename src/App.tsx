@@ -8,6 +8,7 @@ import { LanguageProvider } from "@/i18n/LanguageContext";
 import { AuthProvider } from "@/hooks/useAuth";
 import { HelmetProvider } from "react-helmet-async";
 import FloatingLanguageSelector from "@/components/FloatingLanguageSelector";
+import FloatingContact from "@/components/FloatingContact";
 import CursorHalo from "@/components/CursorHalo";
 import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
@@ -92,6 +93,7 @@ const App = () => (
         <BrowserRouter>
           <ScrollToTop />
           <FloatingLanguageSelector />
+          <FloatingContact />
           <CursorHalo />
           <Suspense fallback={<RouteFallback />}>
           <Routes>
