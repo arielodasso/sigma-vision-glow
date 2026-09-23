@@ -37,21 +37,10 @@ export function useClientAccess(): ClientAccessState {
           setHasClientAccess(true);
           setClientId(client.id);
         } else {
-          // Also check if user_id is linked directly (if schema supports it)
-          const { data: clientByUser } = await supabase
-            .from("clients")
-            .select("id")
-            .eq("user_id", user.id)
-            .maybeSingle();
-
-          if (clientByUser) {
-            setHasClientAccess(true);
-            setClientId(clientByUser.id);
-          } else {
-            setHasClientAccess(false);
-            setClientId(null);
-          }
+          setHasClientAccess(false);
+          setClientId(null);
         }
+
       } catch (error) {
         console.error("Error checking client access:", error);
         setHasClientAccess(false);
