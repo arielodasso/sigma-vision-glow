@@ -289,6 +289,7 @@ export type Database = {
           created_by: string | null
           email: string | null
           id: string
+          image_url: string | null
           name: string
           notes: string | null
           phone: string | null
@@ -303,6 +304,7 @@ export type Database = {
           created_by?: string | null
           email?: string | null
           id?: string
+          image_url?: string | null
           name: string
           notes?: string | null
           phone?: string | null
@@ -317,6 +319,7 @@ export type Database = {
           created_by?: string | null
           email?: string | null
           id?: string
+          image_url?: string | null
           name?: string
           notes?: string | null
           phone?: string | null
@@ -669,43 +672,100 @@ export type Database = {
         }
         Relationships: []
       }
+      sprints: {
+        Row: {
+          created_at: string
+          end_date: string | null
+          goal: string | null
+          id: string
+          name: string
+          start_date: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          end_date?: string | null
+          goal?: string | null
+          id?: string
+          name: string
+          start_date?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          end_date?: string | null
+          goal?: string | null
+          id?: string
+          name?: string
+          start_date?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       tasks: {
         Row: {
           assignee_id: string | null
+          color: string | null
           completed_at: string | null
           created_at: string
           created_by: string | null
           description: string | null
           due_date: string | null
+          epic_id: string | null
           id: string
+          issue_type: string
+          key: string | null
+          parent_id: string | null
           priority: string
+          reporter_id: string | null
+          sprint_id: string | null
           status: string
+          story_points: number | null
           title: string
           updated_at: string
         }
         Insert: {
           assignee_id?: string | null
+          color?: string | null
           completed_at?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
           due_date?: string | null
+          epic_id?: string | null
           id?: string
+          issue_type?: string
+          key?: string | null
+          parent_id?: string | null
           priority?: string
+          reporter_id?: string | null
+          sprint_id?: string | null
           status?: string
+          story_points?: number | null
           title: string
           updated_at?: string
         }
         Update: {
           assignee_id?: string | null
+          color?: string | null
           completed_at?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
           due_date?: string | null
+          epic_id?: string | null
           id?: string
+          issue_type?: string
+          key?: string | null
+          parent_id?: string | null
           priority?: string
+          reporter_id?: string | null
+          sprint_id?: string | null
           status?: string
+          story_points?: number | null
           title?: string
           updated_at?: string
         }
@@ -722,6 +782,27 @@ export type Database = {
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_epic_id_fkey"
+            columns: ["epic_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_sprint_id_fkey"
+            columns: ["sprint_id"]
+            isOneToOne: false
+            referencedRelation: "sprints"
             referencedColumns: ["id"]
           },
         ]
@@ -776,6 +857,7 @@ export type Database = {
           content: string
           created_at: string
           id: string
+          image_url: string | null
           name: string
           published: boolean
           rating: number | null
@@ -788,6 +870,7 @@ export type Database = {
           content: string
           created_at?: string
           id?: string
+          image_url?: string | null
           name: string
           published?: boolean
           rating?: number | null
@@ -800,6 +883,7 @@ export type Database = {
           content?: string
           created_at?: string
           id?: string
+          image_url?: string | null
           name?: string
           published?: boolean
           rating?: number | null
