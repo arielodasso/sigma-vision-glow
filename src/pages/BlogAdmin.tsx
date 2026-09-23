@@ -39,6 +39,38 @@ const BlogAdmin = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [category, setCategory] = useState("");
   const [published, setPublished] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingImage(true);
+    try {
+      const ext = file.name.split(".").pop();
+      const path = `blog/${crypto.randomUUID()}.${ext}`;
+      const { error: upErr } = await supabase.storage.from("media").upload(path, file, { upsert: false });
+      if (upErr) throw upErr;
+      const { data } = supabase.storage.from("media").getPublicUrl(path);
+      setImageUrl(data.publicUrl);
+      await supabase.from("media_assets").insert({
+        name: file.name,
+        url: data.publicUrl,
+        path,
+        mime_type: file.type,
+        size_bytes: file.size,
+        kind: file.type.startsWith("video") ? "video" : "image",
+      });
+      toast({ title: "Archivo subido" });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Error desconocido";
+      toast({ title: "Error al subir", description: message, variant: "destructive" });
+    } finally {
+      setUploadingImage(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
 
   const fetchPosts = async () => {
     const { data } = await supabase

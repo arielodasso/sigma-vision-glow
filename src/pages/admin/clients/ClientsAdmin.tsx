@@ -17,6 +17,8 @@ interface Client {
   notes: string | null;
   status: "active" | "pending_payment" | "proposal" | "lost";
   portal_enabled: boolean;
+  image_url: string | null;
+
   created_by: string | null;
   created_at: string;
   updated_at: string;
