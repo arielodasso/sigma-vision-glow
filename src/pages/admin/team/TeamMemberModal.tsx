@@ -95,6 +95,8 @@ const TeamMemberModal = ({ member, onClose, onSuccess }: TeamMemberModalProps) =
         active: true,
         roles: ["empleado"],
         password: "",
+        avatar_url: "",
+
       });
     }
   }, [member]);
