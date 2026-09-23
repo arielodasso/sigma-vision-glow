@@ -380,7 +380,7 @@ const TasksAdmin = () => {
         sprint:sprints!tasks_sprint_id_fkey(name, status)
       `)
       .order("created_at", { ascending: false });
-    if (data) setTasks(data as Task[]);
+    if (data) setTasks(data as unknown as Task[]);
     setLoading(false);
   };
 

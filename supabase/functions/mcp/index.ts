@@ -2,7 +2,120 @@
 // To take ownership, delete this banner line; the plugin then leaves the file alone.
 // supabase function: mcp
 // Bundled from src/lib/mcp/index.ts by @lovable.dev/mcp-js.
+// src/lib/mcp/index.ts
+import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.20.1";
+
+// src/lib/mcp/tools/list-blog-posts.ts
+import { createClient } from "npm:@supabase/supabase-js@^2.98.0";
+import { defineTool } from "npm:@lovable.dev/mcp-js@0.20.1";
+import { z } from "npm:zod@^3.25.76";
+var list_blog_posts_default = defineTool({
+  name: "list_blog_posts",
+  title: "List blog posts",
+  description: "List published blog posts from Sigma Tecnolog\xEDas, ordered by publish date (newest first).",
+  inputSchema: {
+    limit: z.number().int().min(1).max(50).default(10).describe("Max number of posts to return."),
+    category: z.string().optional().describe("Optional category filter.")
+  },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async ({ limit, category }) => {
+    const supabase = createClient(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_PUBLISHABLE_KEY,
+      { auth: { persistSession: false, autoRefreshToken: false } }
+    );
+    let query = supabase.from("blog_posts").select("id, title, slug, excerpt, category, published_at").eq("published", true).order("published_at", { ascending: false }).limit(limit);
+    if (category) query = query.eq("category", category);
+    const { data, error } = await query;
+    if (error)
+      return { content: [{ type: "text", text: error.message }], isError: true };
+    return {
+      content: [{ type: "text", text: JSON.stringify(data) }],
+      structuredContent: { posts: data }
+    };
+  }
+});
+
+// src/lib/mcp/tools/get-blog-post.ts
+import { createClient as createClient2 } from "npm:@supabase/supabase-js@^2.98.0";
+import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.20.1";
+import { z as z2 } from "npm:zod@^3.25.76";
+var get_blog_post_default = defineTool2({
+  name: "get_blog_post",
+  title: "Get blog post",
+  description: "Fetch a single published blog post by slug, including full content.",
+  inputSchema: {
+    slug: z2.string().min(1).describe("Slug of the blog post.")
+  },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async ({ slug }) => {
+    const supabase = createClient2(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_PUBLISHABLE_KEY,
+      { auth: { persistSession: false, autoRefreshToken: false } }
+    );
+    const { data, error } = await supabase.from("blog_posts").select("id, title, slug, excerpt, content, image_url, category, published_at").eq("slug", slug).eq("published", true).maybeSingle();
+    if (error)
+      return { content: [{ type: "text", text: error.message }], isError: true };
+    if (!data)
+      return { content: [{ type: "text", text: `No post found for slug "${slug}"` }], isError: true };
+    return {
+      content: [{ type: "text", text: JSON.stringify(data) }],
+      structuredContent: { post: data }
+    };
+  }
+});
+
+// src/lib/mcp/tools/get-brand-info.ts
+import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.20.1";
+var get_brand_info_default = defineTool3({
+  name: "get_brand_info",
+  title: "Get brand info",
+  description: "Return positioning, services, and contact info for Sigma Tecnolog\xEDas \u2014 useful to answer questions about the studio.",
+  inputSchema: {},
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: () => {
+    const info = {
+      name: "Sigma Tecnolog\xEDas",
+      type: "Estudio de software",
+      founder: "Ariel Odasso",
+      positioning: "Socio t\xE9cnico para desarrollo a medida, automatizaciones y productos con IA. No prometemos, construimos.",
+      services: [
+        "Desarrollo de software a medida",
+        "Automatizaciones e integraciones",
+        "Productos propios con IA (Sigma Analytics, Sigma Trend Engine)"
+      ],
+      products: [
+        { name: "Sigma Analytics", description: "Anal\xEDtica de rendimiento para f\xFAtbol." },
+        { name: "Sigma Trend Engine", description: "Motor de inteligencia de tendencias con IA." }
+      ],
+      websites: [
+        "https://sigmatecnologiasarg.com",
+        "https://www.sigmatecnologiasarg.com"
+      ],
+      contactPath: "/contacto"
+    };
+    return {
+      content: [{ type: "text", text: JSON.stringify(info) }],
+      structuredContent: info
+    };
+  }
+});
+
+// src/lib/mcp/index.ts
+var projectRef = "qxkeungqbgaytxdfhccn";
+var mcp_default = defineMcp({
+  name: "sigma-tecnologias-mcp",
+  title: "Sigma Tecnolog\xEDas MCP",
+  version: "0.1.0",
+  instructions: "Tools to explore Sigma Tecnolog\xEDas \u2014 a software studio led by Ariel Odasso. Use `get_brand_info` for positioning and services, `list_blog_posts` to browse published articles, and `get_blog_post` to read a specific post by slug.",
+  auth: auth.oauth.issuer({
+    issuer: `https://${projectRef}.supabase.co/auth/v1`,
+    acceptedAudiences: "authenticated"
+  }),
+  tools: [get_brand_info_default, list_blog_posts_default, get_blog_post_default]
+});
+
 // lovable-mcp-supabase-entry.ts
-import mcp from "npm:C:\\Users\\ariel\\OneDrive\\Escritorio\\ARIEL\\Sigma\\WEB SIGMA TECNOLOGIAS\\sigma-vision-glow\\src\\lib\\mcp\\index.ts";
-import { createSupabaseHandler } from "npm:@lovable.dev/mcp-js@0.20.0/stacks/supabase";
-Deno.serve(createSupabaseHandler(mcp, { functionName: "mcp" }));
+import { createSupabaseHandler } from "npm:@lovable.dev/mcp-js@0.20.1/stacks/supabase";
+Deno.serve(createSupabaseHandler(mcp_default, { functionName: "mcp" }));

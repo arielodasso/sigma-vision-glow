@@ -15,6 +15,8 @@ interface Testimonial {
   content: string;
   rating: number | null;
   published: boolean;
+  image_url: string | null;
+
   sort_order: number;
   created_at: string;
   updated_at: string;

@@ -82,6 +82,7 @@ const TeamMemberModal = ({ member, onClose, onSuccess }: TeamMemberModalProps) =
         active: member.active,
         roles,
         password: "",
+        avatar_url: member.avatar_url || "",
       });
     } else {
       setFormData({
@@ -94,6 +95,8 @@ const TeamMemberModal = ({ member, onClose, onSuccess }: TeamMemberModalProps) =
         active: true,
         roles: ["empleado"],
         password: "",
+        avatar_url: "",
+
       });
     }
   }, [member]);

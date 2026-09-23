@@ -34,28 +34,30 @@ const TestimonialsCarousel = ({ testimonials, speed = 50 }: Props) => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "center", slidesToScroll: 1 });
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const scrollPrev = () => emblaApi?.scrollPrev();
+  const scrollNext = () => emblaApi?.scrollNext();
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onInit = () => setScrollSnaps(emblaApi.scrollSnapList());
+    const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
+    onInit();
+    emblaApi.on("init", onInit);
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onInit);
+    return () => {
+      emblaApi.off("init", onInit);
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onInit);
+    };
+  }, [emblaApi]);
+
   // Mobile carousel (embla) for >3 items
   if (isMobile && shouldMarquee) {
-    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "center", slidesToScroll: 1 });
-    const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
-    const [selectedIndex, setSelectedIndex] = useState(0);
-    const scrollPrev = () => emblaApi?.scrollPrev();
-    const scrollNext = () => emblaApi?.scrollNext();
 
-    useEffect(() => {
-      if (!emblaApi) return;
-      const onInit = () => setScrollSnaps(emblaApi.scrollSnapList());
-      const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
-      onInit();
-      emblaApi.on("init", onInit);
-      emblaApi.on("select", onSelect);
-      emblaApi.on("reInit", onInit);
-      return () => {
-        emblaApi.off("init", onInit);
-        emblaApi.off("select", onSelect);
-        emblaApi.off("reInit", onInit);
-      };
-    }, [emblaApi]);
 
     return (
       <div className="relative w-full py-4">

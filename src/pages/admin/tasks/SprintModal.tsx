@@ -184,7 +184,7 @@ const SprintModal = ({ sprint, onClose, onSuccess }: SprintModalProps) => {
                   <button
                     key={opt.value}
                     type="button"
-                    onClick={() => handleStatusChange(opt.value)}
+                    onClick={() => handleStatusChange(opt.value as "planning" | "active" | "completed")}
                     className={`flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
                       formData.status === opt.value
                         ? opt.color + " ring-2 ring-offset-2 ring-offset-card"

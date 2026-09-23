@@ -289,6 +289,7 @@ export type Database = {
           created_by: string | null
           email: string | null
           id: string
+          image_url: string | null
           name: string
           notes: string | null
           phone: string | null
@@ -303,6 +304,7 @@ export type Database = {
           created_by?: string | null
           email?: string | null
           id?: string
+          image_url?: string | null
           name: string
           notes?: string | null
           phone?: string | null
@@ -317,6 +319,7 @@ export type Database = {
           created_by?: string | null
           email?: string | null
           id?: string
+          image_url?: string | null
           name?: string
           notes?: string | null
           phone?: string | null
@@ -372,19 +375,46 @@ export type Database = {
         }
         Relationships: []
       }
+      contract_templates: {
+        Row: {
+          body: string
+          contract_type: string
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string
+          contract_type?: string
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          contract_type?: string
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       contracts: {
         Row: {
           amount: number | null
           body: string
           client_id: string | null
-          contract_type: Database["public"]["Enums"]["contract_type"]
+          contract_type: string
           created_at: string
           created_by: string | null
           currency: string
           id: string
           project: string | null
           sent_at: string | null
-          status: Database["public"]["Enums"]["contract_status"]
+          status: string
           title: string
           updated_at: string
         }
@@ -392,14 +422,14 @@ export type Database = {
           amount?: number | null
           body?: string
           client_id?: string | null
-          contract_type?: Database["public"]["Enums"]["contract_type"]
+          contract_type?: string
           created_at?: string
           created_by?: string | null
           currency?: string
           id?: string
           project?: string | null
           sent_at?: string | null
-          status?: Database["public"]["Enums"]["contract_status"]
+          status?: string
           title: string
           updated_at?: string
         }
@@ -407,14 +437,14 @@ export type Database = {
           amount?: number | null
           body?: string
           client_id?: string | null
-          contract_type?: Database["public"]["Enums"]["contract_type"]
+          contract_type?: string
           created_at?: string
           created_by?: string | null
           currency?: string
           id?: string
           project?: string | null
           sent_at?: string | null
-          status?: Database["public"]["Enums"]["contract_status"]
+          status?: string
           title?: string
           updated_at?: string
         }
@@ -427,33 +457,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      contract_templates: {
-        Row: {
-          body: string
-          contract_type: Database["public"]["Enums"]["contract_type"]
-          created_at: string
-          id: string
-          name: string
-          updated_at: string
-        }
-        Insert: {
-          body?: string
-          contract_type?: Database["public"]["Enums"]["contract_type"]
-          created_at?: string
-          id?: string
-          name: string
-          updated_at?: string
-        }
-        Update: {
-          body?: string
-          contract_type?: Database["public"]["Enums"]["contract_type"]
-          created_at?: string
-          id?: string
-          name?: string
-          updated_at?: string
-        }
-        Relationships: []
       }
       crm_settings: {
         Row: {
@@ -752,66 +755,102 @@ export type Database = {
         }
         Relationships: []
       }
+      sprints: {
+        Row: {
+          created_at: string
+          end_date: string | null
+          goal: string | null
+          id: string
+          name: string
+          start_date: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          end_date?: string | null
+          goal?: string | null
+          id?: string
+          name: string
+          start_date?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          end_date?: string | null
+          goal?: string | null
+          id?: string
+          name?: string
+          start_date?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       tasks: {
         Row: {
           assignee_id: string | null
+          color: string | null
           completed_at: string | null
           created_at: string
           created_by: string | null
           description: string | null
           due_date: string | null
+          epic_id: string | null
           id: string
-          priority: "low" | "medium" | "high" | "urgent"
-          status: "backlog" | "pending" | "in_progress" | "in_review" | "done" | "cancelled"
+          issue_type: string
+          key: string | null
+          parent_id: string | null
+          priority: string
+          reporter_id: string | null
+          sprint_id: string | null
+          status: string
+          story_points: number | null
           title: string
           updated_at: string
-          key: string | null
-          issue_type: "epic" | "story" | "task" | "bug" | "subtask"
-          story_points: number | null
-          epic_id: string | null
-          parent_id: string | null
-          sprint_id: string | null
-          reporter_id: string | null
         }
         Insert: {
           assignee_id?: string | null
+          color?: string | null
           completed_at?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
           due_date?: string | null
+          epic_id?: string | null
           id?: string
-          priority?: "low" | "medium" | "high" | "urgent"
-          status?: "backlog" | "pending" | "in_progress" | "in_review" | "done" | "cancelled"
+          issue_type?: string
+          key?: string | null
+          parent_id?: string | null
+          priority?: string
+          reporter_id?: string | null
+          sprint_id?: string | null
+          status?: string
+          story_points?: number | null
           title: string
           updated_at?: string
-          key?: string | null
-          issue_type?: "epic" | "story" | "task" | "bug" | "subtask"
-          story_points?: number | null
-          epic_id?: string | null
-          parent_id?: string | null
-          sprint_id?: string | null
-          reporter_id?: string | null
         }
         Update: {
           assignee_id?: string | null
+          color?: string | null
           completed_at?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
           due_date?: string | null
+          epic_id?: string | null
           id?: string
-          priority?: "low" | "medium" | "high" | "urgent"
-          status?: "backlog" | "pending" | "in_progress" | "in_review" | "done" | "cancelled"
+          issue_type?: string
+          key?: string | null
+          parent_id?: string | null
+          priority?: string
+          reporter_id?: string | null
+          sprint_id?: string | null
+          status?: string
+          story_points?: number | null
           title?: string
           updated_at?: string
-          key?: string | null
-          issue_type?: "epic" | "story" | "task" | "bug" | "subtask"
-          story_points?: number | null
-          epic_id?: string | null
-          parent_id?: string | null
-          sprint_id?: string | null
-          reporter_id?: string | null
         }
         Relationships: [
           {
@@ -847,57 +886,6 @@ export type Database = {
             columns: ["sprint_id"]
             isOneToOne: false
             referencedRelation: "sprints"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "tasks_reporter_id_fkey"
-            columns: ["reporter_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      sprints: {
-        Row: {
-          id: string
-          name: string
-          goal: string | null
-          start_date: string | null
-          end_date: string | null
-          status: "planning" | "active" | "completed"
-          created_by: string | null
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          name: string
-          goal?: string | null
-          start_date?: string | null
-          end_date?: string | null
-          status?: "planning" | "active" | "completed"
-          created_by?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          name?: string
-          goal?: string | null
-          start_date?: string | null
-          end_date?: string | null
-          status?: "planning" | "active" | "completed"
-          created_by?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "sprints_created_by_fkey"
-            columns: ["created_by"]
-            isOneToOne: false
-            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -952,6 +940,7 @@ export type Database = {
           content: string
           created_at: string
           id: string
+          image_url: string | null
           name: string
           published: boolean
           rating: number | null
@@ -964,6 +953,7 @@ export type Database = {
           content: string
           created_at?: string
           id?: string
+          image_url?: string | null
           name: string
           published?: boolean
           rating?: number | null
@@ -976,6 +966,7 @@ export type Database = {
           content?: string
           created_at?: string
           id?: string
+          image_url?: string | null
           name?: string
           published?: boolean
           rating?: number | null
@@ -1071,10 +1062,6 @@ export type Database = {
       app_role: "admin" | "moderator" | "user" | "superadmin" | "empleado"
       budget_status: "draft" | "sent" | "accepted" | "rejected"
       contact_status: "pending" | "sent" | "failed"
-      sprint_status: "planning" | "active" | "completed"
-      task_status: "backlog" | "pending" | "in_progress" | "in_review" | "done" | "cancelled"
-      task_priority: "low" | "medium" | "high" | "urgent"
-      task_issue_type: "epic" | "story" | "task" | "bug" | "subtask"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1205,12 +1192,6 @@ export const Constants = {
       app_role: ["admin", "moderator", "user", "superadmin", "empleado"],
       budget_status: ["draft", "sent", "accepted", "rejected"],
       contact_status: ["pending", "sent", "failed"],
-      contract_status: ["draft", "sent", "signed"],
-      contract_type: ["desarrollo", "mantenimiento", "general"],
-      sprint_status: ["planning", "active", "completed"],
-      task_status: ["backlog", "pending", "in_progress", "in_review", "done", "cancelled"],
-      task_priority: ["low", "medium", "high", "urgent"],
-      task_issue_type: ["epic", "story", "task", "bug", "subtask"],
     },
   },
 } as const
