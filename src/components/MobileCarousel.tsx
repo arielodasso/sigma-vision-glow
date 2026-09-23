@@ -22,30 +22,48 @@ export const MobileCarousel = <T,>({
 
   useEffect(() => {
     if (!autoScroll || !trackRef.current) return;
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const track = trackRef.current;
-    const itemWidth = track.querySelector(".carousel-item")?.clientWidth || 300;
-    const gap = 16; // gap-4 = 16px
-    const totalItems = items.length;
-    const scrollWidth = (itemWidth + gap) * totalItems;
     let animationId: number;
-    let lastTime = 0;
+    let lastTime: number | null = null;
+    let paused = false;
+    let resumeTimer: ReturnType<typeof setTimeout> | undefined;
+
+    const pause = () => {
+      paused = true;
+      lastTime = null;
+      if (resumeTimer) clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => {
+        paused = false;
+      }, 4000);
+    };
 
     const animate = (time: number) => {
-      if (!lastTime) lastTime = time;
-      const elapsed = (time - lastTime) / 1000;
-      const scrollSpeed = scrollWidth / autoScrollSpeed; // pixels per second
-      const scrollDistance = elapsed * scrollSpeed;
-
-      track.scrollLeft = scrollDistance % scrollWidth;
-
+      const maxScroll = track.scrollWidth - track.clientWidth;
+      if (!paused && maxScroll > 0) {
+        if (lastTime === null) lastTime = time;
+        const elapsed = (time - lastTime) / 1000;
+        lastTime = time;
+        const speed = maxScroll / autoScrollSpeed; // px per second
+        const next = track.scrollLeft + elapsed * speed;
+        track.scrollLeft = next >= maxScroll - 0.5 ? 0 : next;
+      }
       animationId = requestAnimationFrame(animate);
     };
+
+    track.addEventListener("pointerdown", pause);
+    track.addEventListener("touchstart", pause, { passive: true });
+    track.addEventListener("wheel", pause, { passive: true });
 
     animationId = requestAnimationFrame(animate);
 
     return () => {
       cancelAnimationFrame(animationId);
+      if (resumeTimer) clearTimeout(resumeTimer);
+      track.removeEventListener("pointerdown", pause);
+      track.removeEventListener("touchstart", pause);
+      track.removeEventListener("wheel", pause);
     };
   }, [autoScroll, autoScrollSpeed, items.length]);
 

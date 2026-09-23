@@ -47,6 +47,9 @@ const ContactSection = () => {
       service: (formData.get("need") as string) || "",
       message: (formData.get("message") as string) || "",
     };
+    if (!payload.message.trim()) {
+      payload.message = `Consulta desde el formulario web${payload.service ? `: ${payload.service}` : ""}.`;
+    }
 
     const validationErrors = validate(payload);
     if (Object.keys(validationErrors).length > 0) {
