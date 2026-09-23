@@ -73,6 +73,8 @@ const ClientsAdmin = () => {
         id: `v-${b.slug}`,
         name: b.client_name,
         company: null,
+        image_url: null,
+
         email: b.client_email || null,
         phone: null,
         whatsapp: null,
