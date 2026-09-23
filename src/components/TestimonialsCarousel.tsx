@@ -113,7 +113,7 @@ const TestimonialsCarousel = ({ testimonials, speed = 50 }: Props) => {
           <Button
             variant="outline"
             size="icon"
-            className="h-10 w-10 rounded-full bg-background/80 backdrop-blur-sm"
+            className="h-10 w-10 rounded-full bg-muted/60 text-muted-foreground border-border backdrop-blur-sm"
             onClick={scrollPrev}
             disabled={selectedIndex === 0 && !emblaApi?.canScrollPrev()}
             aria-label="Testimonial anterior"
@@ -129,10 +129,10 @@ const TestimonialsCarousel = ({ testimonials, speed = 50 }: Props) => {
                 aria-label={`Ir al testimonio ${i + 1}`}
                 onClick={() => emblaApi?.scrollTo(i)}
                 className={cn(
-                  "w-2 h-2 rounded-full transition-colors",
+                  "h-2 rounded-full bg-muted-foreground transition-[width,opacity]",
                   i === selectedIndex
-                    ? "bg-sigma-yellow"
-                    : "bg-foreground/20 hover:bg-foreground/40"
+                    ? "w-5 opacity-90"
+                    : "w-2 opacity-30 hover:opacity-60"
                 )}
               />
             ))}
@@ -140,7 +140,7 @@ const TestimonialsCarousel = ({ testimonials, speed = 50 }: Props) => {
           <Button
             variant="outline"
             size="icon"
-            className="h-10 w-10 rounded-full bg-background/80 backdrop-blur-sm"
+            className="h-10 w-10 rounded-full bg-muted/60 text-muted-foreground border-border backdrop-blur-sm"
             onClick={scrollNext}
             disabled={selectedIndex === scrollSnaps.length - 1 && !emblaApi?.canScrollNext()}
             aria-label="Testimonial siguiente"
