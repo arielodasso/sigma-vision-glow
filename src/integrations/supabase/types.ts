@@ -375,6 +375,89 @@ export type Database = {
         }
         Relationships: []
       }
+      contract_templates: {
+        Row: {
+          body: string
+          contract_type: string
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string
+          contract_type?: string
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          contract_type?: string
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      contracts: {
+        Row: {
+          amount: number | null
+          body: string
+          client_id: string | null
+          contract_type: string
+          created_at: string
+          created_by: string | null
+          currency: string
+          id: string
+          project: string | null
+          sent_at: string | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          amount?: number | null
+          body?: string
+          client_id?: string | null
+          contract_type?: string
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          id?: string
+          project?: string | null
+          sent_at?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number | null
+          body?: string
+          client_id?: string | null
+          contract_type?: string
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          id?: string
+          project?: string | null
+          sent_at?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contracts_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       crm_settings: {
         Row: {
           category: string
