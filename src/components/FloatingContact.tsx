@@ -31,9 +31,9 @@ const FloatingContact = () => {
               </a>
             </Button>
             <Button asChild className={itemClass} variant="outline">
-              <a href="https://instagram.com/sigmatecnologiasarg" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.instagram.com/sigma.tecnologias/" target="_blank" rel="noopener noreferrer">
                 <Instagram className="h-4 w-4" />
-                Instagram de Sigma
+                @sigma.tecnologias
               </a>
             </Button>
           </motion.div>
