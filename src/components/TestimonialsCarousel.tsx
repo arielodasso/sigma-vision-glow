@@ -16,6 +16,7 @@ interface Testimonial {
   content: string;
   rating: number | null;
   sort_order: number;
+  image_url: string | null;
 }
 
 interface Props {
@@ -83,9 +84,17 @@ const TestimonialsCarousel = ({ testimonials, speed = 50 }: Props) => {
                     "{testimonial.content}"
                   </blockquote>
                   <footer className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-foreground/[0.04] border border-foreground/[0.06] flex items-center justify-center">
-                      <Quote size={14} className="text-foreground/30" />
-                    </div>
+                    {testimonial.image_url ? (
+                      <img
+                        src={testimonial.image_url}
+                        alt={testimonial.name}
+                        className="w-8 h-8 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-foreground/[0.04] border border-foreground/[0.06] flex items-center justify-center">
+                        <Quote size={14} className="text-foreground/30" />
+                      </div>
+                    )}
                     <div>
                       <p className="font-medium text-sm text-foreground">{testimonial.name}</p>
                       <p className="text-xs text-foreground/40">

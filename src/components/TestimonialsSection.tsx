@@ -13,6 +13,7 @@ interface Testimonial {
   content: string;
   rating: number | null;
   sort_order: number;
+  image_url: string | null;
 }
 
 const TestimonialsSection = () => {
@@ -23,7 +24,7 @@ const TestimonialsSection = () => {
   useEffect(() => {
     supabase
       .from('testimonials')
-      .select('id, name, role, company, content, rating, sort_order')
+      .select('id, name, role, company, content, rating, sort_order, image_url')
       .eq('published', true)
       .order('sort_order', { ascending: true })
       .then(({ data }) => {
