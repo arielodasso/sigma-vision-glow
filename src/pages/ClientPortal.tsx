@@ -7,6 +7,8 @@ import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
 import sigmaIsologo from "@/assets/brand/sigma-isologo-4.png.asset.json";
 import { useClientAccess } from "@/hooks/useClientAccess";
+import Navbar from "@/components/Navbar";
+
 
 interface Client {
   id: string;
