@@ -29,6 +29,8 @@ import {
   Mail,
   Link as LinkIcon,
   Globe,
+  Gauge,
+  FileSignature,
 } from "lucide-react";
 import BlogAdminLogin from "@/components/BlogAdminLogin";
 import sigmaIsologo from "@/assets/brand/sigma-isologo-2.png.asset.json";
@@ -78,7 +80,6 @@ const NAV_CONFIG: NavSection[] = [
       { label: "Casos reales", icon: <LinkIcon size={14} />, href: "/admin/contenidos/casos", permission: "contents.manage" },
       { label: "FAQs", icon: <HelpCircle size={14} />, href: "/admin/contenidos/faqs", permission: "contents.manage" },
       { label: "Multimedia", icon: <ImageIcon size={14} />, href: "/admin/contenidos/multimedia", permission: "media.manage" },
-      { label: "SEO", icon: <BarChart3 size={14} />, href: "/admin/contenidos/seo", permission: "seo.read" },
     ],
   },
   {
@@ -98,6 +99,7 @@ const NAV_CONFIG: NavSection[] = [
     icon: <Building2 size={16} />,
     children: [
       { label: "Listado", icon: <Users size={14} />, href: "/admin/clientes", permission: "clients.read" },
+      { label: "Contratos", icon: <FileSignature size={14} />, href: "/admin/clientes/contratos", permission: "clients.read" },
       { label: "Presupuestos", icon: <Receipt size={14} />, href: "/admin/presupuestos", permission: "budgets.manage" },
       { label: "Cotizador", icon: <Calculator size={14} />, href: "/admin/cotizador", permission: "budgets.manage" },
       { label: "Documentos", icon: <FolderKanban size={14} />, href: "/admin/clientes/documentos", permission: "docs.read" },
@@ -129,6 +131,13 @@ const NAV_CONFIG: NavSection[] = [
       { label: "Documentos", icon: <FolderKanban size={14} />, href: "/admin/conocimiento/documentos", permission: "docs.read" },
       { label: "Ayuda", icon: <HelpCircle size={14} />, href: "/admin/conocimiento/ayuda", permission: "help.manage" },
       { label: "Portal Editorial", icon: <Server size={14} />, href: "/admin/conocimiento/portal", permission: "help.manage" },
+    ],
+  },
+  {
+    label: "Métricas",
+    icon: <Gauge size={16} />,
+    children: [
+      { label: "SEO", icon: <BarChart3 size={14} />, href: "/admin/contenidos/seo", permission: "seo.read" },
     ],
   },
   {

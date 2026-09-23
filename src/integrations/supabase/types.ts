@@ -372,6 +372,89 @@ export type Database = {
         }
         Relationships: []
       }
+      contracts: {
+        Row: {
+          amount: number | null
+          body: string
+          client_id: string | null
+          contract_type: Database["public"]["Enums"]["contract_type"]
+          created_at: string
+          created_by: string | null
+          currency: string
+          id: string
+          project: string | null
+          sent_at: string | null
+          status: Database["public"]["Enums"]["contract_status"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          amount?: number | null
+          body?: string
+          client_id?: string | null
+          contract_type?: Database["public"]["Enums"]["contract_type"]
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          id?: string
+          project?: string | null
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["contract_status"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number | null
+          body?: string
+          client_id?: string | null
+          contract_type?: Database["public"]["Enums"]["contract_type"]
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          id?: string
+          project?: string | null
+          sent_at?: string | null
+          status?: Database["public"]["Enums"]["contract_status"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contracts_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      contract_templates: {
+        Row: {
+          body: string
+          contract_type: Database["public"]["Enums"]["contract_type"]
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string
+          contract_type?: Database["public"]["Enums"]["contract_type"]
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          contract_type?: Database["public"]["Enums"]["contract_type"]
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       crm_settings: {
         Row: {
           category: string
@@ -1122,6 +1205,8 @@ export const Constants = {
       app_role: ["admin", "moderator", "user", "superadmin", "empleado"],
       budget_status: ["draft", "sent", "accepted", "rejected"],
       contact_status: ["pending", "sent", "failed"],
+      contract_status: ["draft", "sent", "signed"],
+      contract_type: ["desarrollo", "mantenimiento", "general"],
       sprint_status: ["planning", "active", "completed"],
       task_status: ["backlog", "pending", "in_progress", "in_review", "done", "cancelled"],
       task_priority: ["low", "medium", "high", "urgent"],

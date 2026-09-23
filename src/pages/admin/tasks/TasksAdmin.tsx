@@ -710,22 +710,6 @@ const TasksAdmin = () => {
             <p className="text-xs text-muted-foreground mt-1">Gestión ágil del equipo · Sprints, backlog y métricas</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-1 bg-card border border-foreground/[0.08] rounded-lg p-1">
-              {viewModes.map((mode) => (
-                <button
-                  key={mode.value}
-                  onClick={() => setViewMode(mode.value)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-                    viewMode === mode.value
-                      ? "bg-foreground text-background"
-                      : "text-foreground/50 hover:text-foreground hover:bg-foreground/[0.05]"
-                  }`}
-                >
-                  <mode.icon size={14} />
-                  {mode.label}
-                </button>
-              ))}
-            </div>
             <button
               onClick={openCreateSprint}
               className="flex items-center gap-2 bg-sigma-blue text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-sigma-blue/90 transition-colors"
@@ -740,6 +724,31 @@ const TasksAdmin = () => {
               <Plus size={16} />
               Nueva tarea
             </button>
+          </div>
+        </motion.div>
+
+        {/* View mode toggle */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="mb-4"
+        >
+          <div className="flex items-center gap-1 bg-card border border-foreground/[0.08] rounded-lg p-1 w-fit">
+            {viewModes.map((mode) => (
+              <button
+                key={mode.value}
+                onClick={() => setViewMode(mode.value)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
+                  viewMode === mode.value
+                    ? "bg-foreground text-background"
+                    : "text-foreground/50 hover:text-foreground hover:bg-foreground/[0.05]"
+                }`}
+              >
+                <mode.icon size={14} />
+                {mode.label}
+              </button>
+            ))}
           </div>
         </motion.div>
 

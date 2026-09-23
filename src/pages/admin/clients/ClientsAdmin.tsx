@@ -43,6 +43,7 @@ const ClientsAdmin = () => {
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
   const [modalOpen, setModalOpen] = useState(false);
   const [editingClient, setEditingClient] = useState<Client | null>(null);
 
@@ -99,11 +100,30 @@ const ClientsAdmin = () => {
     fetchClients();
   }, []);
 
-  const filtered = clients.filter((c) =>
-    c.name.toLowerCase().includes(search.toLowerCase()) ||
-    c.company?.toLowerCase().includes(search.toLowerCase()) ||
-    c.email?.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = clients.filter((c) => {
+    const matchesSearch =
+      c.name.toLowerCase().includes(search.toLowerCase()) ||
+      c.company?.toLowerCase().includes(search.toLowerCase()) ||
+      c.email?.toLowerCase().includes(search.toLowerCase());
+    const matchesStatus = statusFilter === "all" || c.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  const statusCounts: Record<string, number> = {
+    all: clients.length,
+    active: clients.filter((c) => c.status === "active").length,
+    pending_payment: clients.filter((c) => c.status === "pending_payment").length,
+    proposal: clients.filter((c) => c.status === "proposal").length,
+    lost: clients.filter((c) => c.status === "lost").length,
+  };
+
+  const statusTabs = [
+    { value: "all", label: "Todos" },
+    { value: "active", label: "Activos" },
+    { value: "pending_payment", label: "Esperando pago" },
+    { value: "proposal", label: "Propuestas" },
+    { value: "lost", label: "Perdidos" },
+  ];
 
   const handleDelete = async (id: string) => {
     if (!confirm("¿Eliminar este cliente?")) return;
@@ -166,6 +186,28 @@ const ClientsAdmin = () => {
               onChange={(e) => setSearch(e.target.value)}
               className="w-full glass-input rounded-xl px-10 py-2.5 text-xs text-foreground placeholder:text-foreground/25"
             />
+          </div>
+          <div className="flex flex-wrap items-center gap-1 mt-4">
+            {statusTabs.map((tab) => (
+              <button
+                key={tab.value}
+                onClick={() => setStatusFilter(tab.value)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  statusFilter === tab.value
+                    ? "bg-foreground text-background"
+                    : "text-foreground/50 hover:text-foreground hover:bg-foreground/[0.05]"
+                }`}
+              >
+                {tab.label}
+                <span
+                  className={`inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full text-[10px] font-semibold ${
+                    statusFilter === tab.value ? "bg-background text-foreground" : "bg-foreground/[0.06] text-foreground/50"
+                  }`}
+                >
+                  {statusCounts[tab.value]}
+                </span>
+              </button>
+            ))}
           </div>
         </motion.div>
 

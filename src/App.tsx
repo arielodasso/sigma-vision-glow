@@ -58,6 +58,7 @@ const ClientsAdmin = lazy(() => import("./pages/admin/clients/ClientsAdmin"));
 const ClientDocuments = lazy(() => import("./pages/admin/clients/ClientDocuments"));
 const ClientInvites = lazy(() => import("./pages/admin/clients/ClientInvites"));
 const ClientPortal = lazy(() => import("./pages/admin/clients/ClientPortal"));
+const ContractsAdmin = lazy(() => import("./pages/admin/clients/ContractsAdmin"));
 // Admin - Equipo
 const TeamDirectory = lazy(() => import("./pages/admin/team/TeamDirectory"));
 const TeamRoles = lazy(() => import("./pages/admin/team/TeamRoles"));
@@ -125,6 +126,7 @@ const App = () => (
               <Route path="clientes/documentos" element={<ClientDocuments />} />
               <Route path="clientes/invitaciones" element={<ClientInvites />} />
               <Route path="clientes/portal" element={<ClientPortal />} />
+              <Route path="clientes/contratos" element={<ContractsAdmin />} />
               <Route path="equipo" element={<TeamDirectory />} />
               <Route path="equipo/roles" element={<TeamRoles />} />
               <Route path="equipo/invitaciones" element={<TeamInvites />} />

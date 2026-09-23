@@ -8,6 +8,7 @@ interface Budget {
   id: string;
   slug: string;
   client_name: string;
+  client_id: string | null;
   development_cost: number | null;
   monthly_maintenance_cost: number | null;
   status: "draft" | "sent" | "accepted" | "rejected";
@@ -31,9 +32,9 @@ const BudgetsList = () => {
     setLoading(true);
     const { data } = await supabase
       .from("budgets")
-      .select("id, slug, client_name, development_cost, monthly_maintenance_cost, status, accepted_at, created_at")
+      .select("id, slug, client_name, client_id, development_cost, monthly_maintenance_cost, status, accepted_at, created_at")
       .order("created_at", { ascending: false });
-    setBudgets((data as any) || []);
+    setBudgets((data as unknown as Budget[]) || []);
     setLoading(false);
   };
 
@@ -101,6 +102,15 @@ const BudgetsList = () => {
                 <Link to={`/admin/presupuestos/${b.id}`} className="p-2 text-foreground/30 hover:text-foreground text-xs underline">
                   Editar
                 </Link>
+                {b.client_id && (
+                  <Link
+                    to={`/admin/clientes/contratos?nuevo=1&cliente=${b.client_id}&nombre=${encodeURIComponent(b.client_name)}&dev=${b.development_cost ?? 0}&mant=${b.monthly_maintenance_cost ?? 0}&presupuesto=${b.slug}`}
+                    className="p-2 text-foreground/30 hover:text-sigma-blue text-xs underline"
+                    title="Crear contrato a partir de este presupuesto"
+                  >
+                    Contrato
+                  </Link>
+                )}
                 <button onClick={() => remove(b.id)} className="p-2 text-foreground/30 hover:text-destructive">
                   <Trash2 size={14} />
                 </button>
