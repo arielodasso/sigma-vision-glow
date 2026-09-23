@@ -4,7 +4,7 @@ import { Loader2, Building2, FileText, DollarSign, Calendar, Shield, LogIn, Arro
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/i18n/useTranslation";
 import { motion } from "framer-motion";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import sigmaIsologo from "@/assets/brand/sigma-isologo-4.png.asset.json";
 import { useClientAccess } from "@/hooks/useClientAccess";
 import Navbar from "@/components/Navbar";
@@ -41,7 +41,8 @@ interface Document {
 const ClientPortal = () => {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
-  const token = searchParams.get("token");
+  const { token: routeToken } = useParams<{ token?: string }>();
+  const token = routeToken || searchParams.get("token");
   const { hasClientAccess, loading: clientAccessLoading, clientId } = useClientAccess();
   const [loading, setLoading] = useState(true);
   const [client, setClient] = useState<Client | null>(null);
@@ -70,14 +71,19 @@ const ClientPortal = () => {
   };
 
   const fetchClientSettings = async () => {
-    const { data } = await supabase
-      .from("crm_settings")
-      .select("key, value")
-      .in("key", ["client_portal_require_auth", "client_portal_base_url"]);
-    if (data) {
-      data.forEach((s) => {
-        if (s.key === "client_portal_require_auth") setRequireAuth(s.value === "true");
-      });
+    setLoading(true);
+    try {
+      const { data } = await supabase
+        .from("crm_settings")
+        .select("key, value")
+        .in("key", ["client_portal_require_auth", "client_portal_base_url"]);
+      if (data) {
+        data.forEach((s) => {
+          if (s.key === "client_portal_require_auth") setRequireAuth(s.value === "true");
+        });
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
