@@ -1,6 +1,6 @@
 import { useEffect, useState, FormEvent } from "react";
 import { X, Loader2, Mail, Shield, Users, Send } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { invokeFunction } from "@/integrations/supabase/functions";
 import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "@/i18n/useTranslation";
@@ -63,27 +63,21 @@ const TeamInviteModal = ({ invite, onClose, onSuccess }: TeamInviteModalProps) =
     setLoading(true);
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/team-invite`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          role: formData.role,
-          expires_in_days: formData.expires_in_days,
-        }),
+      const data = await invokeFunction<{ success: boolean; portal_url?: string }>("team-invite", {
+        email: formData.email,
+        role: formData.role,
+        expires_in_days: formData.expires_in_days,
       });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Error al crear invitación");
 
       toast({ title: "Invitación creada" });
       onSuccess();
       onClose();
-    } catch (error: any) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "No se pudo crear la invitación",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }

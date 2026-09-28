@@ -1,6 +1,7 @@
 import { useEffect, useState, FormEvent } from "react";
 import { X, Loader2, User, Mail, Phone, MessageCircle, Building2, Shield, Calendar, Image as ImageIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { invokeFunction } from "@/integrations/supabase/functions";
 import type { Database } from "@/integrations/supabase/types";
 
 type AppRole = Database["public"]["Enums"]["app_role"];
@@ -145,39 +146,32 @@ const TeamMemberModal = ({ member, onClose, onSuccess }: TeamMemberModalProps) =
           return;
         }
 
-        const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+        // La Admin API de Supabase exige un JWT service_role y no puede llamarse
+        // desde el browser (devuelve 403 "User not allowed"). Se delega a la
+        // edge function, que corre con service role y valida los permisos.
+        await invokeFunction("team-create-user", {
           email: formData.email.trim(),
           password: formData.password,
-          email_confirm: true,
-          user_metadata: { full_name: formData.full_name.trim() },
-        });
-        if (authError) throw authError;
-
-        const userId = authData.user.id;
-
-        const { error: profileError } = await supabase.from("profiles").insert({
-          id: userId,
           full_name: formData.full_name.trim(),
-          title: formData.title.trim() || null,
-          phone: formData.phone.trim() || null,
-          whatsapp: formData.whatsapp.trim() || null,
+          title: formData.title.trim(),
+          phone: formData.phone.trim(),
+          whatsapp: formData.whatsapp.trim(),
           manager_id: formData.manager_id || null,
-          active: formData.active,
           avatar_url: formData.avatar_url || null,
+          active: formData.active,
+          roles: formData.roles,
         });
-        if (profileError) throw profileError;
 
-        if (formData.roles.length > 0) {
-          const roleInserts = formData.roles.map((r) => ({ user_id: userId, role: r as AppRole }));
-          const { error: roleError } = await supabase.from("user_roles").insert(roleInserts);
-          if (roleError) throw roleError;
-        }
         toast({ title: "Miembro creado" });
       }
       onSuccess();
       onClose();
-    } catch (error: any) {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "No se pudo guardar el miembro",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }

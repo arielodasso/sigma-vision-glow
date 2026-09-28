@@ -60,6 +60,25 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+## Edge functions
+
+Las edge functions de `supabase/functions/` se despliegan aparte del frontend
+(Lovable no las publica). Después de cada cambio hay que desplegarlas:
+
+```sh
+supabase link --project-ref qxkeungqbgaytxdfhccn
+supabase functions deploy team-create-user
+supabase functions deploy team-invite
+supabase functions deploy client-invite
+```
+
+Las funciones que crean o modifican usuarios (`team-create-user`, `team-invite`,
+`client-invite`) corren con `SUPABASE_SERVICE_ROLE_KEY` y validan el rol del
+llamador leyendo `public.user_roles`. El frontend las invoca con
+`invokeFunction` de `src/integrations/supabase/functions.ts`, que manda el access
+token de la sesión: nunca llamar `supabase.auth.admin.*` desde el browser, la
+Admin API exige un JWT `service_role` y responde 403 `User not allowed`.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.

@@ -15,6 +15,9 @@ verify_jwt = false
 [functions.team-invite]
 verify_jwt = false
 
+[functions.team-create-user]
+verify_jwt = false
+
 [functions.client-invite]
 verify_jwt = false
 
