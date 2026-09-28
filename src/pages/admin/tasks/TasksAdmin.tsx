@@ -368,19 +368,27 @@ const TasksAdmin = () => {
 
   const fetchTasks = async () => {
     setLoading(true);
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("tasks")
       .select(`
         *,
         assignee:profiles!tasks_assignee_id_fkey(full_name, email),
         creator:profiles!tasks_created_by_fkey(full_name, email),
-        reporter:profiles!tasks_reporter_id_fkey(full_name, email),
-        epic:tasks!tasks_epic_id_fkey(title, key, color),
-        parent:tasks!tasks_parent_id_fkey(title, key),
+        epic:epic_id(title, key, color),
+        parent:parent_id(title, key),
         sprint:sprints!tasks_sprint_id_fkey(name, status)
       `)
       .order("created_at", { ascending: false });
-    if (data) setTasks(data as unknown as Task[]);
+    if (error) console.error("[tasks] fetch error", error);
+    if (data) {
+      const reporterIds = Array.from(new Set(data.map((t: any) => t.reporter_id).filter(Boolean)));
+      let reporters: Record<string, { full_name: string | null; email: string }> = {};
+      if (reporterIds.length) {
+        const { data: profs } = await supabase.from("profiles").select("id, full_name, email").in("id", reporterIds);
+        reporters = Object.fromEntries((profs || []).map((p) => [p.id, { full_name: p.full_name, email: p.email }]));
+      }
+      setTasks(data.map((t: any) => ({ ...t, reporter: t.reporter_id ? reporters[t.reporter_id] ?? null : null })) as unknown as Task[]);
+    }
     setLoading(false);
   };
 
