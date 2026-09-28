@@ -80,8 +80,8 @@ const ProjectsSection = () => {
     theme: (c.logo_theme as "light" | "dark" | "gray") || "dark",
   }));
 
-  // Combine static and dynamic clients
-  const allWebClients = [...webClients, ...dynamicWebClients];
+  // Admin-managed cases take over; static list is only a fallback
+  const allWebClients = dynamicWebClients.length ? dynamicWebClients : webClients;
 
   return (
     <section id="proyectos" className="section-padding relative">
