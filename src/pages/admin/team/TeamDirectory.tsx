@@ -51,14 +51,15 @@ const TeamDirectory = () => {
 
   const fetchMembers = async () => {
     setLoading(true);
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("profiles")
       .select(`
         *,
         user_roles(role),
-        manager:profiles!profiles_manager_id_fkey(full_name, email)
+        manager:manager_id(full_name, email)
       `)
       .order("full_name");
+    if (error) toast({ title: "Error al cargar el equipo", description: error.message, variant: "destructive" });
     if (data) setMembers(data as unknown as TeamMember[]);
     setLoading(false);
   };

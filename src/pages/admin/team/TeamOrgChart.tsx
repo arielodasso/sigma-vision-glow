@@ -40,7 +40,7 @@ const TeamOrgChart = () => {
       .select(`
         *,
         user_roles(role),
-        manager:profiles!profiles_manager_id_fkey(full_name, email)
+        manager:manager_id(full_name, email)
       `)
       .order("full_name");
     if (data) {
