@@ -23,13 +23,21 @@ export function usePermissions(): PermissionsState {
 
   const fetchPermissions = async () => {
     try {
-      const [{ data: rolesData }, { data: permsData }] = await Promise.all([
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        setRoles([]);
+        setPermissions([]);
+        return;
+      }
+      const [rolesRes, permsRes] = await Promise.all([
         supabase.rpc('get_my_roles'),
         supabase.rpc('get_my_permissions'),
       ]);
+      if (rolesRes.error) throw rolesRes.error;
+      if (permsRes.error) throw permsRes.error;
 
-      setRoles((rolesData as AppRole[]) ?? []);
-      setPermissions((permsData as string[]) ?? []);
+      setRoles((rolesRes.data as AppRole[]) ?? []);
+      setPermissions((permsRes.data as string[]) ?? []);
     } catch (error) {
       console.error('Error fetching permissions:', error);
       setRoles([]);
@@ -40,10 +48,10 @@ export function usePermissions(): PermissionsState {
   };
 
   useEffect(() => {
-    fetchPermissions();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
-      fetchPermissions();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'TOKEN_REFRESHED') return;
+      setLoading(true);
+      setTimeout(fetchPermissions, 0);
     });
 
     return () => subscription.unsubscribe();
