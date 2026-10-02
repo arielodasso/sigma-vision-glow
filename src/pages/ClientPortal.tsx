@@ -36,6 +36,7 @@ interface Document {
   size_bytes: number | null;
   created_at: string;
   url: string | null;
+  path: string;
 }
 
 const ClientPortal = () => {
@@ -115,6 +116,31 @@ const ClientPortal = () => {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const openDocument = async (doc: Document) => {
+    const win = window.open("", "_blank");
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const params = new URLSearchParams({ path: doc.path });
+      if (token) params.set("token", token);
+      const res = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/docs-signed-url?${params}`,
+        {
+          headers: {
+            apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+            Authorization: `Bearer ${session?.access_token ?? import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          },
+        },
+      );
+      const json = await res.json();
+      if (!res.ok || !json.signed_url) throw new Error(json.error || "No se pudo abrir el documento");
+      if (win) win.location.href = json.signed_url;
+      else window.location.href = json.signed_url;
+    } catch (e: any) {
+      win?.close();
+      alert(e.message || "No se pudo descargar el documento");
     }
   };
 
@@ -392,10 +418,10 @@ const ClientPortal = () => {
                               <p className="text-sm text-foreground/50">{formatDate(doc.created_at)}</p>
                             </div>
                           </div>
-                          {doc.url && (
-                            <a href={doc.url} target="_blank" rel="noopener noreferrer" className="text-sm text-sigma-blue hover:text-sigma-yellow">
+                          {doc.path && (
+                            <button type="button" onClick={() => openDocument(doc)} className="text-sm text-sigma-blue hover:text-sigma-yellow">
                               Ver
-                            </a>
+                            </button>
                           )}
                         </div>
                       ))}
@@ -501,16 +527,15 @@ const ClientPortal = () => {
                             </td>
                             <td className="p-4 text-foreground/50">{formatDate(doc.created_at)}</td>
                             <td className="p-4 text-right">
-                              {doc.url && (
-                                <a
-                                  href={doc.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
+                              {doc.path && (
+                                <button
+                                  type="button"
+                                  onClick={() => openDocument(doc)}
                                   className="inline-flex items-center gap-1 text-sm text-sigma-blue hover:text-sigma-yellow"
                                 >
                                   <ExternalLink size={14} />
                                   Descargar
-                                </a>
+                                </button>
                               )}
                             </td>
                           </tr>

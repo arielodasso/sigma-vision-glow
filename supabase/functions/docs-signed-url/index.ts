@@ -16,6 +16,42 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
+    const url = new URL(req.url);
+    const portalToken = url.searchParams.get("token");
+
+    // Portal access: valid client invite token grants access to that client's documents
+    if (portalToken) {
+      const path = url.searchParams.get("path");
+      if (!path) {
+        return new Response(JSON.stringify({ error: "path requerido" }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const { data: invite } = await supabase
+        .from("client_invites")
+        .select("client_id, expires_at")
+        .eq("token", portalToken)
+        .in("status", ["pending", "accepted"])
+        .maybeSingle();
+      const { data: doc } = await supabase
+        .from("documents").select("client_id").eq("path", path).maybeSingle();
+      const expired = invite?.expires_at && new Date(invite.expires_at) < new Date();
+      if (!invite || expired || !doc || doc.client_id !== invite.client_id) {
+        return new Response(JSON.stringify({ error: "Sin acceso a este documento" }), {
+          status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const { data, error } = await supabase.storage.from("documents").createSignedUrl(path, 3600);
+      if (error) {
+        return new Response(JSON.stringify({ error: error.message }), {
+          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      return new Response(JSON.stringify({ signed_url: data.signedUrl }), {
+        status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const { data: { user }, error: authError } = await supabase.auth.getUser(
       req.headers.get("Authorization")?.replace("Bearer ", "") || ""
     );
@@ -35,7 +71,6 @@ Deno.serve(async (req) => {
 
     const isStaff = roles && roles.length > 0;
 
-    const url = new URL(req.url);
     const path = url.searchParams.get("path");
     const bucket = url.searchParams.get("bucket") || "documents";
     const expiresIn = parseInt(url.searchParams.get("expires_in") || "3600", 10);
