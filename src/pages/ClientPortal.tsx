@@ -36,6 +36,7 @@ interface Document {
   size_bytes: number | null;
   created_at: string;
   url: string | null;
+  path: string;
 }
 
 const ClientPortal = () => {
