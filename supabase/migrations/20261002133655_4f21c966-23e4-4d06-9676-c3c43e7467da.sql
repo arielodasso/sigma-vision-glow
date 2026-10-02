@@ -1,0 +1,4 @@
+CREATE POLICY "Staff manage client documents select" ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'documents' AND public.is_staff(auth.uid()));
+CREATE POLICY "Staff manage client documents insert" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'documents' AND public.is_staff(auth.uid()));
+CREATE POLICY "Staff manage client documents update" ON storage.objects FOR UPDATE TO authenticated USING (bucket_id = 'documents' AND public.is_staff(auth.uid()));
+CREATE POLICY "Staff manage client documents delete" ON storage.objects FOR DELETE TO authenticated USING (bucket_id = 'documents' AND public.is_staff(auth.uid()));
