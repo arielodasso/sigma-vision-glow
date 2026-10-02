@@ -270,14 +270,6 @@ const ClientPortal = () => {
             </Link>
             <div className="flex items-center gap-4">
               <span className="text-sm text-foreground/60">{client.name}{client.company && ` · ${client.company}`}</span>
-              {token && (
-                <a
-                  href={`/auth/login?redirectTo=${encodeURIComponent(window.location.pathname + window.location.search)}`}
-                  className="text-sm text-sigma-blue hover:text-sigma-yellow"
-                >
-                  Iniciar sesión
-                </a>
-              )}
             </div>
           </div>
         </div>
