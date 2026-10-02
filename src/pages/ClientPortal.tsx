@@ -91,27 +91,18 @@ const ClientPortal = () => {
   const fetchClientByToken = async (inviteToken: string) => {
     setLoading(true);
     try {
-      const { data: invite, error: inviteError } = await supabase
-        .from("client_invites")
-        .select("*, client:clients(*)")
-        .eq("token", inviteToken)
-        .eq("status", "pending")
-        .single();
-
-      if (inviteError || !invite) {
-        setError("Enlace de invitación inválido o expirado");
-        setLoading(false);
+      const res = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/client-portal-data?token=${encodeURIComponent(inviteToken)}`,
+        { headers: { apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY } },
+      );
+      const data = await res.json();
+      if (!res.ok || !data.client) {
+        setError(data.error || "Enlace de portal inválido o expirado");
         return;
       }
-
-      if (invite.expires_at && new Date(invite.expires_at) < new Date()) {
-        setError("Esta invitación ha expirado");
-        setLoading(false);
-        return;
-      }
-
-      setClient(invite.client as Client);
-      await fetchClientData(invite.client.id);
+      setClient(data.client as Client);
+      setBudgets(data.budgets as Budget[]);
+      setDocuments(data.documents as Document[]);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -162,7 +153,7 @@ const ClientPortal = () => {
     if (docsData) setDocuments(docsData as Document[]);
   };
 
-  if (clientAccessLoading) {
+  if (clientAccessLoading && !token) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="animate-spin text-sigma-yellow" size={32} />
